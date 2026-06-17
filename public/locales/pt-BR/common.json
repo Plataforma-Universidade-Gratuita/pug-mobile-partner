@@ -1,0 +1,67 @@
+{
+    "auth": {
+        "login": {
+            "brand": {
+                "name": "PUG Student",
+                "subtitle": "Workspace do estudante"
+            },
+            "feedback": {
+                "error": "NÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£o foi possÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­vel entrar agora."
+            },
+            "form": {
+                "description": "Informe suas credenciais de estudante para entrar na experiencia mobile do PUG.",
+                "fields": {
+                    "email": {
+                        "label": "Email",
+                        "placeholder": "student@pug.edu.br"
+                    },
+                    "password": {
+                        "label": "Senha",
+                        "placeholder": "Digite sua senha"
+                    }
+                },
+                "submit": "Continuar",
+                "title": "Login"
+            },
+            "validation": {
+                "email": "Informe um email vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡lido.",
+                "password": "Informe sua senha."
+            }
+        }
+    },
+    "mobile": {
+        "bootstrapping": "Verificando sua sessao...",
+        "dev": {
+            "language": {
+                "label": "Idioma",
+                "options": {
+                    "enUS": "Ingles",
+                    "ptBR": "Portugues"
+                }
+            },
+            "theme": {
+                "label": "Tema",
+                "options": {
+                    "dark": "Escuro",
+                    "light": "Claro",
+                    "system": "Sistema"
+                }
+            }
+        },
+        "home": {
+            "description": "Voce esta autenticado com uma sessao de estudante.",
+            "fields": {
+                "accountId": "ID da conta",
+                "email": "Email",
+                "groups": "Grupos de acesso",
+                "userId": "ID do usuario"
+            },
+            "title": "Inicio do Estudante"
+        }
+    },
+    "Navbar": {
+        "account": {
+            "logout": "Sair"
+        }
+    }
+}

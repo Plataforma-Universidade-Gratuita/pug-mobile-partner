@@ -1,0 +1,67 @@
+{
+    "auth": {
+        "login": {
+            "brand": {
+                "name": "PUG Student",
+                "subtitle": "Student workspace"
+            },
+            "feedback": {
+                "error": "Unable to sign in right now."
+            },
+            "form": {
+                "description": "Enter your student credentials to continue into the PUG mobile experience.",
+                "fields": {
+                    "email": {
+                        "label": "Email",
+                        "placeholder": "student@pug.edu.br"
+                    },
+                    "password": {
+                        "label": "Password",
+                        "placeholder": "Enter your password"
+                    }
+                },
+                "submit": "Continue",
+                "title": "Login"
+            },
+            "validation": {
+                "email": "Enter a valid email address.",
+                "password": "Enter your password."
+            }
+        }
+    },
+    "mobile": {
+        "bootstrapping": "Checking your session...",
+        "dev": {
+            "language": {
+                "label": "Language",
+                "options": {
+                    "enUS": "English",
+                    "ptBR": "Portuguese"
+                }
+            },
+            "theme": {
+                "label": "Theme",
+                "options": {
+                    "dark": "Dark",
+                    "light": "Light",
+                    "system": "System"
+                }
+            }
+        },
+        "home": {
+            "description": "You are signed in with a student session.",
+            "fields": {
+                "accountId": "Account ID",
+                "email": "Email",
+                "groups": "Access groups",
+                "userId": "User ID"
+            },
+            "title": "Student Home"
+        }
+    },
+    "Navbar": {
+        "account": {
+            "logout": "Log out"
+        }
+    }
+}

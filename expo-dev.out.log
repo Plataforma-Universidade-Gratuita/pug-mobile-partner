@@ -1,0 +1,45 @@
+
+> pug-mobile-student@0.1.0 start
+> expo start --offline --port 8083
+
+env: load .env
+env: export EXPO_PUBLIC_API_URL
+Networking has been disabled
+Starting project at C:\Users\e-mateusf\Documents\college\PUG portfolio\pug-mobile-student
+React Compiler enabled
+Starting Metro Bundler
+Waiting on http://localhost:8083
+Logs for your project will appear below.
+Web node_modules\expo-router\entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web node_modules\expo-router\entry.js ▓▓▓▓▓▓░░░░░░░░░░ 42.5% (206/316)
+λ node_modules\expo-router\node\render.js ▓▓▓▓▓▓▓▓▓▓▓░░░░░ 69.5% (612/734)
+λ Bundled 5478ms node_modules\expo-router\node\render.js (1030 modules)
+Web node_modules\expo-router\entry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░ 99.6% (949/951)
+Web Bundled 7171ms node_modules\expo-router\entry.js (951 modules)
+Web Bundled 1821ms node_modules\expo-router\entry.js (953 modules)
+ LOG  [web] Logs will appear in the browser console
+λ Bundled 26ms node_modules\expo-router\node\render.js (1 module)
+Web Bundled 457ms node_modules\expo-router\entry.js (1 module)
+Web node_modules\expo-router\entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+λ Bundled 27ms node_modules\expo-router\node\render.js (1 module)
+Web Bundled 551ms node_modules\expo-router\entry.js (1 module)
+Web node_modules\expo-router\entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web Bundled 189ms node_modules\expo-router\entry.js (1 module)
+λ Bundled 230ms node_modules\expo-router\node\render.js (1 module)
+Web Bundled 23ms node_modules\expo-router\entry.js (1 module)
+ LOG  [web] Logs will appear in the browser console
+Web Bundled 34ms node_modules\expo-secure-store\build\SecureStore.js (1 module)
+Web node_modules\expo-secure-store\build\SecureStore.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web Bundled 5ms node_modules\expo-secure-store\build\SecureStore.js (1 module)
+Web node_modules\expo-router\entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+λ Bundled 32ms node_modules\expo-router\node\render.js (1 module)
+Web Bundled 767ms node_modules\expo-router\entry.js (1 module)
+Web Bundled 39ms node_modules\expo-router\entry.js (1 module)
+ LOG  [web] Logs will appear in the browser console
+Web Bundled 1ms node_modules\expo-secure-store\build\SecureStore.js (1 module)
+Web node_modules\expo-router\entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+λ Bundled 22ms node_modules\expo-router\node\render.js (1 module)
+Web Bundled 383ms node_modules\expo-router\entry.js (1 module)
+Web Bundled 36ms node_modules\expo-router\entry.js (1 module)
+ LOG  [web] Logs will appear in the browser console
+Web Bundled 2ms node_modules\expo-secure-store\build\SecureStore.js (1 module)

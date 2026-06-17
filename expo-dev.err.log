@@ -1,0 +1,125 @@
+Error while reading cache, falling back to a full crawl:
+ Error: Unable to deserialize cloned data due to invalid or unsupported version.
+    at deserialize (node:v8:435:7)
+    at DiskCacheManager.read (C:\Users\e-mateusf\Documents\college\PUG portfolio\pug-mobile-student\node_modules\metro-file-map\src\cache\DiskCacheManager.js:60:33)
+    at FileMap.read (C:\Users\e-mateusf\Documents\college\PUG portfolio\pug-mobile-student\node_modules\metro-file-map\src\index.js:284:14)
+    at C:\Users\e-mateusf\Documents\college\PUG portfolio\pug-mobile-student\node_modules\metro-file-map\src\index.js:202:25
+    at DependencyGraph.ready (C:\Users\e-mateusf\Documents\college\PUG portfolio\pug-mobile-student\node_modules\metro\src\node-haste\DependencyGraph.js:88:5)
+    at Bundler.ready (C:\Users\e-mateusf\Documents\college\PUG portfolio\pug-mobile-student\node_modules\metro\src\Bundler.js:62:5)
+    at IncrementalBundler.ready (C:\Users\e-mateusf\Documents\college\PUG portfolio\pug-mobile-student\node_modules\metro\src\IncrementalBundler.js:302:5)
+    at Server.ready (C:\Users\e-mateusf\Documents\college\PUG portfolio\pug-mobile-student\node_modules\metro\src\Server.js:1305:5)
+Skipping dependency validation in offline mode
+Require cycle: schemas/api/index.ts -> schemas/api/academic/school.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/academic/course.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/academic/student.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/identity/account.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/identity/admin.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/identity/auth.ts -> schemas/api/index.ts -> schemas/api/identity/auth.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/identity/user.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/partner/entity.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/partner/staff.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/project/project.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/project/enrollment.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/project/attendance.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+"shadow*" style props are deprecated. Use "boxShadow".
+Require cycle: schemas/api/index.ts -> schemas/api/academic/school.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/academic/course.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/academic/student.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/identity/account.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/identity/admin.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/identity/auth.ts -> schemas/api/index.ts -> schemas/api/identity/auth.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/identity/user.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/partner/entity.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/partner/staff.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/project/project.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/project/enrollment.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/project/attendance.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+"shadow*" style props are deprecated. Use "boxShadow".
+Require cycle: schemas/api/index.ts -> schemas/api/academic/school.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/academic/course.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/academic/student.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/identity/account.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/identity/admin.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/identity/auth.ts -> schemas/api/index.ts -> schemas/api/identity/auth.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/identity/user.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/partner/entity.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/partner/staff.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/project/project.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/project/enrollment.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+Require cycle: schemas/api/index.ts -> schemas/api/project/attendance.ts -> schemas/api/index.ts
+
+Require cycles are allowed, but can result in uninitialized values. Consider refactoring to remove the need for a cycle.
+"shadow*" style props are deprecated. Use "boxShadow".
+"shadow*" style props are deprecated. Use "boxShadow".
+"shadow*" style props are deprecated. Use "boxShadow".
+"shadow*" style props are deprecated. Use "boxShadow".
