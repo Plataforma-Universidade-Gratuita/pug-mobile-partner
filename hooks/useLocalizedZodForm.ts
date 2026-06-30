@@ -7,8 +7,8 @@ import { useTranslation } from "react-i18next";
 
 import type {
 	LocalizedZodFormOptions,
-	LocalizedZodFormResult,
 	LocalizedZodFormResolver,
+	LocalizedZodFormResult,
 } from "@/types/client";
 
 export function useLocalizedZodForm<TValues extends FieldValues>({

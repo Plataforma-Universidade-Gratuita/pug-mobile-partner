@@ -1,0 +1,158 @@
+name: Publish Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_environment:
+        description: "Target environment for the Expo web build"
+        required: true
+        type: choice
+        options:
+          - dev
+          - qa
+          - prd
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY_SERVER: ghcr.io
+  IMAGE_NAME: pug-mobile-student
+
+jobs:
+  guard-publish-ref:
+    name: Guard Publish Ref
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Validate publish ref
+        run: |
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            if [[ "${GITHUB_REF}" != "refs/heads/main" ]]; then
+              echo "Manual publish is only allowed from main."
+              exit 1
+            fi
+          fi
+
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            git branch -r --contains "${GITHUB_SHA}" | grep -q "origin/main" || {
+              echo "Tag publish is only allowed when the tagged commit is on main."
+              exit 1
+            }
+          fi
+
+  verify:
+    name: Verify
+    needs: guard-publish-ref
+    uses: ./.github/workflows/verify.yml
+
+  build-image:
+    name: Build Image
+    needs: verify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          platforms: linux/amd64
+          build-args: |
+            EXPO_PUBLIC_API_URL=http://localhost:8080
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  publish-image:
+    name: Publish Image
+    needs: build-image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Resolve public API URL
+        id: public-api
+        env:
+          TARGET_ENVIRONMENT: ${{ inputs.target_environment }}
+          EXPO_PUBLIC_API_URL_DEV: ${{ vars.EXPO_PUBLIC_API_URL_DEV }}
+          EXPO_PUBLIC_API_URL_QA: ${{ vars.EXPO_PUBLIC_API_URL_QA }}
+          EXPO_PUBLIC_API_URL_PRD: ${{ vars.EXPO_PUBLIC_API_URL_PRD }}
+        run: |
+          case "$TARGET_ENVIRONMENT" in
+            dev)
+              API_URL="$EXPO_PUBLIC_API_URL_DEV"
+              ;;
+            qa)
+              API_URL="$EXPO_PUBLIC_API_URL_QA"
+              ;;
+            prd)
+              API_URL="$EXPO_PUBLIC_API_URL_PRD"
+              ;;
+            *)
+              echo "Invalid target environment: $TARGET_ENVIRONMENT"
+              exit 1
+              ;;
+          esac
+
+          if [ -z "$API_URL" ]; then
+            echo "EXPO_PUBLIC_API_URL for $TARGET_ENVIRONMENT is empty or not configured."
+            exit 1
+          fi
+
+          echo "expo_public_api_url=$API_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Prepare image metadata
+        id: image
+        run: |
+          OWNER_LOWER=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
+          SHORT_SHA="${GITHUB_SHA::12}"
+          IMAGE="${REGISTRY_SERVER}/${OWNER_LOWER}/${IMAGE_NAME}"
+
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+            echo "tags=$IMAGE:$VERSION,$IMAGE:latest" >> "$GITHUB_OUTPUT"
+          else
+            echo "tags=$IMAGE:sha-$SHORT_SHA" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.image.outputs.tags }}
+          build-args: |
+            EXPO_PUBLIC_API_URL=${{ steps.public-api.outputs.expo_public_api_url }}
+          provenance: false
+          sbom: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -1,11 +1,11 @@
 {
 	"expo": {
-		"name": "pug-mobile-student",
-		"slug": "pug-mobile-student",
-		"version": "1.0.0",
+		"name": "pug-mobile-partner",
+		"slug": "pug-mobile-partner",
+		"version": "0.1.0",
 		"orientation": "portrait",
-		"icon": "./assets/images/icon.png",
-		"scheme": "pugmobilestudent",
+		"icon": "./public/assets/icon.png",
+		"scheme": "pugmobilepartner",
 		"userInterfaceStyle": "automatic",
 		"newArchEnabled": true,
 		"ios": {
@@ -14,27 +14,27 @@
 		"android": {
 			"adaptiveIcon": {
 				"backgroundColor": "#E6F4FE",
-				"foregroundImage": "./assets/images/android-icon-foreground.png",
-				"backgroundImage": "./assets/images/android-icon-background.png",
-				"monochromeImage": "./assets/images/android-icon-monochrome.png"
+				"foregroundImage": "./public/assets/adaptive-icon.png",
+				"monochromeImage": "./public/assets/adaptive-icon-white.png"
 			},
 			"edgeToEdgeEnabled": true,
 			"predictiveBackGestureEnabled": false
 		},
 		"web": {
 			"output": "static",
-			"favicon": "./assets/images/favicon.png"
+			"favicon": "./public/assets/icon.png"
 		},
 		"plugins": [
 			"expo-router",
 			[
 				"expo-splash-screen",
 				{
-					"image": "./assets/images/splash-icon.png",
+					"image": "./public/assets/icon.png",
 					"imageWidth": 200,
 					"resizeMode": "contain",
 					"backgroundColor": "#ffffff",
 					"dark": {
+						"image": "./public/assets/icon-inverted.png",
 						"backgroundColor": "#000000"
 					}
 				}

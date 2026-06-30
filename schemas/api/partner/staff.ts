@@ -1,8 +1,14 @@
 import { z } from "zod";
 
-import { AccountResponseSchema } from "@/schemas/api/identity/account";
-
-// ─── Responses ───────────────────────────────────────────────────────────────
+/*
+ * Forced exception: this frozen API schema avoids the root schemas barrel to
+ * break a build-time initialization cycle during Next.js SSR collection.
+ */
+import {
+	AccountComplexSearchResponseSchema,
+	AccountResponseSchema,
+} from "../identity/accounts";
+import { EntitySimpleComplexSearchResponseSchema } from "./entities";
 
 export const StaffResponseSchema = z.object({
 	account: AccountResponseSchema,
@@ -10,19 +16,30 @@ export const StaffResponseSchema = z.object({
 	cityId: z.string(),
 });
 
-// ─── Requests ────────────────────────────────────────────────────────────────
+export const StaffComplexSearchRequestSchema = z.object({
+	name: z.string().optional(),
+	cpf: z.string().optional(),
+	email: z.string().optional(),
+	dateFrom: z.string().optional(),
+	dateTo: z.string().optional(),
+	activeOnly: z.boolean().optional(),
+	entityIds: z.array(z.string()).optional(),
+});
+
+export const StaffComplexSearchResponseSchema = z.object({
+	account: AccountComplexSearchResponseSchema,
+	entity: EntitySimpleComplexSearchResponseSchema,
+});
 
 export const StaffCreateRequestSchema = z.object({
 	cpf: z.string(),
 	name: z.string(),
 	email: z.string(),
-	password: z.string(),
 	entityId: z.string(),
 });
 
 export const StaffUpdateRequestSchema = z.object({
-	name: z.string().nullable().optional(),
-	email: z.string().nullable().optional(),
-	password: z.string().nullable().optional(),
-	active: z.boolean().nullable().optional(),
+	name: z.string(),
+	email: z.string(),
+	entityId: z.string(),
 });

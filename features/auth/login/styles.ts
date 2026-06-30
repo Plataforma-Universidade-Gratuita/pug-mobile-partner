@@ -1,84 +1,51 @@
 import { StyleSheet } from "react-native";
 
-import type { AppResolvedTheme } from "@/types/client";
+import type {
+	AppResolvedTheme,
+	PrimitiveSurfaceStyleSpec,
+} from "@/types/client";
 
-export function createStyles(theme: AppResolvedTheme) {
+export function createStyles(
+	theme: AppResolvedTheme,
+	spec: PrimitiveSurfaceStyleSpec,
+) {
 	return StyleSheet.create({
-		container: {
+		screen: {
 			flex: 1,
+			backgroundColor: spec.screenBackground,
+		},
+		keyboard: {
+			flex: 1,
+		},
+		content: {
+			flexGrow: 1,
 			justifyContent: "center",
-			backgroundColor: theme.colors.surface1,
-			padding: theme.layout.screenPadding,
+			paddingHorizontal: theme.layout.screenPadding,
+			paddingVertical: theme.space[6],
 		},
-		card: {
+		panel: {
 			width: "100%",
-			maxWidth: 480,
+			maxWidth: theme.form.formMaxWidth,
 			alignSelf: "center",
-		},
-		cardContent: {
 			gap: theme.space[5],
+			padding: spec.panelPadding,
+			borderWidth: 1,
+			borderColor: spec.panelBorder,
+			borderRadius: spec.panelRadius,
+			backgroundColor: spec.panelBackground,
+			...theme.shadow.lg,
 		},
-		brand: {
-			fontSize: theme.type.xxl,
-			fontWeight: theme.weight.bold,
-			lineHeight: theme.type.xxl * theme.lineHeight.tight,
-			color: theme.colors.text,
-		},
-		subtitle: {
-			fontSize: theme.type.sm,
-			lineHeight: theme.type.sm * theme.lineHeight.normal,
-			color: theme.colors.muted,
-			marginTop: theme.space[1],
+		badge: {
+			alignSelf: "flex-start",
 		},
 		header: {
-			gap: theme.space[2],
-		},
-		devControls: {
-			gap: theme.space[3],
-		},
-		controlGroup: {
-			gap: theme.space[2],
-		},
-		controlLabel: {
-			fontSize: theme.type.xs,
-			fontWeight: theme.weight.semibold,
-			color: theme.colors.muted,
-			textTransform: "uppercase",
-		},
-		controlOptions: {
-			flexDirection: "row",
-			flexWrap: "wrap",
-			gap: theme.space[2],
-		},
-		title: {
-			fontSize: theme.type.xl,
-			fontWeight: theme.weight.bold,
-			lineHeight: theme.type.xl * theme.lineHeight.snug,
-			color: theme.colors.text,
-		},
-		description: {
-			fontSize: theme.type.sm,
-			lineHeight: theme.type.sm * theme.lineHeight.relaxed,
-			color: theme.colors.muted,
+			gap: theme.form.headerGap,
 		},
 		form: {
-			gap: theme.space[4],
+			gap: theme.form.formGap,
 		},
 		field: {
-			gap: theme.space[2],
-		},
-		label: {
-			fontSize: theme.type.sm,
-			fontWeight: theme.weight.semibold,
-			color: theme.colors.text,
-		},
-		errorText: {
-			fontSize: theme.type.xs,
-			lineHeight: theme.type.xs * theme.lineHeight.normal,
-			color: theme.colors.danger,
-		},
-		submitButton: {
-			width: "100%",
+			gap: theme.form.fieldGap,
 		},
 	});
 }

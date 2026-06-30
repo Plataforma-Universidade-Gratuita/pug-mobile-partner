@@ -1,144 +1,279 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 
-import { Redirect } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { RefreshControl, ScrollView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import * as api from "@/api";
+import { BrandScreenHeader } from "@/components";
+import { useCurrentFormerStudentStore, useThemeStore } from "@/stores";
+import { createPrimitiveSurfaceStyleSpec } from "@/styles";
+import type { ProjectResponse } from "@/types/api";
+import type { HomeQuickActionItem } from "@/types/client";
 
 import {
-	Button,
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components";
-import {
-	DEV_LANGUAGE_OPTION_LABEL_KEYS,
-	DEV_THEME_OPTION_LABEL_KEYS,
-} from "@/constants/dev-controls";
-import { SUPPORTED_LANGS } from "@/constants/locale";
-import { APP_THEMES } from "@/constants/theme";
-import { useAuthStore, useThemeStore } from "@/store";
-import { coerceLang } from "@/utils/lang";
-import { applyClientLanguage } from "@/utils/locale";
-
+	HomeCounterpartSummaryCard,
+	HomeQuickActionsSection,
+	HomeRecentSection,
+	HomeStateCard,
+} from "./home-sections";
 import { createStyles } from "./styles";
+import {
+	buildHomeSummaryMetrics,
+	buildHomeAttendanceSnapshotCard,
+	buildHomeEnrollmentSnapshotCard,
+	buildQuickActionItems,
+	countHomeActiveEnrollments,
+	countHomePendingEnrollments,
+	findLatestAttendance,
+	findLatestEnrollment,
+	formatHomeProgressValue,
+} from "./utils";
 
 export function HomeScreen() {
-	const { i18n, t } = useTranslation();
+	const { t } = useTranslation();
+	const router = useRouter();
+	const insets = useSafeAreaInsets();
 	const theme = useThemeStore(state => state.theme);
-	const themeMode = useThemeStore(state => state.mode);
-	const setThemeMode = useThemeStore(state => state.setMode);
-	const isAuthenticated = useAuthStore(state => state.isAuthenticated);
-	const isBootstrapping = useAuthStore(state => state.isBootstrapping);
-	const isMutatingSession = useAuthStore(state => state.isMutatingSession);
-	const sessionPayload = useAuthStore(state => state.sessionPayload);
-	const signOut = useAuthStore(state => state.signOut);
-	const styles = useMemo(() => createStyles(theme), [theme]);
-	const currentLang = coerceLang(i18n.resolvedLanguage ?? i18n.language);
+	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
+	const styles = useMemo(() => createStyles(theme, spec), [spec, theme]);
+	const currentUser = useCurrentFormerStudentStore(state => state.currentUser);
+	const currentFormerStudent = useCurrentFormerStudentStore(
+		state => state.currentFormerStudent,
+	);
+	const currentCourse = useCurrentFormerStudentStore(
+		state => state.currentCourse,
+	);
+	const isCurrentFormerStudentLoading = useCurrentFormerStudentStore(
+		state => state.isLoading,
+	);
+	const isCurrentFormerStudentLoaded = useCurrentFormerStudentStore(
+		state => state.isLoaded,
+	);
+	const currentFormerStudentError = useCurrentFormerStudentStore(
+		state => state.error,
+	);
+	const loadCurrentFormerStudentContext = useCurrentFormerStudentStore(
+		state => state.loadCurrentFormerStudentContext,
+	);
+	const enrollmentsQuery = api.project.enrollments.useMyEnrollmentsQuery(
+		isCurrentFormerStudentLoaded,
+	);
+	const attendancesQuery =
+		api.project.attendances.useAttendancesByFormerStudentQuery(
+			currentFormerStudent?.accountId ?? null,
+		);
 
-	if (isBootstrapping) {
-		return null;
-	}
+	useEffect(() => {
+		if (!isCurrentFormerStudentLoaded && !isCurrentFormerStudentLoading) {
+			void loadCurrentFormerStudentContext();
+		}
+	}, [
+		isCurrentFormerStudentLoaded,
+		isCurrentFormerStudentLoading,
+		loadCurrentFormerStudentContext,
+	]);
 
-	if (!isAuthenticated || !sessionPayload) {
-		return <Redirect href="/login" />;
-	}
+	const projectIds = useMemo(
+		() => [
+			...new Set((enrollmentsQuery.data ?? []).map(item => item.projectId)),
+		],
+		[enrollmentsQuery.data],
+	);
+	const projectsQuery = useQuery({
+		queryKey: [
+			"project",
+			"project",
+			"list",
+			"home",
+			projectIds.join(","),
+		] as const,
+		queryFn: () => api.project.projects.list(projectIds),
+		enabled: projectIds.length > 0,
+	});
+	const projectsById = useMemo(() => {
+		const map = new Map<string, ProjectResponse>();
+
+		for (const project of projectsQuery.data ?? []) {
+			map.set(project.id, project);
+		}
+
+		return map;
+	}, [projectsQuery.data]);
+	const latestEnrollment = useMemo(
+		() => findLatestEnrollment(enrollmentsQuery.data ?? []),
+		[enrollmentsQuery.data],
+	);
+	const latestAttendance = useMemo(
+		() => findLatestAttendance(attendancesQuery.data ?? []),
+		[attendancesQuery.data],
+	);
+	const activeEnrollments = countHomeActiveEnrollments(
+		enrollmentsQuery.data ?? [],
+	);
+	const pendingEnrollments = countHomePendingEnrollments(
+		enrollmentsQuery.data ?? [],
+	);
+	const attendanceCount = (attendancesQuery.data ?? []).length;
+	const summaryMetrics = buildHomeSummaryMetrics({
+		activeEnrollments,
+		pendingEnrollments,
+		attendanceCount,
+		t,
+	});
+	const quickActionItems = useMemo<HomeQuickActionItem[]>(
+		() =>
+			buildQuickActionItems({
+				latestAttendanceId: latestAttendance?.id ?? null,
+				onAttendancesPress: () => {
+					router.push("/activity?tab=attendances");
+				},
+				onDiscoverPress: () => {
+					router.push("/discover");
+				},
+				onEnrollmentsPress: () => {
+					router.push("/activity?tab=enrollments");
+				},
+				onLatestQrPress: () => {
+					if (latestAttendance) {
+						router.push(`/attendance/qr/${latestAttendance.id}`);
+					}
+				},
+				onProfilePress: () => {
+					router.push("/profile");
+				},
+				t,
+			}),
+		[latestAttendance, router, t],
+	);
+	const hasQueryError =
+		currentFormerStudentError != null ||
+		enrollmentsQuery.error != null ||
+		attendancesQuery.error != null ||
+		projectsQuery.error != null;
+	const isInitialLoading =
+		(!isCurrentFormerStudentLoaded && isCurrentFormerStudentLoading) ||
+		enrollmentsQuery.isLoading ||
+		attendancesQuery.isLoading;
+	const isRefreshing =
+		isCurrentFormerStudentLoading ||
+		enrollmentsQuery.isRefetching ||
+		attendancesQuery.isRefetching ||
+		projectsQuery.isRefetching;
+	const contentBottomPadding =
+		theme.space[8] + theme.space[2] + Math.max(insets.bottom, theme.space[4]);
+	const enrollmentCard = buildHomeEnrollmentSnapshotCard({
+		latestAttendance,
+		latestEnrollment,
+		onOpenAttendance: () => undefined,
+		onOpenEnrollment: projectId => {
+			router.push({
+				pathname: "/activity/enrollments/[projectId]",
+				params: { projectId },
+			});
+		},
+		projectsById,
+		t,
+	});
+	const attendanceCard = buildHomeAttendanceSnapshotCard({
+		latestAttendance,
+		latestEnrollment,
+		onOpenAttendance: attendanceId => {
+			router.push({
+				pathname: "/activity/attendances/[id]",
+				params: { id: attendanceId },
+			});
+		},
+		onOpenEnrollment: () => undefined,
+		projectsById,
+		t,
+	});
 
 	return (
-		<View style={styles.container}>
-			<Card style={styles.card}>
-				<CardHeader>
-					<CardTitle>{t("mobile.home.title")}</CardTitle>
-					<CardDescription>{t("mobile.home.description")}</CardDescription>
-				</CardHeader>
-
-				<CardContent style={styles.content}>
-					<View style={styles.devControls}>
-						<View style={styles.controlGroup}>
-							<Text style={styles.controlLabel}>
-								{t("mobile.dev.theme.label")}
-							</Text>
-							<View style={styles.controlOptions}>
-								{APP_THEMES.map(option => (
-									<Button
-										key={option}
-										onPress={() => void setThemeMode(option)}
-										size="sm"
-										usage="primary"
-										variant={themeMode === option ? "primary" : "secondary"}
-									>
-										{t(DEV_THEME_OPTION_LABEL_KEYS[option])}
-									</Button>
-								))}
-							</View>
-						</View>
-
-						<View style={styles.controlGroup}>
-							<Text style={styles.controlLabel}>
-								{t("mobile.dev.language.label")}
-							</Text>
-							<View style={styles.controlOptions}>
-								{SUPPORTED_LANGS.map(option => (
-									<Button
-										key={option}
-										onPress={() => applyClientLanguage(option, i18n)}
-										size="sm"
-										usage="primary"
-										variant={currentLang === option ? "primary" : "secondary"}
-									>
-										{t(DEV_LANGUAGE_OPTION_LABEL_KEYS[option])}
-									</Button>
-								))}
-							</View>
-						</View>
-					</View>
-
-					<View style={styles.detailList}>
-						<View style={styles.detailItem}>
-							<Text style={styles.detailLabel}>
-								{t("mobile.home.fields.email")}
-							</Text>
-							<Text style={styles.detailValue}>{sessionPayload.upn}</Text>
-						</View>
-
-						<View style={styles.detailItem}>
-							<Text style={styles.detailLabel}>
-								{t("mobile.home.fields.accountId")}
-							</Text>
-							<Text style={styles.detailValue}>{sessionPayload.accountId}</Text>
-						</View>
-
-						<View style={styles.detailItem}>
-							<Text style={styles.detailLabel}>
-								{t("mobile.home.fields.userId")}
-							</Text>
-							<Text style={styles.detailValue}>{sessionPayload.userId}</Text>
-						</View>
-
-						<View style={styles.detailItem}>
-							<Text style={styles.detailLabel}>
-								{t("mobile.home.fields.groups")}
-							</Text>
-							<Text style={styles.detailValue}>
-								{sessionPayload.groups.join(", ")}
-							</Text>
-						</View>
-					</View>
-				</CardContent>
-
-				<CardFooter>
-					<Button
-						disabled={isMutatingSession}
-						isLoading={isMutatingSession}
-						onPress={() => void signOut()}
-						usage="danger"
-					>
-						{t("Navbar.account.logout")}
-					</Button>
-				</CardFooter>
-			</Card>
+		<View style={[styles.screen, { backgroundColor: spec.screenBackground }]}>
+			<BrandScreenHeader title={t("home.title")} />
+			<ScrollView
+				contentContainerStyle={[
+					styles.content,
+					{ paddingBottom: contentBottomPadding },
+				]}
+				refreshControl={
+					<RefreshControl
+						refreshing={isRefreshing}
+						onRefresh={() => {
+							void loadCurrentFormerStudentContext();
+							void enrollmentsQuery.refetch();
+							void attendancesQuery.refetch();
+							if (projectIds.length > 0) {
+								void projectsQuery.refetch();
+							}
+						}}
+						tintColor={theme.colors.brand}
+					/>
+				}
+				showsVerticalScrollIndicator={false}
+			>
+				<View style={styles.shell}>
+					{hasQueryError ? (
+						<HomeStateCard
+							badgeLabel={t("home.states.badge")}
+							description={t("home.states.errorDescription")}
+							title={t("home.states.errorTitle")}
+							tone="danger"
+						/>
+					) : isInitialLoading ? (
+						<HomeStateCard
+							badgeLabel={t("home.states.badge")}
+							description={t("home.states.loadingDescription")}
+							title={t("home.states.loadingTitle")}
+							tone="neutral"
+						/>
+					) : (
+						<>
+							<HomeCounterpartSummaryCard
+								badgeLabel={
+									currentFormerStudent?.campus.campusFormatted ??
+									t("home.values.unavailable")
+								}
+								courseLabel={
+									currentCourse?.name ?? t("home.values.unavailable")
+								}
+								dueDateLabel={
+									currentFormerStudent?.period.dueDateFormatted ||
+									t("home.values.unavailable")
+								}
+								name={currentUser?.name ?? t("home.values.unavailable")}
+								progressLabel={formatHomeProgressValue(
+									currentFormerStudent?.counterpartHours.progress,
+									t,
+								)}
+								progressRatio={Math.max(
+									0,
+									Math.min(
+										(currentFormerStudent?.counterpartHours.progress ?? 0) /
+											100,
+										1,
+									),
+								)}
+								remainingDaysLabel={
+									currentFormerStudent?.period.remainingDaysFormatted ||
+									t("home.values.unavailable")
+								}
+								summaryMetrics={summaryMetrics}
+							/>
+							<HomeQuickActionsSection items={quickActionItems} />
+							<HomeRecentSection
+								attendanceCard={attendanceCard}
+								enrollmentCard={enrollmentCard}
+								helper={t("home.sections.recentHelper")}
+								title={t("home.sections.recent")}
+							/>
+						</>
+					)}
+				</View>
+			</ScrollView>
 		</View>
 	);
 }

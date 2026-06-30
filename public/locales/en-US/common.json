@@ -1,67 +1,464 @@
 {
-    "auth": {
-        "login": {
-            "brand": {
-                "name": "PUG Student",
-                "subtitle": "Student workspace"
-            },
-            "feedback": {
-                "error": "Unable to sign in right now."
-            },
-            "form": {
-                "description": "Enter your student credentials to continue into the PUG mobile experience.",
-                "fields": {
-                    "email": {
-                        "label": "Email",
-                        "placeholder": "student@pug.edu.br"
-                    },
-                    "password": {
-                        "label": "Password",
-                        "placeholder": "Enter your password"
-                    }
-                },
-                "submit": "Continue",
-                "title": "Login"
-            },
-            "validation": {
-                "email": "Enter a valid email address.",
-                "password": "Enter your password."
-            }
-        }
-    },
-    "mobile": {
-        "bootstrapping": "Checking your session...",
-        "dev": {
-            "language": {
-                "label": "Language",
-                "options": {
-                    "enUS": "English",
-                    "ptBR": "Portuguese"
-                }
-            },
-            "theme": {
-                "label": "Theme",
-                "options": {
-                    "dark": "Dark",
-                    "light": "Light",
-                    "system": "System"
-                }
-            }
-        },
-        "home": {
-            "description": "You are signed in with a student session.",
-            "fields": {
-                "accountId": "Account ID",
-                "email": "Email",
-                "groups": "Access groups",
-                "userId": "User ID"
-            },
-            "title": "Student Home"
-        }
-    },
-    "Navbar": {
-        "account": {
-            "logout": "Log out"
-        }
-    }
+	"academicDetails": {
+		"fields": {
+			"campus": "Campus",
+			"completedHours": "Completed hours",
+			"dueDate": "Due date",
+			"missingHours": "Missing hours",
+			"progress": "Progress",
+			"remainingDays": "Remaining days",
+			"requiredHours": "Required hours",
+			"startDate": "Start date"
+		},
+		"progressValue": "{{value}}% completed",
+		"sections": {
+			"counterpart": "Counterpart hours",
+			"period": "Period",
+			"record": "Academic record"
+		},
+		"state": {
+			"badge": "Academic state",
+			"emptyDescription": "We could not find an academic record for this session.",
+			"emptyTitle": "Academic record unavailable",
+			"errorDescription": "Refresh the screen or try again in a moment.",
+			"errorTitle": "Unable to load academic details",
+			"loadingDescription": "Fetching your current academic record and counterpart progress.",
+			"loadingTitle": "Loading academic details"
+		},
+		"status": {
+			"concluded": "Concluded",
+			"inProgress": "In progress"
+		},
+		"title": "Academic details"
+	},
+	"activity": {
+		"actions": {
+			"filters": "Open filters"
+		},
+		"attendance": {
+			"duration": "{{count}}h logged",
+			"waiting": "Waiting validation"
+		},
+		"attendanceDetail": {
+			"actions": {
+				"openEnrollment": "Open enrollment",
+				"showQr": "Show QR code"
+			},
+			"fields": {
+				"formerStudent": "Former student",
+				"registration": "Academic registration"
+			},
+			"metrics": {
+				"createdAt": "Created at",
+				"validatedAt": "Validated at",
+				"validator": "Validator"
+			},
+			"sections": {
+				"validation": "Validation data"
+			},
+			"states": {
+				"errorDescription": "Refresh the screen or try again in a moment.",
+				"errorTitle": "Unable to load this attendance",
+				"loadingDescription": "Fetching the selected attendance and validation data.",
+				"loadingTitle": "Loading attendance details",
+				"missingDescription": "We could not find this attendance in your current activity list.",
+				"missingTitle": "Attendance unavailable"
+			},
+			"subtitle": "Review validation state and the linked project before opening it again.",
+			"title": "Attendance details",
+			"values": {
+				"notValidated": "Not validated yet"
+			}
+		},
+		"attendanceQr": {
+			"actions": {
+				"done": "Done"
+			},
+			"fields": {
+				"duration": "Logged duration"
+			},
+			"helper": "Keep the code fully visible until the validation is completed.",
+			"states": {
+				"errorDescription": "Refresh the modal or try again in a moment.",
+				"errorTitle": "Unable to load this QR code",
+				"loadingDescription": "Fetching the selected attendance and generating the QR code.",
+				"loadingTitle": "Loading attendance QR",
+				"missingDescription": "We could not find this attendance or its validation hash.",
+				"missingTitle": "QR code unavailable"
+			},
+			"subtitle": "Present this code so the project attendance can be validated.",
+			"title": "Attendance QR"
+		},
+		"chips": {
+			"active": "Active projects",
+			"needsAttendance": "Needs attendance",
+			"pending": "Pending review",
+			"recent": "Recent records",
+			"waiting": "Waiting validation"
+		},
+		"enrollment": {},
+		"enrollmentDetail": {
+			"actions": {
+				"openProject": "Project details"
+			},
+			"attendancesHelper": "Review only the attendances logged on this project for your current enrollment.",
+			"attendancesTitle": "Attendances on this enrollment",
+			"badge": "Enrollment",
+			"states": {
+				"emptyAttendancesDescription": "Attendances logged for this enrollment will appear here as soon as they are created.",
+				"emptyAttendancesTitle": "No attendances yet",
+				"errorDescription": "Refresh the screen or try again in a moment.",
+				"errorTitle": "Unable to load this enrollment",
+				"loadingDescription": "Fetching the enrollment, project, and related attendance details.",
+				"loadingTitle": "Loading enrollment details",
+				"missingDescription": "We could not find one of your current enrollments for this project.",
+				"missingTitle": "Enrollment unavailable"
+			},
+			"title": "Enrollment details"
+		},
+		"filters": {
+			"apply": "Apply",
+			"clear": "Clear",
+			"searchHelper": "Matches the project name, entity, description, or status.",
+			"searchLabel": "Project or status",
+			"searchPlaceholder": "Search activity",
+			"statusesHelper": "Select one or more statuses from the current list.",
+			"statusesLabel": "Statuses",
+			"subtitle": "Apply local filters to narrow the current activity list.",
+			"title": "Filter activity"
+		},
+		"focus": {
+			"activeDescription": "Keep an eye on project progress and register attendances on time.",
+			"activeTitle": "{{count}} active enrollments in progress",
+			"attendancesDescription": "Review recent validations and watch for records still waiting on confirmation.",
+			"attendancesTitle": "{{count}} attendances tracked so far",
+			"pendingDescription": "Track partner responses and move approved enrollments into attendance flow.",
+			"pendingTitle": "{{count}} pending enrollments need attention"
+		},
+		"sections": {
+			"attendances": "Your attendances",
+			"attendancesHelper": "Review validation state and jump back to the related project.",
+			"enrollments": "Your enrollments",
+			"enrollmentsHelper": "Follow approval status and open each project for details."
+		},
+		"segments": {
+			"attendances": "Attendances",
+			"enrollments": "Enrollments"
+		},
+		"states": {
+			"badge": "Activity state",
+			"emptyAttendancesDescription": "Attendance records will appear here once your project activity starts.",
+			"emptyAttendancesTitle": "No attendances yet",
+			"emptyEnrollmentsDescription": "Projects you apply to will show up here as soon as they are created.",
+			"emptyEnrollmentsTitle": "No enrollments yet",
+			"errorDescription": "Refresh the screen or try again in a moment.",
+			"errorTitle": "Unable to load activity",
+			"filteredEmptyAttendancesDescription": "Try clearing one or more filters to see more attendances.",
+			"filteredEmptyAttendancesTitle": "No attendances match these filters",
+			"filteredEmptyEnrollmentsDescription": "Try clearing one or more filters to see more enrollments.",
+			"filteredEmptyEnrollmentsTitle": "No enrollments match these filters",
+			"loadingDescription": "Fetching enrollments, attendances, and related project details.",
+			"loadingTitle": "Loading your activity"
+		},
+		"summary": {
+			"active": "Active",
+			"attendances": "Attendances",
+			"pending": "Pending"
+		},
+		"title": "Activity",
+		"values": {
+			"projectFallback": "Project unavailable"
+		}
+	},
+	"attendanceCreate": {
+		"actions": {
+			"submit": "Create attendance"
+		},
+		"duration": {
+			"helper": "Use the number of hours completed in this project activity.",
+			"label": "Duration in hours",
+			"placeholder": "Example: 2"
+		},
+		"errors": {
+			"durationInvalid": "Enter a duration greater than zero.",
+			"durationRequired": "Duration is required.",
+			"fallback": "Unable to create this attendance right now. Try again in a moment.",
+			"missingFormerStudent": "Unable to resolve the current former student context.",
+			"projectRequired": "Select a project before continuing."
+		},
+		"project": {
+			"helper": "Choose one of your approved project enrollments.",
+			"label": "Project",
+			"lockedHelper": "This attendance will be created for the current project.",
+			"selected": "Selected project",
+			"selectedFromProject": "Selected from this project"
+		},
+		"states": {
+			"badge": "Attendance state",
+			"emptyDescription": "You need an approved enrollment before logging a new attendance.",
+			"emptyTitle": "No approved project yet",
+			"errorDescription": "Refresh the modal or try again in a moment.",
+			"errorTitle": "Unable to prepare the attendance form",
+			"loadingDescription": "Fetching your approved enrollments and available project context.",
+			"loadingTitle": "Loading attendance form"
+		},
+		"subtitle": "Register your project hours and open the validation QR right after saving.",
+		"title": "New attendance"
+	},
+	"auth": {
+		"login": {
+			"badge": "Former student access",
+			"emailLabel": "Email",
+			"errors": {
+				"emailInvalid": "Enter a valid email address.",
+				"emailRequired": "Email is required.",
+				"emailTooLong": "Email is too long.",
+				"fallback": "Unable to sign in right now. Try again in a moment.",
+				"invalidCredentials": "Email or password is incorrect or account is inactive.",
+				"passwordInvalid": "Password must have between 8 and 255 characters.",
+				"passwordRequired": "Password is required."
+			},
+			"passwordHelper": "Leave it blank on your first access.",
+			"passwordLabel": "Password",
+			"submit": "Login",
+			"subtitle": "Manage enrollments and attendance on projects from one place.",
+			"title": "Keep control of your counterpart hours"
+		},
+		"wireCredentials": {
+			"badge": "First login setup",
+			"confirmPasswordLabel": "Confirm password",
+			"confirmPasswordPlaceholder": "Repeat your password",
+			"errors": {
+				"confirmationMismatch": "Passwords do not match.",
+				"confirmationRequired": "Confirm your password.",
+				"fallback": "Unable to finish setup right now. Try again in a moment.",
+				"missingEmail": "Unable to resolve the current account email.",
+				"passwordMinLength": "Password must have at least 8 characters.",
+				"passwordRequired": "Password is required."
+			},
+			"finishLater": "Finish later",
+			"passwordLabel": "Password",
+			"passwordPlaceholder": "Create your password",
+			"submit": "Finish setup",
+			"subtitle": "Create the password that will be required in future accesses.",
+			"title": "Set your password"
+		}
+	},
+	"common": {
+		"primitives": {
+			"input": {
+				"placeholders": {
+					"email": "student@catolica.edu.br",
+					"password": "Enter your password",
+					"text": "Type here"
+				}
+			}
+		}
+	},
+	"discover": {
+		"actions": {
+			"filters": "Open filters"
+		},
+		"badge": "Available projects",
+		"card": {
+			"hoursFallback": "Hours available",
+			"hoursLabel": "Hours",
+			"hoursValue": "{{count}}h left",
+			"openProject": "Open project {{name}}",
+			"seatsLabel": "Availability",
+			"seatsOpen": "Open spots",
+			"seatsUnlimited": "Unlimited spots",
+			"seatsValue": "{{count}} spots left"
+		},
+		"filters": {
+			"apply": "Apply",
+			"clear": "Clear",
+			"entitiesHelper": "Select one or more partner entities.",
+			"entitiesLabel": "Entities",
+			"searchHelper": "Matches either field.",
+			"searchLabel": "Name or description",
+			"searchPlaceholder": "Search projects",
+			"statusesHelper": "Select one or more project statuses.",
+			"statusesLabel": "Statuses",
+			"subtitle": "Apply local filters to narrow the available projects.",
+			"title": "Filter projects"
+		},
+		"resultsTitle": "Projects",
+		"states": {
+			"badge": "Discovery state",
+			"emptyDescription": "No available projects match your area right now.",
+			"emptyTitle": "Nothing open yet",
+			"errorDescription": "Unable to load project discovery right now.",
+			"errorTitle": "Projects unavailable",
+			"filteredEmptyDescription": "Try clearing one or more filters to see more results.",
+			"filteredEmptyTitle": "No projects match these filters",
+			"loadingDescription": "Checking which projects are open for your current academic area.",
+			"loadingTitle": "Loading available projects",
+			"missingAreaDescription": "Your current course area of expertise could not be resolved.",
+			"missingAreaTitle": "Area of expertise unavailable"
+		},
+		"summary": {
+			"count": "{{count}} available",
+			"description": "Only projects with remaining hours, open availability, and eligible status are listed here.",
+			"fallbackArea": "Area unavailable"
+		},
+		"title": "Discover"
+	},
+	"home": {
+		"actions": {
+			"attendances": "Attendances",
+			"attendancesHelper": "Review validations and recent activity.",
+			"discover": "Discover",
+			"discoverHelper": "Find projects that still have open capacity.",
+			"enrollments": "Enrollments",
+			"enrollmentsHelper": "Check approvals and pending project requests.",
+			"latestQr": "Latest QR",
+			"latestQrHelper": "Open the most recent attendance validation code.",
+			"openAttendance": "Open attendance",
+			"openEnrollment": "Open enrollment",
+			"profile": "Profile",
+			"profileHelper": "Review your student data and preferences."
+		},
+		"recent": {
+			"emptyAttendanceDescription": "Your attendance records will appear here after your next project session.",
+			"emptyAttendanceTitle": "No attendance yet",
+			"emptyEnrollmentDescription": "Your latest project application will appear here once you create one.",
+			"emptyEnrollmentTitle": "No enrollment yet",
+			"latestAttendance": "Latest attendance",
+			"latestAttendanceDescription": "Registered on {{createdAt}}.",
+			"latestEnrollment": "Latest enrollment",
+			"latestEnrollmentDescription": "Submitted on {{createdAt}}."
+		},
+		"sections": {
+			"quickActions": "Quick actions",
+			"quickActionsHelper": "Jump into the next thing you need to handle.",
+			"recent": "Recent activity",
+			"recentHelper": "Open your latest enrollment or attendance without searching for it."
+		},
+		"states": {
+			"badge": "Home state",
+			"emptyBadge": "No data",
+			"errorDescription": "Refresh the screen or try again in a moment.",
+			"errorTitle": "Unable to load your dashboard",
+			"loadingDescription": "Fetching your current student context, enrollments, and attendances.",
+			"loadingTitle": "Loading your home overview"
+		},
+		"summary": {
+			"activeEnrollments": "Active projects",
+			"attendances": "Attendances",
+			"dueDate": "Due date",
+			"pendingEnrollments": "Pending approvals",
+			"progress": "Counterpart progress",
+			"progressValue": "{{value}}% completed",
+			"remainingDays": "Remaining days"
+		},
+		"title": "Home",
+		"values": {
+			"projectUnavailable": "Project unavailable",
+			"unavailable": "Unavailable"
+		}
+	},
+	"profile": {
+		"actions": {
+			"openAcademicDetails": "Academic details"
+		},
+		"badge": "Profile",
+		"errors": {
+			"load": "Some profile data could not be loaded right now."
+		},
+		"fields": {
+			"academicRegistration": "Academic registration",
+			"accountEmail": "Account",
+			"areaOfExpertise": "Area of expertise",
+			"course": "Course",
+			"cpf": "CPF",
+			"language": "Language",
+			"languageHelper": "Switch application language.",
+			"theme": "Theme",
+			"themeHelper": "Choose how the app should render."
+		},
+		"logout": {
+			"device": "Log out on this device",
+			"deviceHelper": "Only end the current device session.",
+			"everywhere": "Log out everywhere",
+			"everywhereHelper": "End this account session on every device that is still signed in.",
+			"stay": "Stay signed in",
+			"stayHelper": "Close this sheet and keep using the app.",
+			"subtitle": "Choose whether to keep this session, sign out only here, or end every active session.",
+			"title": "Log out of your account",
+			"trigger": "Log out"
+		},
+		"options": {
+			"theme": {
+				"dark": "Dark",
+				"light": "Light",
+				"system": "System"
+			}
+		},
+		"sections": {
+			"preferences": "Preferences and session",
+			"record": "Student record",
+			"session": "Session"
+		},
+		"title": "Profile",
+		"values": {
+			"active": "Active",
+			"inactive": "Inactive",
+			"loading": "Loading...",
+			"unavailable": "Unavailable"
+		}
+	},
+	"projectDetail": {
+		"actions": {
+			"apply": "Apply to project",
+			"close": "Close",
+			"exitProject": "Exit project",
+			"manage": "Manage enrollment",
+			"newAttendance": "Log attendance"
+		},
+		"apply": {
+			"applyHelper": "Create a new enrollment request for this project and wait for partner review.",
+			"caption": "Enrollment",
+			"closeHelper": "Close this sheet and keep reviewing the project details.",
+			"subtitle": "Confirm that you want to apply to this project before submitting your enrollment."
+		},
+		"entity": {
+			"address": "Address",
+			"city": "City",
+			"cnpj": "CNPJ",
+			"staff": "Staff"
+		},
+		"manage": {
+			"caption": "Enrollment",
+			"closeHelper": "Close this sheet and return to the project details.",
+			"exitProjectHelper": "Leave this project and free the slot for another participant.",
+			"subtitle": "Choose what you want to do with your enrollment in this project."
+		},
+		"metrics": {
+			"activeParticipants": "Active participants",
+			"completedHours": "Completed hours",
+			"maxParticipants": "Max participants",
+			"offeredHours": "Offered hours",
+			"progress": "Progress",
+			"progressValue": "{{value}}% completed"
+		},
+		"sections": {
+			"entity": "Entity"
+		},
+		"states": {
+			"badge": "Project",
+			"errorDescription": "Refresh the screen or try again in a moment.",
+			"errorTitle": "Unable to load this project",
+			"loadingDescription": "Fetching project, entity, and related enrollment data.",
+			"loadingTitle": "Loading project details",
+			"missingDescription": "We could not find this project to show its details.",
+			"missingTitle": "Project unavailable"
+		},
+		"title": "Project details",
+		"values": {
+			"loading": "Loading...",
+			"unavailable": "Unavailable",
+			"unlimited": "Unlimited"
+		}
+	}
 }

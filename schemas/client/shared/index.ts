@@ -1,0 +1,2 @@
+/* --- Root --- */
+export * from "./domain";

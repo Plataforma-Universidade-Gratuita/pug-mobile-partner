@@ -1,23 +1,22 @@
-// Identity
-export * as auth from "./identity/auth";
-export * as admins from "./identity/admins";
+export * as academic from "./academic";
+export * as geo from "./geo";
+export * as identity from "./identity";
+export * as partner from "./partner";
+export * as project from "./project";
+
+export * as areasOfExpertise from "./academic/areas-of-expertise";
+export * as courses from "./academic/courses";
+export * as formerStudents from "./academic/former-students";
+export * as cities from "./geo/cities";
 export * as accounts from "./identity/accounts";
 export * as users from "./identity/users";
-
-// Academic
-export * as schools from "./academic/schools";
-export * as courses from "./academic/courses";
-export * as students from "./academic/students";
-
-// Partner
 export * as entities from "./partner/entities";
 export * as staff from "./partner/staff";
-
-// Project
-export * as projects from "./project/projects";
-export * as projectSchools from "./project/project-schools";
-export * as enrollments from "./project/enrollments";
 export * as attendances from "./project/attendances";
+export * as enrollments from "./project/enrollments";
+export * as projectAreasOfExpertise from "./project/project-areas-of-expertise";
+export * as projects from "./project/projects";
 
-// Geo
-export * as cities from "./geo/cities";
+export * from "./constants";
+export * from "./errors";
+export * from "./utils";

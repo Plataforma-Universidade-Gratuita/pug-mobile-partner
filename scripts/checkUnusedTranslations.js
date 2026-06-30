@@ -23,14 +23,17 @@ const allKeys = flattenKeys(en);
 
 const ROOT = path.resolve(__dirname, "..");
 const SCAN_DIRS = [
-	"api",
 	"app",
 	"components",
 	"constants",
+	"contexts",
 	"features",
 	"hooks",
+	"i18n",
 	"schemas",
 	"store",
+	"stores",
+	"types",
 	"utils",
 ];
 const EXTENSIONS = new Set([".ts", ".tsx", ".js", ".jsx"]);
@@ -55,45 +58,40 @@ function collectFiles(dir) {
 
 const sourceFiles = SCAN_DIRS.flatMap(d => collectFiles(path.join(ROOT, d)));
 
-// Static keys:  t("some.key")  or  t('some.key')
+// Static keys: t("some.key") or t('some.key')
 const STATIC_KEY_RE = /\bt\(\s*["']([^"']+)["']/g;
 
-// Dynamic keys:  t(`prefix.${var}.suffix`)
-// Captures the static prefix and suffix around the interpolation
+// Dynamic keys: t(`prefix.${var}.suffix`)
+// Captures the static prefix and suffix around the interpolation.
 const DYNAMIC_KEY_RE = /\bt\(\s*`([^`]*?\$\{[^}]*}[^`]*)`/g;
 
-// Indirect string values that look like i18n keys (dot-separated, start with
-// an uppercase or lowercase letter, at least two segments) stored in constants
-// and config objects.  These are passed to t() at runtime.
+// Indirect string values that look like i18n keys in config objects.
 const INDIRECT_KEY_RE =
 	/["']([A-Za-z][A-Za-z0-9]*\.[A-Za-z][A-Za-z0-9-]*(?:\.[A-Za-z][A-Za-z0-9-]*)*)["']/g;
 
 const usedStaticKeys = new Set();
-const dynamicPatterns = []; // { prefix: string, suffix: string }
+const dynamicPatterns = [];
 
 for (const file of sourceFiles) {
 	const source = fs.readFileSync(file, "utf8");
 
-	// Static keys
 	let match;
 	while ((match = STATIC_KEY_RE.exec(source)) !== null) {
 		usedStaticKeys.add(match[1]);
 	}
 
-	// Dynamic keys – turn the template literal into a prefix/suffix pair
 	while ((match = DYNAMIC_KEY_RE.exec(source)) !== null) {
-		const raw = match[1]; // e.g. "docs.accordion.structure.items.${key}.title"
+		const raw = match[1];
 		const parts = raw.split(/\$\{[^}]*}/);
 
 		if (parts.length >= 2) {
 			dynamicPatterns.push({
-				prefix: parts[0], // "docs.accordion.structure.items."
-				suffix: parts[parts.length - 1], // ".title"
+				prefix: parts[0],
+				suffix: parts[parts.length - 1],
 			});
 		}
 	}
 
-	// Indirect keys – strings that look like translation keys in config files
 	while ((match = INDIRECT_KEY_RE.exec(source)) !== null) {
 		usedStaticKeys.add(match[1]);
 	}
@@ -102,7 +100,6 @@ for (const file of sourceFiles) {
 function isKeyUsed(key) {
 	if (usedStaticKeys.has(key)) return true;
 
-	// Check if the key matches any dynamic pattern
 	for (const { prefix, suffix } of dynamicPatterns) {
 		if (key.startsWith(prefix) && key.endsWith(suffix)) return true;
 	}
@@ -113,16 +110,18 @@ function isKeyUsed(key) {
 const unusedKeys = allKeys.filter(key => !isKeyUsed(key));
 
 if (unusedKeys.length > 0) {
-	console.warn(`\n⚠  Found ${unusedKeys.length} unused translation key(s):\n`);
+	console.warn(
+		`\nWarning: found ${unusedKeys.length} unused translation key(s):\n`,
+	);
 
 	for (const key of unusedKeys) {
-		console.warn(`   • ${key}`);
+		console.warn(`   - ${key}`);
 	}
 
 	console.warn("");
 	throw new Error(
 		`${unusedKeys.length} translation key(s) are defined but never referenced in source code.`,
 	);
-} else {
-	console.log("\n✔  All translation keys are referenced in source code.\n");
 }
+
+console.log("\nOK: all translation keys are referenced in source code.\n");

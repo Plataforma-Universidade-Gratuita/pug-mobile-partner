@@ -1,20 +1,46 @@
-import type { LoginRequest } from "@/types/api";
+import type {
+	AccountResponse,
+	CredentialsRequest,
+	CourseResponse,
+	FormerStudentResponse,
+	LoginRequest,
+	TokenResponse,
+	UserResponse,
+} from "@/types/api";
 
 import type { PugJwtPayload, StoredSessionTokens } from "./auth";
+import type { AppLang } from "./context";
 import type { AppResolvedTheme, AppTheme, ResolvedThemeMode } from "./theme";
 
 export interface AuthStoreState {
 	isAuthenticated: boolean;
 	isBootstrapping: boolean;
 	isMutatingSession: boolean;
+	requiresCredentialSetup: boolean;
 	accessToken: string | null;
 	refreshToken: string | null;
 	sessionPayload: PugJwtPayload | null;
 	bootstrapSession: () => Promise<boolean>;
-	signIn: (credentials: LoginRequest) => Promise<void>;
+	refreshSession: () => Promise<TokenResponse>;
+	signIn: (credentials: LoginRequest) => Promise<TokenResponse>;
+	completeCredentialSetup: (body: CredentialsRequest) => Promise<void>;
 	signOut: () => Promise<void>;
+	signOutAll: () => Promise<void>;
 	setSession: (tokens: StoredSessionTokens, payload: PugJwtPayload) => void;
+	setRequiresCredentialSetup: (value: boolean) => void;
 	clearSessionState: () => void;
+}
+
+export interface CurrentFormerStudentStoreState {
+	currentAccount: AccountResponse | null;
+	currentUser: UserResponse | null;
+	currentFormerStudent: FormerStudentResponse | null;
+	currentCourse: CourseResponse | null;
+	isLoading: boolean;
+	isLoaded: boolean;
+	error: string | null;
+	loadCurrentFormerStudentContext: () => Promise<void>;
+	clearCurrentFormerStudentContext: () => void;
 }
 
 export interface ThemeStoreState {
@@ -26,4 +52,11 @@ export interface ThemeStoreState {
 	hydrateTheme: () => Promise<void>;
 	setMode: (mode: AppTheme) => Promise<void>;
 	setSystemMode: (mode: ResolvedThemeMode) => void;
+}
+
+export interface LocaleStoreState {
+	language: AppLang;
+	isHydrated: boolean;
+	hydrateLanguage: () => Promise<void>;
+	setLanguage: (language: AppLang) => Promise<void>;
 }

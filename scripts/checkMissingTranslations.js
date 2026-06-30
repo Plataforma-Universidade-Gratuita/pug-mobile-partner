@@ -56,9 +56,9 @@ flatEn.forEach((enValue, key) => {
 const uniqueKeysMissingInPt = unique(missingInPt);
 const uniqueKeysMissingInEn = unique(missingInEn);
 
-console.warn("Traducoes faltantes em PT:", uniqueKeysMissingInPt);
-console.warn("Traducoes faltantes em EN:", uniqueKeysMissingInEn);
+console.warn("Missing translations in pt-BR:", uniqueKeysMissingInPt);
+console.warn("Missing translations in en-US:", uniqueKeysMissingInEn);
 
 if (missingInPt.length > 0 || missingInEn.length > 0) {
-	throw new Error("Existem traducoes faltando em algum dos arquivos!");
+	throw new Error("Some translations are missing from the locale files.");
 }

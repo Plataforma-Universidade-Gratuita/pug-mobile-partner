@@ -1,0 +1,41 @@
+name: Deploy PRD
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard-prd-ref:
+    name: Guard PRD Ref
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Validate PRD ref
+        run: |
+          if [[ "${GITHUB_REF}" != refs/tags/v* ]]; then
+            echo "PRD deploy is only allowed from version tags."
+            exit 1
+          fi
+
+          git branch -r --contains "${GITHUB_SHA}" | grep -q "origin/main" || {
+            echo "PRD deploy is only allowed when the tagged commit is on main."
+            exit 1
+          }
+
+  deploy:
+    name: Deploy PRD
+    needs: guard-prd-ref
+    uses: ./.github/workflows/deploy-container-app.yml
+    with:
+      environment_name: prd
+      azure_resource_group: rg-pug-prd
+      azure_container_app: pug-mobile-student-prd
+      image: ghcr.io/plataforma-universidade-gratuita/pug-mobile-student:latest
+    secrets: inherit

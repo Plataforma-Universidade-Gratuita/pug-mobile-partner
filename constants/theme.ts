@@ -2,10 +2,10 @@ import { Platform } from "react-native";
 
 import type {
 	AppResolvedTheme,
-	AppThemeShadowStyle,
 	AppTheme,
+	AppThemeShadowStyle,
 	ResolvedThemeMode,
-} from "@/types/client";
+} from "@/types/client/theme";
 
 export const APP_THEMES = ["system", "light", "dark"] as const;
 export const DEFAULT_THEME: AppTheme = "system";
@@ -66,6 +66,24 @@ const type = {
 	xxxxl: 40,
 } as const;
 
+const font = {
+	sans: Platform.select({
+		ios: "System",
+		android: "sans-serif",
+		default: '"Inter", "Segoe UI", sans-serif',
+	}),
+	display: Platform.select({
+		ios: "System",
+		android: "sans-serif-medium",
+		default: '"Inter", "Segoe UI", sans-serif',
+	}),
+	mono: Platform.select({
+		ios: "Menlo",
+		android: "monospace",
+		default: '"JetBrains Mono", "Fira Code", monospace',
+	}),
+} as const;
+
 const weight = {
 	regular: "400",
 	medium: "500",
@@ -94,6 +112,23 @@ const layout = {
 	contentMaxWidth: 720,
 } as const;
 
+const surface = {
+	panelRadius: 28,
+	panelPadding: 24,
+	panelPaddingWide: 28,
+} as const;
+
+const form = {
+	formMaxWidth: 440,
+	headerGap: 12,
+	formGap: 16,
+	fieldGap: 8,
+	controlHeight: 56,
+	controlRadius: 18,
+	buttonHeight: 56,
+	badgeHeight: 32,
+} as const;
+
 const lightTheme: AppResolvedTheme = {
 	mode: "light",
 	colors: {
@@ -101,9 +136,9 @@ const lightTheme: AppResolvedTheme = {
 		brandPressed: "#872231",
 		text: "#1c2024",
 		muted: "#60646c",
-		surface1: "#f9f9fb",
+		surface1: "#eef1f5",
 		surface2: "#ffffff",
-		surface3: "#fcfcfd",
+		surface3: "#f7f9fc",
 		border1: "#e0e1e6",
 		border2: "#e8e8ec",
 		border3: "#f0f0f3",
@@ -121,14 +156,23 @@ const lightTheme: AppResolvedTheme = {
 		chromeBgHover: "#872231",
 		chromeFg: "rgba(255, 255, 255, 0.95)",
 		chromeMuted: "rgba(255, 255, 255, 0.9)",
+		brandSoftText: "#9b2234",
+		warningSoftText: "#8a6200",
+		tabFgActive: "#9b2234",
+		tabFgInactive: "rgba(155, 34, 52, 0.56)",
+		tabBgActive: "rgba(155, 34, 52, 0.08)",
+		tabBgPressed: "rgba(155, 34, 52, 0.14)",
 	},
 	radius,
 	space,
 	type,
+	font,
 	weight,
 	lineHeight,
 	motion,
 	layout,
+	surface,
+	form,
 	shadow: {
 		sm: createShadow(
 			"#0f172a",
@@ -164,9 +208,9 @@ const darkTheme: AppResolvedTheme = {
 		brandPressed: "#c06573",
 		text: "#edeef0",
 		muted: "#b0b4ba",
-		surface1: "#111113",
-		surface2: "#212225",
-		surface3: "#18191b",
+		surface1: "#0b0a0d",
+		surface2: "#17131b",
+		surface3: "#221d27",
 		border1: "#363a3f",
 		border2: "#2e3135",
 		border3: "#272a2d",
@@ -184,14 +228,23 @@ const darkTheme: AppResolvedTheme = {
 		chromeBgHover: "#5d2e37",
 		chromeFg: "rgba(255, 255, 255, 0.95)",
 		chromeMuted: "rgba(255, 255, 255, 0.9)",
+		brandSoftText: "#f2d0d6",
+		warningSoftText: "#f6d98f",
+		tabFgActive: "#af4e5d",
+		tabFgInactive: "rgba(175, 78, 93, 0.62)",
+		tabBgActive: "rgba(175, 78, 93, 0.16)",
+		tabBgPressed: "rgba(175, 78, 93, 0.24)",
 	},
 	radius,
 	space,
 	type,
+	font,
 	weight,
 	lineHeight,
 	motion,
 	layout,
+	surface,
+	form,
 	shadow: {
 		sm: createShadow(
 			"#000000",

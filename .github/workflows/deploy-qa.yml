@@ -1,0 +1,23 @@
+name: Deploy QA
+
+on:
+  workflow_dispatch:
+    inputs:
+      image:
+        description: Full image to deploy (e.g. ghcr.io/.../pug-mobile-student:sha-abc123)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy QA
+    uses: ./.github/workflows/deploy-container-app.yml
+    with:
+      environment_name: qa
+      azure_resource_group: rg-pug-qa
+      azure_container_app: pug-mobile-student-qa
+      image: ${{ inputs.image }}
+    secrets: inherit

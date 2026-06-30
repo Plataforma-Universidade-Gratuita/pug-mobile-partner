@@ -9,6 +9,7 @@ export const TokenResponseSchema = z.object({
 	refreshToken: z.string(),
 	accountId: z.string(),
 	accountType: AccountTypeEnum,
+	passwordWired: z.boolean(),
 	expiresIn: z.number(),
 	refreshExpiresIn: z.number(),
 });
@@ -17,7 +18,7 @@ export const TokenResponseSchema = z.object({
 
 export const LoginRequestSchema = z.object({
 	email: z.string(),
-	password: z.string(),
+	password: z.string().nullable(),
 });
 
 export const RefreshRequestSchema = z.object({

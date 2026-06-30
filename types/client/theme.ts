@@ -32,6 +32,12 @@ export interface AppThemeColors {
 	chromeBgHover: string;
 	chromeFg: string;
 	chromeMuted: string;
+	brandSoftText: string;
+	warningSoftText: string;
+	tabFgActive: string;
+	tabFgInactive: string;
+	tabBgActive: string;
+	tabBgPressed: string;
 }
 
 export interface AppThemeRadius {
@@ -65,6 +71,12 @@ export interface AppThemeTypeScale {
 	xxxxl: number;
 }
 
+export interface AppThemeFontScale {
+	sans: string;
+	display: string;
+	mono: string;
+}
+
 export interface AppThemeWeightScale {
 	regular: "400";
 	medium: "500";
@@ -93,6 +105,23 @@ export interface AppThemeLayoutScale {
 	contentMaxWidth: number;
 }
 
+export interface AppThemeSurfaceScale {
+	panelRadius: number;
+	panelPadding: number;
+	panelPaddingWide: number;
+}
+
+export interface AppThemeFormScale {
+	formMaxWidth: number;
+	headerGap: number;
+	formGap: number;
+	fieldGap: number;
+	controlHeight: number;
+	controlRadius: number;
+	buttonHeight: number;
+	badgeHeight: number;
+}
+
 export interface AppThemeShadowScale {
 	sm: AppThemeShadowStyle;
 	md: AppThemeShadowStyle;
@@ -105,9 +134,12 @@ export interface AppResolvedTheme {
 	radius: AppThemeRadius;
 	space: AppThemeSpace;
 	type: AppThemeTypeScale;
+	font: AppThemeFontScale;
 	weight: AppThemeWeightScale;
 	lineHeight: AppThemeLineHeightScale;
 	motion: AppThemeMotionScale;
 	layout: AppThemeLayoutScale;
+	surface: AppThemeSurfaceScale;
+	form: AppThemeFormScale;
 	shadow: AppThemeShadowScale;
 }
