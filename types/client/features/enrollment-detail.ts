@@ -1,4 +1,8 @@
-import type { AttendanceComplexSearchItem, ProjectStatus } from "@/types/api";
+import type {
+	AttendanceComplexSearchItem,
+	EnrollmentStatus,
+	ProjectStatus,
+} from "@/types/api";
 import type { BadgeTone } from "@/types/client";
 
 export interface EnrollmentDetailScreenProps {
@@ -7,13 +11,20 @@ export interface EnrollmentDetailScreenProps {
 
 export interface EnrollmentDetailContentProps {
 	attendanceItems: AttendanceComplexSearchItem[];
+	canManage: boolean;
 	contentBottomPadding: number;
+	disabled: boolean;
 	hasEnrollment: boolean;
 	hasQueryError: boolean;
 	isInitialLoading: boolean;
 	isRefreshing: boolean;
+	onManage: () => void;
 	onOpenProject: () => void;
 	onRefresh: () => void;
+	enrollmentStatus: {
+		status: EnrollmentStatus;
+		statusFormatted: string;
+	} | null;
 	project: {
 		description: string;
 		id: string;
@@ -32,7 +43,11 @@ export interface EnrollmentDetailContentProps {
 }
 
 export interface EnrollmentProjectCardProps {
+	canManage: boolean;
 	description: string;
+	disabled: boolean;
+	isLoading?: boolean;
+	onManage: () => void;
 	onOpenProject: () => void;
 	progressRatio: number;
 	progressValueLabel: string;

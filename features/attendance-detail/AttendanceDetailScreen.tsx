@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -9,9 +9,11 @@ import * as api from "@/api";
 import { AppBackButton, BrandScreenHeader } from "@/components";
 import { useCurrentFormerStudentStore, useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
+import { getTabScreenContentBottomPadding } from "@/utils";
 
 import { resolveAttendanceStatusTone } from "../activity/utils";
 import { AttendanceDetailContent } from "./AttendanceDetailContent";
+import { AttendanceDetailLoadingSkeleton } from "./AttendanceDetailLoadingSkeleton";
 import { AttendanceDetailStateCard } from "./AttendanceDetailStateCard";
 import { createStyles } from "./styles";
 
@@ -21,6 +23,7 @@ export function AttendanceDetailScreen() {
 	const theme = useThemeStore(state => state.theme);
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
 	const styles = useMemo(() => createStyles(theme, spec), [spec, theme]);
+	const [isManualRefreshing, setIsManualRefreshing] = useState(false);
 	const params = useLocalSearchParams<{ id?: string | string[] }>();
 	const attendanceId =
 		typeof params.id === "string" && params.id.trim() ? params.id : null;
@@ -60,15 +63,17 @@ export function AttendanceDetailScreen() {
 			null,
 		[attendanceId, attendancesQuery.data],
 	);
-	const contentBottomPadding =
-		theme.space[8] + theme.space[2] + Math.max(insets.bottom, theme.space[4]);
+	const contentBottomPadding = getTabScreenContentBottomPadding(
+		theme,
+		insets.bottom,
+	);
 	const hasQueryError =
 		currentFormerStudentError != null || attendancesQuery.error != null;
 	const isInitialLoading =
 		attendanceId === null ||
 		(!isCurrentFormerStudentLoaded && isCurrentFormerStudentLoading) ||
-		attendancesQuery.isLoading;
-	const isRefreshing = attendancesQuery.isRefetching;
+		(attendancesQuery.isLoading && attendancesQuery.data == null);
+	const isRefreshing = isManualRefreshing;
 
 	return (
 		<View style={[styles.screen, { backgroundColor: spec.screenBackground }]}>
@@ -85,10 +90,19 @@ export function AttendanceDetailScreen() {
 					<RefreshControl
 						refreshing={isRefreshing}
 						onRefresh={() => {
-							if (!isCurrentFormerStudentLoaded) {
-								void loadCurrentFormerStudentContext();
-							}
-							void attendancesQuery.refetch();
+							void (async () => {
+								setIsManualRefreshing(true);
+								try {
+									const tasks: Promise<unknown>[] = [];
+									if (!isCurrentFormerStudentLoaded) {
+										tasks.push(loadCurrentFormerStudentContext());
+									}
+									tasks.push(attendancesQuery.refetch());
+									await Promise.all(tasks);
+								} finally {
+									setIsManualRefreshing(false);
+								}
+							})();
 						}}
 						tintColor={theme.colors.brand}
 					/>
@@ -106,17 +120,11 @@ export function AttendanceDetailScreen() {
 							tone="danger"
 						/>
 					) : isInitialLoading ? (
-						<AttendanceDetailStateCard
-							badgeLabel={t("activity.states.badge")}
-							description={t(
-								"activity.attendanceDetail.states.loadingDescription",
-							)}
-							title={t("activity.attendanceDetail.states.loadingTitle")}
-							tone="neutral"
-						/>
+						<AttendanceDetailLoadingSkeleton />
 					) : attendance ? (
 						<AttendanceDetailContent
 							attendance={attendance}
+							isLoading={isRefreshing}
 							statusTone={resolveAttendanceStatusTone(attendance.status.status)}
 							t={t}
 						/>

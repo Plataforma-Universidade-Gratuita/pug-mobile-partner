@@ -19,15 +19,15 @@ export function HeaderActionButton({
 	const styles = useMemo(() => createStyles(theme), [theme]);
 	const backgroundColor = withAlpha(
 		theme.colors.brand,
-		theme.mode === "dark" ? 0.12 : 0.07,
+		theme.mode === "dark" ? 0.12 : 0.11,
 	);
 	const pressedBackgroundColor = withAlpha(
 		theme.colors.brand,
-		theme.mode === "dark" ? 0.2 : 0.12,
+		theme.mode === "dark" ? 0.2 : 0.18,
 	);
 	const borderColor = withAlpha(
 		theme.colors.brand,
-		theme.mode === "dark" ? 0.18 : 0.12,
+		theme.mode === "dark" ? 0.18 : 0.2,
 	);
 
 	return (
@@ -40,7 +40,7 @@ export function HeaderActionButton({
 				styles.actionButton,
 				{
 					backgroundColor: pressed ? pressedBackgroundColor : backgroundColor,
-					borderColor,
+					borderColor: theme.mode === "dark" ? borderColor : "transparent",
 					borderRadius: theme.radius.md,
 					opacity: disabled ? 0.5 : 1,
 				},

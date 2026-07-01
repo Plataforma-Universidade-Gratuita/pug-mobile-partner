@@ -4,6 +4,7 @@ import type {
 	EnrollmentResponse,
 	EnrollmentStatus,
 	ProjectResponse,
+	ProjectStatus,
 } from "@/types/api";
 import type { BadgeTone, DiscoverFilters } from "@/types/client";
 
@@ -13,13 +14,18 @@ import {
 	DISCOVER_PROJECT_STATUS_ORDER,
 } from "./constants";
 
-type ProjectStatus = ProjectResponse["status"]["status"];
-
 const DISCOVERABLE_PROJECT_STATUS_SET: ReadonlySet<ProjectStatus> = new Set(
 	DISCOVERABLE_PROJECT_STATUSES,
 );
 const DISCOVER_EXCLUDED_ENROLLMENT_STATUS_SET: ReadonlySet<EnrollmentStatus> =
 	new Set(DISCOVER_EXCLUDED_ENROLLMENT_STATUSES);
+
+function normalizeDiscoverSearchValue(value: string) {
+	return value
+		.toLocaleLowerCase()
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "");
+}
 
 export function createDefaultDiscoverFilters(): DiscoverFilters {
 	return {
@@ -41,7 +47,7 @@ export function filterDiscoverProjects(
 	projects: ProjectResponse[],
 	filters: DiscoverFilters,
 ) {
-	const query = filters.query.trim().toLocaleLowerCase();
+	const query = normalizeDiscoverSearchValue(filters.query.trim());
 
 	return projects.filter(project => {
 		if (
@@ -62,11 +68,18 @@ export function filterDiscoverProjects(
 			return true;
 		}
 
-		const normalizedName = project.name.toLocaleLowerCase();
-		const normalizedDescription = project.description.toLocaleLowerCase();
+		const normalizedName = normalizeDiscoverSearchValue(project.name);
+		const normalizedDescription = normalizeDiscoverSearchValue(
+			project.description,
+		);
+		const normalizedEntityName = normalizeDiscoverSearchValue(
+			project.entity.name,
+		);
 
 		return (
-			normalizedName.includes(query) || normalizedDescription.includes(query)
+			normalizedName.includes(query) ||
+			normalizedDescription.includes(query) ||
+			normalizedEntityName.includes(query)
 		);
 	});
 }
@@ -145,18 +158,21 @@ export function sortDiscoverProjects(
 export function resolveDiscoverProjectStatusTone(
 	status: ProjectStatus,
 ): BadgeTone {
-	if (status === "IN_PROGRESS") {
-		return "info";
-	}
-
-	if (status === "ON_HOLD") {
-		return "warning";
-	}
-
 	if (status === "PLANNED") {
 		return "brand";
 	}
-
+	if (status === "IN_PROGRESS") {
+		return "info";
+	}
+	if (status === "ON_HOLD") {
+		return "warning";
+	}
+	if (status === "CANCELED") {
+		return "danger";
+	}
+	if (status === "COMPLETED") {
+		return "success";
+	}
 	return "neutral";
 }
 

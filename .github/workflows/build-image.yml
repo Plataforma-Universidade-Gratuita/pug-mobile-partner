@@ -33,8 +33,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: false
-          build-args: |
-            EXPO_PUBLIC_API_URL=http://localhost:8080
           provenance: false
           sbom: false
           cache-from: type=gha

@@ -42,6 +42,14 @@ export function ActivityFilterSheet({
 		activeTab === "enrollments"
 			? draftFilters.enrollmentStatuses
 			: draftFilters.attendanceStatuses;
+	const searchHelperKey =
+		activeTab === "enrollments"
+			? "activity.filters.searchHelperEnrollments"
+			: "activity.filters.searchHelperAttendances";
+	const searchPlaceholderKey =
+		activeTab === "enrollments"
+			? "activity.filters.searchPlaceholderEnrollments"
+			: "activity.filters.searchPlaceholderAttendances";
 
 	useEffect(() => {
 		if (visible) {
@@ -126,7 +134,7 @@ export function ActivityFilterSheet({
 					<View style={styles.section}>
 						<View style={styles.sectionHeader}>
 							<Label role="field">{t("activity.filters.searchLabel")}</Label>
-							<Label role="helper">{t("activity.filters.searchHelper")}</Label>
+							<Label role="helper">{t(searchHelperKey)}</Label>
 						</View>
 						<Input
 							onChangeText={value => {
@@ -135,7 +143,7 @@ export function ActivityFilterSheet({
 									query: value,
 								}));
 							}}
-							placeholder={t("activity.filters.searchPlaceholder")}
+							placeholder={t(searchPlaceholderKey)}
 							value={draftFilters.query}
 						/>
 					</View>

@@ -14,6 +14,7 @@ export function HomeRecentSection({
 	attendanceCard,
 	enrollmentCard,
 	helper,
+	isLoading = false,
 	title,
 }: HomeRecentSectionProps) {
 	const theme = useThemeStore(state => state.theme);
@@ -27,8 +28,14 @@ export function HomeRecentSection({
 				<Label role="helper">{helper}</Label>
 			</View>
 			<View style={styles.snapshotStack}>
-				<HomeActivitySnapshotCard {...enrollmentCard} />
-				<HomeActivitySnapshotCard {...attendanceCard} />
+				<HomeActivitySnapshotCard
+					{...enrollmentCard}
+					isLoading={isLoading}
+				/>
+				<HomeActivitySnapshotCard
+					{...attendanceCard}
+					isLoading={isLoading}
+				/>
 			</View>
 		</>
 	);

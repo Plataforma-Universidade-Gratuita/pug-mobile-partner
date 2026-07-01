@@ -10,6 +10,7 @@ export interface AttendanceDetailStateCardProps {
 
 export interface AttendanceDetailContentProps {
 	attendance: AttendanceComplexSearchItem;
+	isLoading?: boolean;
 	statusTone: BadgeTone;
 	t: (...args: any[]) => any;
 }

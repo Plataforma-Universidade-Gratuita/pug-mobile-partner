@@ -1,9 +1,29 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 import type {
 	AppResolvedTheme,
 	PrimitiveSurfaceStyleSpec,
 } from "@/types/client";
+
+function getNativeShadowStyle(config: {
+	color: string;
+	opacity: number;
+	radius: number;
+	offsetY: number;
+	elevation: number;
+}) {
+	if (Platform.OS === "web") {
+		return {};
+	}
+
+	return {
+		shadowColor: config.color,
+		shadowOpacity: config.opacity,
+		shadowRadius: config.radius,
+		shadowOffset: { width: 0, height: config.offsetY },
+		elevation: config.elevation,
+	};
+}
 
 export function createStyles(
 	theme: AppResolvedTheme,
@@ -37,11 +57,13 @@ export function createStyles(
 			borderRadius: theme.radius.circle,
 			alignItems: "center",
 			justifyContent: "center",
-			shadowColor: theme.colors.overlay,
-			shadowOpacity: theme.mode === "dark" ? 0.3 : 0.16,
-			shadowRadius: 12,
-			shadowOffset: { width: 0, height: 6 },
-			elevation: 6,
+			...getNativeShadowStyle({
+				color: theme.colors.overlay,
+				opacity: theme.mode === "dark" ? 0.3 : 0.16,
+				radius: 12,
+				offsetY: 6,
+				elevation: 6,
+			}),
 		},
 		segmented: {
 			flexDirection: "row",

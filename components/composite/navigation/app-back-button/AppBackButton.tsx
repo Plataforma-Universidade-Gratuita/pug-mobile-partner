@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
 
 import type { AppBackButtonProps } from "@/types/client";
@@ -12,11 +12,18 @@ export function AppBackButton({
 	onPress,
 	style,
 }: AppBackButtonProps) {
+	const navigation = useNavigation();
 	const router = useRouter();
 	const resolvedOnPress =
 		onPress ??
 		(() => {
-			if (typeof window !== "undefined" && window.history.length <= 1) {
+			const canGoBack = navigation.canGoBack();
+			const hasBrowserHistory =
+				typeof window !== "undefined" &&
+				typeof window.history !== "undefined" &&
+				typeof window.history.length === "number";
+
+			if (!canGoBack || (hasBrowserHistory && window.history.length <= 1)) {
 				router.replace("/");
 				return;
 			}

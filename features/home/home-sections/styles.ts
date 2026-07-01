@@ -125,6 +125,9 @@ export function createStyles(
 		snapshotAction: {
 			marginTop: theme.space[1],
 		},
+		snapshotStack: {
+			gap: theme.space[3],
+		},
 		stateCard: {
 			borderRadius: theme.radius.xl,
 			borderWidth: 1,

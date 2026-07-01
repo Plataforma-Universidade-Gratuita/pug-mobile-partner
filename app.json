@@ -1,11 +1,11 @@
 {
 	"expo": {
-		"name": "pug-mobile-partner",
-		"slug": "pug-mobile-partner",
-		"version": "0.1.0",
+		"name": "pug-mobile-student",
+		"slug": "pug-mobile-student",
+		"version": "1.0.0",
 		"orientation": "portrait",
 		"icon": "./public/assets/icon.png",
-		"scheme": "pugmobilepartner",
+		"scheme": "pugmobilestudent",
 		"userInterfaceStyle": "automatic",
 		"newArchEnabled": true,
 		"ios": {
@@ -18,7 +18,8 @@
 				"monochromeImage": "./public/assets/adaptive-icon-white.png"
 			},
 			"edgeToEdgeEnabled": true,
-			"predictiveBackGestureEnabled": false
+			"predictiveBackGestureEnabled": false,
+			"package": "com.anonymous.pugmobilestudent"
 		},
 		"web": {
 			"output": "static",

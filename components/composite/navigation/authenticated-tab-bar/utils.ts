@@ -19,8 +19,6 @@ export function createAuthenticatedShellTabScreenOptions(
 			elevation: 0,
 			height: 0,
 			position: "absolute",
-			shadowColor: "transparent",
-			shadowOpacity: 0,
 		},
 		sceneStyle: {
 			backgroundColor: theme.colors.surface1,

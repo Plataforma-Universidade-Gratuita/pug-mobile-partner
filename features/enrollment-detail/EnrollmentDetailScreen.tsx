@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,10 @@ import type {
 	AttendanceComplexSearchFilters,
 	EnrollmentDetailScreenProps,
 } from "@/types/client";
+import { getTabScreenContentBottomPadding } from "@/utils";
 
+import { ManageEnrollmentSheet } from "../project-detail/project-detail-sections";
+import { canManageEnrollment } from "../project-detail/utils";
 import { EnrollmentDetailContent } from "./EnrollmentDetailContent";
 import { createStyles } from "./styles";
 
@@ -26,6 +29,8 @@ export function EnrollmentDetailScreen({
 	const theme = useThemeStore(state => state.theme);
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
 	const styles = useMemo(() => createStyles(theme, spec), [spec, theme]);
+	const [isManageSheetVisible, setIsManageSheetVisible] = useState(false);
+	const [isManualRefreshing, setIsManualRefreshing] = useState(false);
 	const params = useLocalSearchParams<{ projectId?: string | string[] }>();
 	const projectId =
 		projectIdProp ??
@@ -62,6 +67,8 @@ export function EnrollmentDetailScreen({
 	const project = projectQuery.data ?? null;
 	const myEnrollmentQuery =
 		api.project.enrollments.useMyEnrollmentDetailQuery(projectId);
+	const updateMyEnrollmentMutation =
+		api.project.enrollments.useMyEnrollmentStatusMutation();
 	const attendanceFilters: AttendanceComplexSearchFilters = {
 		projectIds: projectId ? [projectId] : [],
 		formerStudentIds: currentFormerStudent?.accountId
@@ -91,14 +98,17 @@ export function EnrollmentDetailScreen({
 		(projectQuery.isLoading && projectQuery.data == null) ||
 		(myEnrollmentQuery.isLoading && myEnrollmentQuery.data == null) ||
 		(!isCurrentFormerStudentLoaded && isCurrentFormerStudentLoading);
-	const isRefreshing =
-		projectQuery.isRefetching ||
-		myEnrollmentQuery.isRefetching ||
-		attendancesQuery.isRefetching;
-	const contentBottomPadding =
-		theme.space[8] + theme.space[2] + Math.max(insets.bottom, theme.space[4]);
+	const isRefreshing = isManualRefreshing;
+	const contentBottomPadding = getTabScreenContentBottomPadding(
+		theme,
+		insets.bottom,
+	);
 	const attendanceItems = attendancesQuery.data?.content ?? [];
-	const hasEnrollment = myEnrollmentQuery.data != null;
+	const myEnrollment = myEnrollmentQuery.data;
+	const myEnrollmentStatus = myEnrollment?.status.status;
+	const hasEnrollment = myEnrollment != null;
+	const canManage = canManageEnrollment(myEnrollmentStatus);
+	const isMutatingEnrollment = updateMyEnrollmentMutation.isPending;
 
 	return (
 		<View style={[styles.screen, { backgroundColor: spec.screenBackground }]}>
@@ -108,28 +118,65 @@ export function EnrollmentDetailScreen({
 			/>
 			<EnrollmentDetailContent
 				attendanceItems={hasEnrollment ? attendanceItems : []}
+				canManage={canManage}
 				contentBottomPadding={contentBottomPadding}
+				disabled={isMutatingEnrollment}
 				hasEnrollment={hasEnrollment}
 				hasQueryError={hasQueryError}
 				isInitialLoading={isInitialLoading}
 				isRefreshing={isRefreshing}
+				enrollmentStatus={myEnrollmentQuery.data?.status ?? null}
+				onManage={() => {
+					setIsManageSheetVisible(true);
+				}}
 				onOpenProject={() => {
 					if (!projectId) return;
-					router.push(`/discover/projects/${projectId}`);
+					router.push({
+						pathname: "/projects/[id]",
+						params: { id: projectId },
+					});
 				}}
 				onRefresh={() => {
-					if (!isCurrentFormerStudentLoaded)
-						void loadCurrentFormerStudentContext();
-					if (projectId !== null) {
-						void projectQuery.refetch();
-						void myEnrollmentQuery.refetch();
-						void attendancesQuery.refetch();
-					}
+					void (async () => {
+						setIsManualRefreshing(true);
+						try {
+							const tasks: Promise<unknown>[] = [];
+							if (!isCurrentFormerStudentLoaded) {
+								tasks.push(loadCurrentFormerStudentContext());
+							}
+							if (projectId !== null) {
+								tasks.push(projectQuery.refetch());
+								tasks.push(myEnrollmentQuery.refetch());
+								tasks.push(attendancesQuery.refetch());
+							}
+							await Promise.all(tasks);
+						} finally {
+							setIsManualRefreshing(false);
+						}
+					})();
 				}}
 				project={project}
 				t={t}
 				themeBrandColor={theme.colors.brand}
 			/>
+			{project ? (
+				<ManageEnrollmentSheet
+					isBusy={isMutatingEnrollment}
+					onDismiss={() => {
+						setIsManageSheetVisible(false);
+					}}
+					onExitProject={() => {
+						if (!projectId) return;
+						void updateMyEnrollmentMutation
+							.mutateAsync({ projectId, status: "EXITED" })
+							.then(() => {
+								setIsManageSheetVisible(false);
+							});
+					}}
+					projectName={project.name}
+					visible={isManageSheetVisible}
+				/>
+			) : null}
 		</View>
 	);
 }

@@ -29,7 +29,7 @@ export async function get(id: string): Promise<AreaOfExpertiseResponse> {
 export async function list(ids?: string[]): Promise<AreaOfExpertiseResponse[]> {
 	return authFetch(
 		`${API_ROUTE_BASES.academic.areasOfExpertise}${qs({
-			ids: ids?.join(","),
+			ids,
 		})}`,
 		z.array(AreaOfExpertiseResponseSchema),
 	);

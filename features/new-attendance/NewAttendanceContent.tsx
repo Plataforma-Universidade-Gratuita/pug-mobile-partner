@@ -20,6 +20,7 @@ export function NewAttendanceContent({
 	hasQueryError,
 	isInitialLoading,
 	isProjectLocked,
+	isRefreshingOptions,
 	isSubmitting,
 	onChangeDuration,
 	onDurationBlur,
@@ -54,7 +55,7 @@ export function NewAttendanceContent({
 		);
 	}
 
-	if (!hasEligibleProjects) {
+	if (!hasEligibleProjects && !isRefreshingOptions) {
 		return (
 			<NewAttendanceStateCard
 				badgeLabel={stateBadgeLabel}
@@ -67,21 +68,6 @@ export function NewAttendanceContent({
 
 	return (
 		<View style={styles.formCard}>
-			<NewAttendanceProjectSection
-				clearServerError={clearServerError}
-				errorMessage={projectErrorMessage}
-				isProjectLocked={isProjectLocked}
-				isSubmitting={isSubmitting}
-				onSelectProject={onSelectProject}
-				options={projectOptions}
-				selectedProjectId={selectedProjectId}
-				styles={{
-					errorText: styles.errorText,
-					projectOptionList: styles.projectOptionList,
-					section: styles.section,
-					sectionHeader: styles.sectionHeader,
-				}}
-			/>
 			<View style={styles.field}>
 				<Label role="field">{durationLabel}</Label>
 				<Input
@@ -100,6 +86,24 @@ export function NewAttendanceContent({
 					value={durationValue}
 				/>
 			</View>
+			<NewAttendanceProjectSection
+				clearServerError={clearServerError}
+				errorMessage={projectErrorMessage}
+				isProjectLocked={isProjectLocked}
+				isRefreshingOptions={isRefreshingOptions}
+				isSubmitting={isSubmitting}
+				onSelectProject={onSelectProject}
+				options={projectOptions}
+				selectedProjectId={selectedProjectId}
+				styles={{
+					errorText: styles.errorText,
+					projectOptionList: styles.projectOptionList,
+					projectOptionCard: styles.projectOptionCard,
+					projectOptionListContainer: styles.projectOptionListContainer,
+					section: styles.section,
+					sectionHeader: styles.sectionHeader,
+				}}
+			/>
 			{formFooterError ? (
 				<Label
 					role="helper"

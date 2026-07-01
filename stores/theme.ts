@@ -46,9 +46,9 @@ export const useThemeStore = create<ThemeStoreState>((set, get) => ({
 	setMode: async mode => {
 		const nextMode = coerceTheme(mode);
 
-		await setStoredValue(THEME_STORAGE_KEY, nextMode);
-
 		set(state => buildThemeState(nextMode, state.systemMode, true));
+
+		void setStoredValue(THEME_STORAGE_KEY, nextMode);
 	},
 
 	setSystemMode: mode => {

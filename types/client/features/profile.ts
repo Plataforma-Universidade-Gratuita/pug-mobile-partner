@@ -7,6 +7,7 @@ export interface ProfileStudentCardProps {
 	name: string;
 	cpfLabel: string;
 	cpfValue: string;
+	isLoading: boolean;
 }
 
 export interface ProfileInfoCardProps {
@@ -25,6 +26,7 @@ export interface ProfileInfoCardProps {
 	areaOfExpertiseValue: string;
 	onOpenAcademicDetails: () => void;
 	errorMessage?: string | undefined;
+	isLoading: boolean;
 }
 
 export interface ProfilePreferencesCardProps {

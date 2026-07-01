@@ -28,7 +28,7 @@ export async function get(id: string): Promise<AttendanceResponse> {
 
 export async function list(ids?: string[]): Promise<AttendanceResponse[]> {
 	return authFetch(
-		`${API_ROUTE_BASES.project.attendances}${qs({ ids: ids?.join(",") })}`,
+		`${API_ROUTE_BASES.project.attendances}${qs({ ids })}`,
 		z.array(AttendanceResponseSchema),
 	);
 }

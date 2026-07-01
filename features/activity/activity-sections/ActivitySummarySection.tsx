@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Badge, Label } from "@/components/primitives";
+import { Badge, Label, LoadingBlock } from "@/components/primitives";
 import { useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import type { ActivitySummarySectionProps } from "@/types/client";
@@ -28,6 +28,7 @@ export function ActivitySummarySection({
 	focusDescription,
 	focusTitle,
 	pendingCount,
+	isLoading = false,
 }: ActivitySummarySectionProps) {
 	const { t } = useTranslation();
 	const theme = useThemeStore(state => state.theme);
@@ -53,30 +54,61 @@ export function ActivitySummarySection({
 						]}
 					>
 						<Label role="helper">{label}</Label>
-						<Label
-							role="title"
-							style={styles.summaryValue}
-						>
-							{value}
-						</Label>
+						{isLoading ? (
+							<LoadingBlock
+								width="48%"
+								height={28}
+							/>
+						) : (
+							<Label
+								role="title"
+								style={styles.summaryValue}
+							>
+								{value}
+							</Label>
+						)}
 					</View>
 				))}
 			</View>
 			<View style={styles.focusCard}>
-				<Label
-					role="field"
-					style={styles.focusTitle}
-				>
-					{focusTitle}
-				</Label>
-				<Label role="helper">{focusDescription}</Label>
-				<View style={styles.chipRow}>
-					{chipLabels.map(label => (
-						<SummaryChip
-							key={label}
-							label={label}
+				{isLoading ? (
+					<>
+						<LoadingBlock
+							width="56%"
+							height={22}
 						/>
-					))}
+						<LoadingBlock
+							width="88%"
+							height={14}
+						/>
+					</>
+				) : (
+					<>
+						<Label
+							role="field"
+							style={styles.focusTitle}
+						>
+							{focusTitle}
+						</Label>
+						<Label role="helper">{focusDescription}</Label>
+					</>
+				)}
+				<View style={styles.chipRow}>
+					{isLoading
+						? ["first", "second"].map(key => (
+								<LoadingBlock
+									key={key}
+									width={96}
+									height={28}
+									radius={theme.radius.circle}
+								/>
+							))
+						: chipLabels.map(label => (
+								<SummaryChip
+									key={label}
+									label={label}
+								/>
+							))}
 				</View>
 			</View>
 		</View>

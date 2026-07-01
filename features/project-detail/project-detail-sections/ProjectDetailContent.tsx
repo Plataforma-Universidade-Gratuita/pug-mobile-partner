@@ -6,13 +6,21 @@ import { ProjectEntityCard } from "./ProjectEntityCard";
 import { ProjectOverviewCard } from "./ProjectOverviewCard";
 
 export function ProjectDetailContent(props: ProjectDetailContentProps) {
+	const isLoading = props.isLoading ?? false;
+
 	return (
 		<>
 			<ProjectOverviewCard
 				activeParticipantsValue={props.activeParticipantsValue}
 				completedHoursValue={props.completedHoursValue}
+				{...(props.ctaDisabled !== undefined
+					? { ctaDisabled: props.ctaDisabled }
+					: {})}
+				ctaLabel={props.ctaLabel}
 				description={props.project.description}
+				isLoading={isLoading}
 				maxParticipantsValue={props.maxParticipantsValue}
+				onPressCta={props.onPressCta}
 				offeredHoursValue={props.offeredHoursValue}
 				progressRatio={props.completionRatio}
 				progressValueLabel={props.completionPercentLabel}
@@ -25,6 +33,7 @@ export function ProjectDetailContent(props: ProjectDetailContentProps) {
 				cityValue={props.cityValue}
 				cnpjValue={props.cnpjValue}
 				entityName={props.entityName}
+				isLoading={isLoading}
 				staffItems={props.staffItems}
 				staffStateLabel={props.staffStateLabel}
 			/>

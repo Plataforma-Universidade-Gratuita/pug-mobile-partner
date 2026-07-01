@@ -11,7 +11,7 @@ export function createStyles(
 ) {
 	return StyleSheet.create({
 		card: {
-			gap: theme.space[3],
+			gap: theme.space[2],
 			padding: spec.panelPadding,
 			borderWidth: 1,
 			borderRadius: spec.panelRadius,
@@ -32,7 +32,8 @@ export function createStyles(
 		titleRow: {
 			flexDirection: "row",
 			alignItems: "flex-start",
-			gap: theme.space[3],
+			justifyContent: "space-between",
+			gap: theme.space[2],
 		},
 		titleCopy: {
 			flex: 1,
@@ -42,22 +43,26 @@ export function createStyles(
 			fontSize: theme.type.lg,
 			lineHeight: theme.type.lg * theme.lineHeight.tight,
 		},
+		statusBadge: {
+			flexShrink: 0,
+			marginTop: 1,
+		},
 		description: {
 			lineHeight: theme.type.sm * theme.lineHeight.normal,
 		},
-		chevron: {
-			marginTop: 2,
+		loadingDescription: {
+			gap: theme.space[1],
 		},
 		metricsRow: {
 			flexDirection: "row",
 			alignItems: "stretch",
-			gap: theme.space[3],
+			gap: theme.space[2],
 		},
 		metricCard: {
 			flex: 1,
 			gap: theme.space[1],
 			paddingHorizontal: theme.space[3],
-			paddingVertical: theme.space[3],
+			paddingVertical: theme.space[2],
 			borderWidth: 1,
 			borderRadius: theme.radius.lg,
 		},

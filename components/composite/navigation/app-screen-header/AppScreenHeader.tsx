@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 
-import { useRouter } from "expo-router";
 import { View } from "react-native";
 
 import { Label } from "@/components/primitives";
@@ -17,18 +16,10 @@ export function AppScreenHeader({
 	leftAccessory,
 	rightAccessory,
 }: AppScreenHeaderProps) {
-	const router = useRouter();
 	const theme = useThemeStore(state => state.theme);
 	const styles = useMemo(() => createStyles(theme), [theme]);
 	const resolvedLeftAccessory =
-		leftAccessory ??
-		(showBackButton ? (
-			<AppBackButton
-				onPress={() => {
-					router.back();
-				}}
-			/>
-		) : null);
+		leftAccessory ?? (showBackButton ? <AppBackButton /> : null);
 
 	return (
 		<View style={styles.header}>

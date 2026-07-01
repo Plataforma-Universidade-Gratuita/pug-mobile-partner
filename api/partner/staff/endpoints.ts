@@ -34,7 +34,7 @@ export async function getMe(): Promise<StaffResponse> {
 export async function list(ids?: string[]): Promise<StaffResponse[]> {
 	return authFetch(
 		`${API_ROUTE_BASES.partner.staff}${qs({
-			ids: ids?.join(","),
+			ids,
 		})}`,
 		z.array(StaffResponseSchema),
 	);

@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
+import { useScrollToTop } from "@react-navigation/native";
 import { SlidersHorizontal } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { RefreshControl, ScrollView, View } from "react-native";
@@ -10,9 +11,11 @@ import { BrandScreenHeader, HeaderActionButton } from "@/components";
 import { useCurrentFormerStudentStore, useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import type { ProjectResponse } from "@/types/api";
+import { getTabScreenContentBottomPadding } from "@/utils";
 
 import { DISCOVERABLE_PROJECT_STATUSES } from "./constants";
 import {
+	DiscoverLoadingSkeleton,
 	DiscoverResultsSection,
 	DiscoverStateCard,
 	DiscoverSummarySection,
@@ -30,10 +33,12 @@ import {
 
 export function DiscoverScreen() {
 	const { t } = useTranslation();
+	const scrollRef = useRef<ScrollView>(null);
 	const insets = useSafeAreaInsets();
 	const theme = useThemeStore(state => state.theme);
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
 	const styles = useMemo(() => createStyles(theme, spec), [spec, theme]);
+	useScrollToTop(scrollRef);
 	const [isFilterSheetVisible, setIsFilterSheetVisible] = useState(false);
 	const [appliedFilters, setAppliedFilters] = useState(
 		createDefaultDiscoverFilters,
@@ -151,12 +156,22 @@ export function DiscoverScreen() {
 				}
 			: null;
 	const stateCopy = queryStateCopy ?? filteredStateCopy;
-	const contentBottomPadding =
-		theme.space[8] + theme.space[4] + Math.max(insets.bottom, theme.space[4]);
+	const isInitialLoading =
+		(!isCurrentFormerStudentLoaded && isCurrentFormerStudentLoading) ||
+		projectsQuery.isLoading ||
+		enrollmentsQuery.isLoading;
+	const contentBottomPadding = getTabScreenContentBottomPadding(
+		theme,
+		insets.bottom,
+	);
 	const summaryCountLabel =
 		areaOfExpertise !== null && queryStateCopy === null
 			? t("discover.summary.count", { count: filteredProjects.length })
 			: null;
+	const isRefreshing =
+		projectsQuery.isRefetching ||
+		enrollmentsQuery.isRefetching ||
+		isCurrentFormerStudentLoading;
 
 	return (
 		<View style={styles.screen}>
@@ -174,13 +189,14 @@ export function DiscoverScreen() {
 				}
 			/>
 			<ScrollView
+				ref={scrollRef}
 				contentContainerStyle={[
 					styles.content,
 					{ paddingBottom: contentBottomPadding },
 				]}
 				refreshControl={
 					<RefreshControl
-						refreshing={projectsQuery.isRefetching}
+						refreshing={isRefreshing}
 						onRefresh={() => {
 							if (!isCurrentFormerStudentLoaded) {
 								void loadCurrentFormerStudentContext();
@@ -196,26 +212,34 @@ export function DiscoverScreen() {
 				showsVerticalScrollIndicator={false}
 			>
 				<View style={styles.shell}>
-					<DiscoverSummarySection
-						areaName={
-							areaOfExpertise?.name ?? t("discover.summary.fallbackArea")
-						}
-						badgeLabel={t("discover.badge")}
-						countLabel={summaryCountLabel}
-						description={t("discover.summary.description")}
-					/>
-					{stateCopy ? (
-						<DiscoverStateCard
-							badgeLabel={t("discover.states.badge")}
-							description={stateCopy.description}
-							title={stateCopy.title}
-							tone={stateCopy.badgeTone}
-						/>
+					{isInitialLoading ? (
+						<DiscoverLoadingSkeleton />
 					) : (
-						<DiscoverResultsSection
-							projects={filteredProjects}
-							t={t}
-						/>
+						<>
+							<DiscoverSummarySection
+								areaName={
+									areaOfExpertise?.name ?? t("discover.summary.fallbackArea")
+								}
+								badgeLabel={t("discover.badge")}
+								countLabel={summaryCountLabel}
+								description={t("discover.summary.description")}
+								isLoading={isRefreshing && queryStateCopy === null}
+							/>
+							{stateCopy ? (
+								<DiscoverStateCard
+									badgeLabel={t("discover.states.badge")}
+									description={stateCopy.description}
+									title={stateCopy.title}
+									tone={stateCopy.badgeTone}
+								/>
+							) : (
+								<DiscoverResultsSection
+									isLoading={isRefreshing}
+									projects={filteredProjects}
+									t={t}
+								/>
+							)}
+						</>
 					)}
 				</View>
 			</ScrollView>

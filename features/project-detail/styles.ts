@@ -18,18 +18,6 @@ export function createStyles(theme: AppResolvedTheme) {
 			maxWidth: theme.layout.contentMaxWidth,
 			gap: theme.space[4],
 		},
-		stickyHeader: {
-			alignItems: "center",
-			backgroundColor: "transparent",
-			paddingBottom: theme.space[3],
-			paddingTop: theme.space[1],
-			width: "100%",
-		},
-		stickyHeaderShell: {
-			backgroundColor: "transparent",
-			maxWidth: theme.layout.contentMaxWidth,
-			width: "100%",
-		},
 		stateCard: {
 			borderRadius: theme.radius.xl,
 			borderWidth: 1,

@@ -7,7 +7,7 @@ export interface PugJwtPayload {
 	exp: number;
 }
 
-export interface PartnerTokenValidationResult {
+export interface StudentTokenValidationResult {
 	isValid: boolean;
 	payload?: PugJwtPayload;
 }
@@ -20,6 +20,14 @@ export interface LoginFormValues {
 export interface WireCredentialsFormValues {
 	password: string | null;
 	confirmPassword: string;
+}
+
+export interface WireCredentialsPasswordRequirements {
+	hasMinimumLength: boolean;
+	hasUppercaseLetter: boolean;
+	hasLowercaseLetter: boolean;
+	hasNumber: boolean;
+	hasSpecialSymbol: boolean;
 }
 
 export interface StoredSessionTokens {

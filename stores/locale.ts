@@ -34,12 +34,12 @@ export const useLocaleStore = create<LocaleStoreState>((set, get) => ({
 	setLanguage: async language => {
 		const nextLanguage = coerceLanguage(language);
 
-		await setStoredValue(LANG_STORAGE_KEY, nextLanguage);
 		applyClientLanguage(nextLanguage);
-
 		set({
 			language: nextLanguage,
 			isHydrated: true,
 		});
+
+		void setStoredValue(LANG_STORAGE_KEY, nextLanguage);
 	},
 }));

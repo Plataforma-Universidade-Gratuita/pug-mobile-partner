@@ -1,11 +1,7 @@
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 
-type SecureStoreModule = {
-	getItemAsync(key: string): Promise<string | null>;
-	setItemAsync(key: string, value: string): Promise<void>;
-	deleteItemAsync(key: string): Promise<void>;
-};
+import type { SecureStoreModule } from "@/types/client";
 
 const memoryStorage = new Map<string, string>();
 

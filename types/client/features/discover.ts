@@ -35,6 +35,7 @@ export interface DiscoverProjectCardProps {
 	statusTone: BadgeTone;
 	seatsLabel: string;
 	hoursLabel: string;
+	isLoading?: boolean;
 	onPress: () => void;
 }
 
@@ -43,6 +44,7 @@ export interface DiscoverSummarySectionProps {
 	badgeLabel: string;
 	countLabel: string | null;
 	description: string;
+	isLoading?: boolean;
 }
 
 export interface DiscoverStateCardProps {
@@ -54,5 +56,6 @@ export interface DiscoverStateCardProps {
 
 export interface DiscoverResultsSectionProps {
 	projects: ProjectResponse[];
+	isLoading?: boolean;
 	t: (...args: any[]) => any;
 }

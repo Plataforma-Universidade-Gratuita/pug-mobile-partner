@@ -10,15 +10,12 @@ import { AppBackButton, BrandScreenHeader } from "@/components";
 import { useCurrentFormerStudentStore, useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import type { ProjectDetailScreenProps } from "@/types/client";
+import { getTabScreenContentBottomPadding } from "@/utils";
 
 import { ProjectDetailScrollContent } from "./ProjectDetailScrollContent";
-import {
-	ApplyEnrollmentSheet,
-	ManageEnrollmentSheet,
-} from "./project-detail-sections";
+import { ApplyEnrollmentSheet } from "./project-detail-sections";
 import { createStyles } from "./styles";
 import {
-	canManageEnrollment,
 	countActiveParticipants,
 	getProjectCompletionRatio,
 	resolveOptionalNumberText,
@@ -38,7 +35,6 @@ export function ProjectDetailScreen({
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
 	const styles = useMemo(() => createStyles(theme), [theme]);
 	const [isApplySheetVisible, setIsApplySheetVisible] = useState(false);
-	const [isManageSheetVisible, setIsManageSheetVisible] = useState(false);
 	const params = useLocalSearchParams<{
 		id?: string | string[];
 		projectId?: string | string[];
@@ -91,8 +87,6 @@ export function ProjectDetailScreen({
 		api.project.enrollments.useMyEnrollmentDetailQuery(projectId);
 	const createEnrollmentMutation =
 		api.project.enrollments.useCreateEnrollmentMutation();
-	const updateMyEnrollmentMutation =
-		api.project.enrollments.useMyEnrollmentStatusMutation();
 
 	useEffect(() => {
 		if (!isCurrentFormerStudentLoaded && !isCurrentFormerStudentLoading) {
@@ -157,17 +151,12 @@ export function ProjectDetailScreen({
 			? t("projectDetail.values.loading")
 			: t("projectDetail.values.unavailable");
 	const myEnrollment = myEnrollmentQuery.data;
-	const myEnrollmentStatus = myEnrollment?.status.status;
-	const canManage = canManageEnrollment(myEnrollmentStatus);
 	const canApply =
 		projectId !== null &&
 		currentFormerStudent !== null &&
 		myEnrollment === null &&
 		!myEnrollmentQuery.isLoading;
-	const canCreateAttendance =
-		projectId !== null && myEnrollmentStatus === "APPROVED";
-	const isMutatingEnrollment =
-		createEnrollmentMutation.isPending || updateMyEnrollmentMutation.isPending;
+	const isMutatingEnrollment = createEnrollmentMutation.isPending;
 	const hasQueryError =
 		projectQuery.error != null ||
 		entityQuery.error != null ||
@@ -187,8 +176,10 @@ export function ProjectDetailScreen({
 		staffQuery.isRefetching ||
 		enrollmentsQuery.isRefetching ||
 		myEnrollmentQuery.isRefetching;
-	const contentBottomPadding =
-		theme.space[8] + theme.space[2] + Math.max(insets.bottom, theme.space[4]);
+	const contentBottomPadding = getTabScreenContentBottomPadding(
+		theme,
+		insets.bottom,
+	);
 
 	return (
 		<View style={[styles.screen, { backgroundColor: spec.screenBackground }]}>
@@ -201,8 +192,7 @@ export function ProjectDetailScreen({
 				addressValue={addressValue}
 				badgeLabel={t("projectDetail.states.badge")}
 				canApply={canApply}
-				canCreateAttendance={canCreateAttendance}
-				canManage={canManage}
+				canManage={false}
 				cityValue={cityValue}
 				cnpjValue={cnpjValue}
 				completedHoursValue={completedHoursValue}
@@ -222,9 +212,7 @@ export function ProjectDetailScreen({
 				onApply={() => {
 					setIsApplySheetVisible(true);
 				}}
-				onManage={() => {
-					setIsManageSheetVisible(true);
-				}}
+				onManage={() => undefined}
 				onRefresh={() => {
 					if (!isCurrentFormerStudentLoaded)
 						void loadCurrentFormerStudentContext();
@@ -267,24 +255,6 @@ export function ProjectDetailScreen({
 					}}
 					projectName={project.name}
 					visible={isApplySheetVisible}
-				/>
-			) : null}
-			{project ? (
-				<ManageEnrollmentSheet
-					isBusy={isMutatingEnrollment}
-					onDismiss={() => {
-						setIsManageSheetVisible(false);
-					}}
-					onExitProject={() => {
-						if (!projectId) return;
-						void updateMyEnrollmentMutation
-							.mutateAsync({ projectId, status: "EXITED" })
-							.then(() => {
-								setIsManageSheetVisible(false);
-							});
-					}}
-					projectName={project.name}
-					visible={isManageSheetVisible}
 				/>
 			) : null}
 		</View>

@@ -1,6 +1,23 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 import type { AppResolvedTheme } from "@/types/client";
+
+function getNativeShadowStyle(theme: AppResolvedTheme) {
+	if (Platform.OS === "web") {
+		return {};
+	}
+
+	return {
+		shadowColor: theme.colors.brand,
+		shadowOffset: {
+			width: 0,
+			height: 0,
+		},
+		shadowOpacity: theme.mode === "dark" ? 0.2 : 0.12,
+		shadowRadius: 24,
+		elevation: 8,
+	};
+}
 
 export function createStyles(theme: AppResolvedTheme) {
 	return StyleSheet.create({
@@ -50,14 +67,7 @@ export function createStyles(theme: AppResolvedTheme) {
 			justifyContent: "center",
 			backgroundColor: theme.colors.surface2,
 			overflow: "hidden",
-			shadowColor: theme.colors.brand,
-			shadowOffset: {
-				width: 0,
-				height: 0,
-			},
-			shadowOpacity: theme.mode === "dark" ? 0.2 : 0.12,
-			shadowRadius: 24,
-			elevation: 8,
+			...getNativeShadowStyle(theme),
 		},
 		bootIcon: {
 			width: 104,

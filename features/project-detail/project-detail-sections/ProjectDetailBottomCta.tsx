@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Button } from "@/components";
+import { useThemeStore } from "@/stores";
 import type { ProjectDetailBottomCtaProps } from "@/types/client";
 
 export function ProjectDetailBottomCta({
@@ -14,13 +15,14 @@ export function ProjectDetailBottomCta({
 	onManage,
 }: ProjectDetailBottomCtaProps) {
 	const { t } = useTranslation();
+	const theme = useThemeStore(state => state.theme);
 
 	if (!canApply && !canManage) {
 		return null;
 	}
 
 	return (
-		<View>
+		<View style={{ marginTop: theme.space[2] }}>
 			<Button
 				disabled={disabled}
 				onPress={canManage ? onManage : onApply}

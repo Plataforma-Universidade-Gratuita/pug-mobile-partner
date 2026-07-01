@@ -10,6 +10,7 @@ import type {
 	ActivitySegmentedControlProps,
 	ActivityTab,
 } from "@/types/client";
+import { withAlpha } from "@/utils";
 
 import { createStyles } from "../styles";
 
@@ -21,6 +22,11 @@ export function ActivitySegmentedControl({
 	const theme = useThemeStore(state => state.theme);
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
 	const styles = useMemo(() => createStyles(theme, spec), [spec, theme]);
+	const selectorBackground = withAlpha(
+		theme.colors.surface2,
+		theme.mode === "dark" ? 0.42 : 0.72,
+	);
+	const selectorOptionPressedBackground = withAlpha(theme.colors.brand, 0.14);
 
 	function renderOption(tab: ActivityTab, label: string) {
 		const isActive = activeTab === tab;
@@ -31,18 +37,22 @@ export function ActivitySegmentedControl({
 				onPress={() => {
 					onTabChange(tab);
 				}}
-				style={[
+				style={({ pressed }) => [
 					styles.segmentButton,
-					{ backgroundColor: isActive ? theme.colors.brand : "transparent" },
+					{
+						backgroundColor: isActive
+							? theme.colors.tabBgActive
+							: pressed
+								? selectorOptionPressedBackground
+								: "transparent",
+					},
 				]}
 			>
 				<Label
 					align="center"
 					role="helper"
-					style={[
-						styles.segmentLabel,
-						{ color: isActive ? theme.colors.chromeFg : theme.colors.muted },
-					]}
+					style={styles.segmentLabel}
+					tone={isActive ? "brand" : "muted"}
 				>
 					{label}
 				</Label>
@@ -55,7 +65,7 @@ export function ActivitySegmentedControl({
 			style={[
 				styles.segmented,
 				{
-					backgroundColor: theme.colors.surface2,
+					backgroundColor: selectorBackground,
 					borderColor: spec.panelBorder,
 				},
 			]}

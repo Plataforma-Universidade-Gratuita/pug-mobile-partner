@@ -27,7 +27,6 @@ export function createStyles(
 		},
 		projectHeader: {
 			alignItems: "flex-start",
-			flexDirection: "row",
 			gap: theme.space[3],
 		},
 		projectTitleCopy: {
@@ -55,5 +54,16 @@ export function createStyles(
 		sectionTitle: { color: theme.colors.text },
 		attendanceSection: { gap: theme.space[3] },
 		sectionHeader: { gap: theme.space[1] },
+		attendanceSkeletonCard: {
+			flexDirection: "row",
+			alignItems: "flex-start",
+			justifyContent: "space-between",
+			gap: theme.space[3],
+			paddingVertical: theme.space[2],
+		},
+		attendanceSkeletonCopy: {
+			flex: 1,
+			gap: theme.space[2],
+		},
 	});
 }

@@ -2,6 +2,7 @@ import type { TFunction } from "i18next";
 import { z } from "zod";
 
 import { createPasswordFieldSchema } from "@/schemas/client/shared";
+import { doesWireCredentialsPasswordMeetRequirements } from "@/utils";
 
 export function createWireCredentialsFormSchema(t: TFunction) {
 	return z
@@ -14,6 +15,17 @@ export function createWireCredentialsFormSchema(t: TFunction) {
 			confirmPassword: z.string().trim(),
 		})
 		.superRefine((value, ctx) => {
+			if (
+				value.password !== null &&
+				!doesWireCredentialsPasswordMeetRequirements(value.password)
+			) {
+				ctx.addIssue({
+					code: "custom",
+					path: ["password"],
+					message: t("auth.wireCredentials.errors.passwordInvalid"),
+				});
+			}
+
 			if (value.confirmPassword.trim().length === 0) {
 				ctx.addIssue({
 					code: "custom",

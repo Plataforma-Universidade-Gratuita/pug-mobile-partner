@@ -122,7 +122,6 @@ export function AttendanceQrModalScreen() {
 			<ModalScreenScaffold
 				title={t("activity.attendanceQr.title")}
 				subtitle={t("activity.attendanceQr.subtitle")}
-				subtitleNumberOfLines={1}
 				compactHeader
 				actionSlotMinWidth={0}
 				footer={

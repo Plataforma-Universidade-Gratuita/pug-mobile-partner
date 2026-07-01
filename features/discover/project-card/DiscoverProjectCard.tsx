@@ -1,10 +1,9 @@
 import React, { useMemo } from "react";
 
-import { ChevronRight } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
-import { Badge, Label } from "@/components/primitives";
+import { Badge, Label, LoadingBlock } from "@/components/primitives";
 import { useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import type { DiscoverProjectCardProps } from "@/types/client";
@@ -20,6 +19,7 @@ export function DiscoverProjectCard({
 	statusTone,
 	seatsLabel,
 	hoursLabel,
+	isLoading = false,
 	onPress,
 }: DiscoverProjectCardProps) {
 	const { t } = useTranslation();
@@ -27,16 +27,21 @@ export function DiscoverProjectCard({
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
 	const styles = useMemo(() => createStyles(theme, spec), [spec, theme]);
 	const isDark = theme.mode === "dark";
+	const pressedBackgroundColor = withAlpha(
+		theme.colors.text,
+		theme.mode === "dark" ? 0.08 : 0.04,
+	);
 
 	return (
 		<Pressable
 			accessibilityRole="button"
 			accessibilityLabel={t("discover.card.openProject", { name: title })}
+			disabled={isLoading}
 			onPress={onPress}
 		>
 			{({ pressed }) => {
 				const cardBackgroundColor = pressed
-					? theme.colors.surface2
+					? pressedBackgroundColor
 					: spec.panelBackground;
 				const metricBackgroundColor = pressed
 					? theme.colors.surface3
@@ -55,49 +60,75 @@ export function DiscoverProjectCard({
 							},
 						]}
 					>
-						<View style={styles.badgeRow}>
-							<View style={styles.badgeGroup}>
+						<View style={styles.titleRow}>
+							<View style={styles.titleCopy}>
+								{isLoading ? (
+									<>
+										<LoadingBlock
+											width="76%"
+											height={20}
+										/>
+										<LoadingBlock
+											width="52%"
+											height={14}
+										/>
+									</>
+								) : (
+									<>
+										<Label
+											role="field"
+											style={styles.title}
+										>
+											{title}
+										</Label>
+
+										<Label
+											role="helper"
+											numberOfLines={1}
+										>
+											{entityMeta}
+										</Label>
+									</>
+								)}
+							</View>
+
+							{isLoading ? (
+								<LoadingBlock
+									width={96}
+									height={28}
+									radius={theme.radius.circle}
+								/>
+							) : (
 								<Badge
 									tone={statusTone}
 									variant="primary"
+									style={styles.statusBadge}
 								>
 									{statusLabel}
 								</Badge>
-							</View>
+							)}
 						</View>
 
-						<View style={styles.titleRow}>
-							<View style={styles.titleCopy}>
-								<Label
-									role="field"
-									style={styles.title}
-								>
-									{title}
-								</Label>
-
-								<Label
-									role="helper"
-									numberOfLines={1}
-								>
-									{entityMeta}
-								</Label>
+						{isLoading ? (
+							<View style={styles.loadingDescription}>
+								<LoadingBlock
+									width="94%"
+									height={14}
+								/>
+								<LoadingBlock
+									width="72%"
+									height={14}
+								/>
 							</View>
-
-							<ChevronRight
-								color={theme.colors.muted}
-								size={18}
-								strokeWidth={2.25}
-								style={styles.chevron}
-							/>
-						</View>
-
-						<Label
-							role="helper"
-							numberOfLines={2}
-							style={styles.description}
-						>
-							{description}
-						</Label>
+						) : (
+							<Label
+								role="helper"
+								numberOfLines={2}
+								style={styles.description}
+							>
+								{description}
+							</Label>
+						)}
 
 						<View style={styles.metricsRow}>
 							<View
@@ -110,12 +141,19 @@ export function DiscoverProjectCard({
 								]}
 							>
 								<Label role="helper">{t("discover.card.hoursLabel")}</Label>
-								<Label
-									role="field"
-									style={styles.metricValue}
-								>
-									{hoursLabel}
-								</Label>
+								{isLoading ? (
+									<LoadingBlock
+										width="78%"
+										height={18}
+									/>
+								) : (
+									<Label
+										role="field"
+										style={styles.metricValue}
+									>
+										{hoursLabel}
+									</Label>
+								)}
 							</View>
 
 							<View
@@ -128,12 +166,19 @@ export function DiscoverProjectCard({
 								]}
 							>
 								<Label role="helper">{t("discover.card.seatsLabel")}</Label>
-								<Label
-									role="field"
-									style={styles.metricValue}
-								>
-									{seatsLabel}
-								</Label>
+								{isLoading ? (
+									<LoadingBlock
+										width="74%"
+										height={18}
+									/>
+								) : (
+									<Label
+										role="field"
+										style={styles.metricValue}
+									>
+										{seatsLabel}
+									</Label>
+								)}
 							</View>
 						</View>
 					</View>

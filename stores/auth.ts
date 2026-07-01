@@ -3,7 +3,7 @@ import { create } from "zustand";
 import * as api from "@/api";
 import type { TokenResponse } from "@/types/api";
 import type { AuthStoreState, StoredSessionTokens } from "@/types/client";
-import { validatePartnerToken } from "@/utils";
+import { validateFormerStudentToken } from "@/utils";
 
 import { useCurrentFormerStudentStore } from "./current-former-student";
 
@@ -14,7 +14,7 @@ function buildSessionState(
 	tokens: StoredSessionTokens,
 	requiresCredentialSetup: boolean,
 ) {
-	const validation = validatePartnerToken(tokens.accessToken);
+	const validation = validateFormerStudentToken(tokens.accessToken);
 
 	if (!validation.isValid || !validation.payload) {
 		return null;
@@ -94,7 +94,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 		}
 
 		const tokens = await api.identity.auth.refresh({ refreshToken });
-		const validation = validatePartnerToken(tokens.token);
+		const validation = validateFormerStudentToken(tokens.token);
 
 		if (!validation.isValid || !validation.payload) {
 			await clearApiSession();
@@ -181,7 +181,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 
 		try {
 			const tokens = await api.identity.auth.login(credentials);
-			const validation = validatePartnerToken(tokens.token);
+			const validation = validateFormerStudentToken(tokens.token);
 
 			if (!validation.isValid || !validation.payload) {
 				await clearApiSession();
@@ -261,7 +261,7 @@ configureApiSessionProvider({
 	persistSession: async tokens => {
 		await baseSessionProvider.persistSession(tokens);
 
-		const validation = validatePartnerToken(tokens.token);
+		const validation = validateFormerStudentToken(tokens.token);
 		if (!validation.isValid || !validation.payload) {
 			return;
 		}

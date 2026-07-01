@@ -18,6 +18,7 @@ import {
 
 export function DiscoverResultsSection({
 	projects,
+	isLoading = false,
 	t,
 }: DiscoverResultsSectionProps) {
 	const router = useRouter();
@@ -57,6 +58,7 @@ export function DiscoverResultsSection({
 							description={project.description}
 							entityMeta={project.entity.name}
 							hoursLabel={hoursLabel}
+							isLoading={isLoading}
 							onPress={() => {
 								router.push(`/discover/projects/${project.id}`);
 							}}

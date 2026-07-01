@@ -1,6 +1,26 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 import type { AppResolvedTheme } from "@/types/client";
+
+function getNativeShadowStyle(config: {
+	color: string;
+	opacity: number;
+	radius: number;
+	offsetY: number;
+	elevation: number;
+}) {
+	if (Platform.OS === "web") {
+		return {};
+	}
+
+	return {
+		shadowColor: config.color,
+		shadowOpacity: config.opacity,
+		shadowRadius: config.radius,
+		shadowOffset: { width: 0, height: config.offsetY },
+		elevation: config.elevation,
+	};
+}
 
 export function createStyles(theme: AppResolvedTheme) {
 	return StyleSheet.create({
@@ -40,20 +60,23 @@ export function createStyles(theme: AppResolvedTheme) {
 			position: "absolute",
 			right: 0,
 			...(theme.mode === "dark"
-				? {
-						shadowColor: theme.colors.overlay,
-						shadowOpacity: 0.26,
-						shadowRadius: 22,
-						shadowOffset: { width: 0, height: 12 },
+				? getNativeShadowStyle({
+						color: theme.colors.overlay,
+						opacity: 0.26,
+						radius: 22,
+						offsetY: 12,
 						elevation: 2,
-					}
-				: {
-						shadowColor: theme.colors.text,
-						shadowOpacity: 0.07,
-						shadowRadius: 20,
-						shadowOffset: { width: 0, height: 10 },
+					})
+				: getNativeShadowStyle({
+						color: theme.colors.text,
+						opacity: 0.07,
+						radius: 20,
+						offsetY: 10,
 						elevation: 1,
-					}),
+					})),
+		},
+		pointerEventsNone: {
+			pointerEvents: "none",
 		},
 	});
 }

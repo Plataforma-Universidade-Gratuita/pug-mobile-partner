@@ -1,13 +1,13 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import * as api from "@/api";
-import { AppBackButton } from "@/components";
 import { Button, ModalScreenScaffold } from "@/components/primitives";
 import { useLocalizedZodForm, useServerErrorState } from "@/hooks";
 import { createNewAttendanceFormSchema } from "@/schemas/client";
@@ -16,7 +16,8 @@ import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import type { ProjectResponse } from "@/types/api";
 import type { NewAttendanceFormValues } from "@/types/client";
 
-import { NewAttendanceContent } from "./NewAttendanceContent";
+import { NewAttendanceModalBody } from "./NewAttendanceModalBody";
+import { ATTENDANCE_ELIGIBLE_ENROLLMENT_STATUS } from "./constants";
 import { createStyles } from "./styles";
 import {
 	buildNewAttendanceProjectOptions,
@@ -54,6 +55,7 @@ export function NewAttendanceModalScreen() {
 	const loadCurrentFormerStudentContext = useCurrentFormerStudentStore(
 		state => state.loadCurrentFormerStudentContext,
 	);
+	const hasTriggeredEnrollmentRefreshRef = useRef(false);
 	const enrollmentsQuery = api.project.enrollments.useMyEnrollmentsQuery(
 		isCurrentFormerStudentLoaded,
 	);
@@ -68,6 +70,18 @@ export function NewAttendanceModalScreen() {
 		mode: "onSubmit",
 		reValidateMode: "onChange",
 	});
+	const selectedProjectId =
+		useWatch({
+			control: form.control,
+			name: "projectId",
+			defaultValue: "",
+		}) ?? "";
+	const durationValue =
+		useWatch({
+			control: form.control,
+			name: "duration",
+			defaultValue: "",
+		}) ?? "";
 
 	useEffect(() => {
 		if (!isCurrentFormerStudentLoaded && !isCurrentFormerStudentLoading) {
@@ -79,10 +93,22 @@ export function NewAttendanceModalScreen() {
 		loadCurrentFormerStudentContext,
 	]);
 
+	useEffect(() => {
+		if (
+			!isCurrentFormerStudentLoaded ||
+			hasTriggeredEnrollmentRefreshRef.current
+		) {
+			return;
+		}
+
+		hasTriggeredEnrollmentRefreshRef.current = true;
+		void enrollmentsQuery.refetch();
+	}, [enrollmentsQuery, isCurrentFormerStudentLoaded]);
+
 	const eligibleProjectIds = useMemo(() => {
 		const ids = new Set<string>();
 		for (const enrollment of enrollmentsQuery.data ?? []) {
-			if (enrollment.status.status === "APPROVED") {
+			if (enrollment.status.status === ATTENDANCE_ELIGIBLE_ENROLLMENT_STATUS) {
 				ids.add(enrollment.projectId);
 			}
 		}
@@ -122,31 +148,48 @@ export function NewAttendanceModalScreen() {
 		requestedProjectId !== null &&
 		initialProjectId !== null &&
 		requestedProjectId === initialProjectId;
-	const selectedProjectId = form.watch("projectId");
 	const isSubmitting = createAttendanceMutation.isPending;
 	const hasQueryError =
 		currentFormerStudentError != null ||
 		enrollmentsQuery.error != null ||
 		projectsQuery.error != null;
 	const isInitialLoading =
-		(!isCurrentFormerStudentLoaded && isCurrentFormerStudentLoading) ||
-		enrollmentsQuery.isLoading ||
-		(eligibleProjectIds.length > 0 && projectsQuery.isLoading);
+		!isCurrentFormerStudentLoaded && isCurrentFormerStudentLoading;
+	const isRefreshingOptions =
+		isCurrentFormerStudentLoaded &&
+		(enrollmentsQuery.isFetching ||
+			(eligibleProjectIds.length > 0 && projectsQuery.isFetching));
 	const hasEligibleProjects = projectOptions.length > 0;
+	const selectedProjectOption = projectOptions.find(
+		option => option.projectId === selectedProjectId,
+	);
+	const isSubmitDisabled =
+		isSubmitting ||
+		!selectedProjectId.trim() ||
+		!durationValue.trim() ||
+		selectedProjectOption == null;
 
 	useEffect(() => {
-		if (!initialProjectId) {
-			return;
-		}
-
-		if (form.getValues("projectId") !== initialProjectId) {
+		if (initialProjectId && selectedProjectId !== initialProjectId) {
 			form.setValue("projectId", initialProjectId, {
 				shouldDirty: false,
 				shouldTouch: false,
 				shouldValidate: true,
 			});
+			return;
 		}
-	}, [form, initialProjectId]);
+
+		if (
+			selectedProjectId &&
+			!projectOptions.some(option => option.projectId === selectedProjectId)
+		) {
+			form.setValue("projectId", initialProjectId ?? "", {
+				shouldDirty: false,
+				shouldTouch: false,
+				shouldValidate: true,
+			});
+		}
+	}, [form, initialProjectId, projectOptions, selectedProjectId]);
 
 	async function onSubmit(values: NewAttendanceFormValues) {
 		clearServerError();
@@ -156,10 +199,19 @@ export function NewAttendanceModalScreen() {
 			return;
 		}
 
+		const selectedOption = projectOptions.find(
+			option => option.projectId === values.projectId,
+		);
+
+		if (!selectedOption) {
+			setServerError(t("attendanceCreate.errors.projectRequired"));
+			return;
+		}
+
 		try {
 			const created = await createAttendanceMutation.mutateAsync({
 				body: {
-					projectId: values.projectId,
+					projectId: selectedOption.projectId,
 					formerStudentId: currentFormerStudent.accountId,
 					duration: parseAttendanceDuration(values.duration),
 				},
@@ -181,11 +233,13 @@ export function NewAttendanceModalScreen() {
 			<ModalScreenScaffold
 				title={t("attendanceCreate.title")}
 				subtitle={t("attendanceCreate.subtitle")}
-				leftAccessory={<AppBackButton />}
 				footer={
-					hasQueryError || isInitialLoading || !hasEligibleProjects ? null : (
+					hasQueryError ||
+					isInitialLoading ||
+					isRefreshingOptions ||
+					!hasEligibleProjects ? null : (
 						<Button
-							disabled={isSubmitting}
+							disabled={isSubmitDisabled}
 							loading={isSubmitting}
 							onPress={() => {
 								void form.handleSubmit(onSubmit)();
@@ -197,84 +251,44 @@ export function NewAttendanceModalScreen() {
 					)
 				}
 			>
-				<KeyboardAvoidingView
-					behavior={Platform.OS === "ios" ? "padding" : undefined}
-					style={styles.keyboard}
-				>
-					<ScrollView
-						contentContainerStyle={[
-							styles.content,
-							{ paddingBottom: Math.max(insets.bottom, theme.space[4]) },
-						]}
-						keyboardShouldPersistTaps="handled"
-						showsVerticalScrollIndicator={false}
-					>
-						<View style={styles.contentShell}>
-							<NewAttendanceContent
-								clearServerError={clearServerError}
-								durationErrorMessage={
-									form.formState.errors.duration?.message ?? null
-								}
-								durationHelperText={t("attendanceCreate.duration.helper")}
-								durationLabel={t("attendanceCreate.duration.label")}
-								durationPlaceholder={t("attendanceCreate.duration.placeholder")}
-								durationValue={form.watch("duration")}
-								formFooterError={serverError}
-								hasEligibleProjects={hasEligibleProjects}
-								hasQueryError={hasQueryError}
-								isInitialLoading={isInitialLoading}
-								isProjectLocked={isProjectLocked}
-								isSubmitting={isSubmitting}
-								onChangeDuration={value => {
-									form.setValue("duration", value, {
-										shouldDirty: true,
-										shouldTouch: true,
-										shouldValidate: true,
-									});
-								}}
-								onDurationBlur={() => {
-									form.trigger("duration");
-								}}
-								onSelectProject={projectId => {
-									form.setValue("projectId", projectId, {
-										shouldDirty: true,
-										shouldTouch: true,
-										shouldValidate: true,
-									});
-								}}
-								onSubmit={() => {
-									void form.handleSubmit(onSubmit)();
-								}}
-								projectErrorMessage={form.formState.errors.projectId?.message}
-								projectOptions={projectOptions}
-								selectedProjectId={selectedProjectId}
-								stateBadgeLabel={t("attendanceCreate.states.badge")}
-								states={{
-									emptyDescription: t(
-										"attendanceCreate.states.emptyDescription",
-									),
-									emptyTitle: t("attendanceCreate.states.emptyTitle"),
-									errorDescription: t(
-										"attendanceCreate.states.errorDescription",
-									),
-									errorTitle: t("attendanceCreate.states.errorTitle"),
-									loadingDescription: t(
-										"attendanceCreate.states.loadingDescription",
-									),
-									loadingTitle: t("attendanceCreate.states.loadingTitle"),
-								}}
-								styles={{
-									errorText: styles.errorText,
-									field: styles.field,
-									formCard: styles.formCard,
-									projectOptionList: styles.projectOptionList,
-									section: styles.section,
-									sectionHeader: styles.sectionHeader,
-								}}
-							/>
-						</View>
-					</ScrollView>
-				</KeyboardAvoidingView>
+				<NewAttendanceModalBody
+					clearServerError={clearServerError}
+					durationValue={durationValue}
+					form={form}
+					formFooterError={serverError}
+					hasEligibleProjects={hasEligibleProjects}
+					hasQueryError={hasQueryError}
+					insetBottom={Math.max(insets.bottom, theme.space[4])}
+					isInitialLoading={isInitialLoading}
+					isProjectLocked={isProjectLocked}
+					isRefreshingOptions={isRefreshingOptions}
+					isSubmitting={isSubmitting}
+					onSelectProject={projectId => {
+						form.setValue("projectId", projectId, {
+							shouldDirty: true,
+							shouldTouch: true,
+							shouldValidate: true,
+						});
+					}}
+					onSubmit={() => {
+						void form.handleSubmit(onSubmit)();
+					}}
+					projectOptions={projectOptions}
+					selectedProjectId={selectedProjectId}
+					styles={{
+						content: styles.content,
+						contentShell: styles.contentShell,
+						errorText: styles.errorText,
+						field: styles.field,
+						formCard: styles.formCard,
+						keyboard: styles.keyboard,
+						projectOptionCard: styles.projectOptionCard,
+						projectOptionList: styles.projectOptionList,
+						projectOptionListContainer: styles.projectOptionListContainer,
+						section: styles.section,
+						sectionHeader: styles.sectionHeader,
+					}}
+				/>
 			</ModalScreenScaffold>
 		</View>
 	);

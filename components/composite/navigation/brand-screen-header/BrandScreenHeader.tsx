@@ -44,10 +44,7 @@ export function BrandScreenHeader({
 				<View style={styles.brandHeaderSlot}>{rightAccessory ?? null}</View>
 			</View>
 
-			<View
-				pointerEvents="none"
-				style={styles.headerShadowEdge}
-			/>
+			<View style={[styles.headerShadowEdge, styles.pointerEventsNone]} />
 		</View>
 	);
 }

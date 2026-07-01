@@ -37,7 +37,7 @@
 		},
 		"attendance": {
 			"duration": "{{count}}h logged",
-			"waiting": "Waiting validation"
+			"waiting": "Waiting"
 		},
 		"attendanceDetail": {
 			"actions": {
@@ -59,8 +59,6 @@
 			"states": {
 				"errorDescription": "Refresh the screen or try again in a moment.",
 				"errorTitle": "Unable to load this attendance",
-				"loadingDescription": "Fetching the selected attendance and validation data.",
-				"loadingTitle": "Loading attendance details",
 				"missingDescription": "We could not find this attendance in your current activity list.",
 				"missingTitle": "Attendance unavailable"
 			},
@@ -94,7 +92,7 @@
 			"needsAttendance": "Needs attendance",
 			"pending": "Pending review",
 			"recent": "Recent records",
-			"waiting": "Waiting validation"
+			"waiting": "Waiting"
 		},
 		"enrollment": {},
 		"enrollmentDetail": {
@@ -109,8 +107,6 @@
 				"emptyAttendancesTitle": "No attendances yet",
 				"errorDescription": "Refresh the screen or try again in a moment.",
 				"errorTitle": "Unable to load this enrollment",
-				"loadingDescription": "Fetching the enrollment, project, and related attendance details.",
-				"loadingTitle": "Loading enrollment details",
 				"missingDescription": "We could not find one of your current enrollments for this project.",
 				"missingTitle": "Enrollment unavailable"
 			},
@@ -119,9 +115,11 @@
 		"filters": {
 			"apply": "Apply",
 			"clear": "Clear",
-			"searchHelper": "Matches the project name, entity, description, or status.",
-			"searchLabel": "Project or status",
-			"searchPlaceholder": "Search activity",
+			"searchHelperAttendances": "Matches the project name.",
+			"searchHelperEnrollments": "Matches the project name or entity name.",
+			"searchLabel": "Search",
+			"searchPlaceholderAttendances": "Search by project name",
+			"searchPlaceholderEnrollments": "Search by project or entity",
 			"statusesHelper": "Select one or more statuses from the current list.",
 			"statusesLabel": "Statuses",
 			"subtitle": "Apply local filters to narrow the current activity list.",
@@ -233,10 +231,19 @@
 				"confirmationRequired": "Confirm your password.",
 				"fallback": "Unable to finish setup right now. Try again in a moment.",
 				"missingEmail": "Unable to resolve the current account email.",
+				"passwordInvalid": "Password does not meet the required format.",
 				"passwordMinLength": "Password must have at least 8 characters.",
 				"passwordRequired": "Password is required."
 			},
 			"finishLater": "Finish later",
+			"passwordChecklist": {
+				"lowercase": "An uncapitalized letter",
+				"minLength": "At least 8 characters",
+				"number": "A number",
+				"specialSymbol": "A special symbol",
+				"uppercase": "A capitalized letter"
+			},
+			"passwordChecklistTitle": "Your password must include:",
 			"passwordLabel": "Password",
 			"passwordPlaceholder": "Create your password",
 			"submit": "Finish setup",
@@ -313,7 +320,7 @@
 			"enrollments": "Enrollments",
 			"enrollmentsHelper": "Check approvals and pending project requests.",
 			"latestQr": "Latest QR",
-			"latestQrHelper": "Open the most recent attendance validation code.",
+			"latestQrHelper": "Open the most recent QR code still waiting for validation.",
 			"openAttendance": "Open attendance",
 			"openEnrollment": "Open enrollment",
 			"profile": "Profile",
@@ -339,9 +346,7 @@
 			"badge": "Home state",
 			"emptyBadge": "No data",
 			"errorDescription": "Refresh the screen or try again in a moment.",
-			"errorTitle": "Unable to load your dashboard",
-			"loadingDescription": "Fetching your current student context, enrollments, and attendances.",
-			"loadingTitle": "Loading your home overview"
+			"errorTitle": "Unable to load your dashboard"
 		},
 		"summary": {
 			"activeEnrollments": "Active projects",
@@ -413,8 +418,7 @@
 			"apply": "Apply to project",
 			"close": "Close",
 			"exitProject": "Exit project",
-			"manage": "Manage enrollment",
-			"newAttendance": "Log attendance"
+			"manage": "Manage enrollment"
 		},
 		"apply": {
 			"applyHelper": "Create a new enrollment request for this project and wait for partner review.",

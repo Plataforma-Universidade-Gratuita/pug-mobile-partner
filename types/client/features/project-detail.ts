@@ -22,10 +22,6 @@ export interface ProjectDetailBottomCtaProps {
 	onManage: () => void;
 }
 
-export interface ProjectDetailAttendanceActionProps {
-	onPress: () => void;
-}
-
 export interface ProjectDetailStaffItem {
 	name: string;
 	email: string;
@@ -36,12 +32,16 @@ export interface ProjectOverviewCardProps {
 	description: string;
 	statusLabel: string;
 	statusTone: BadgeTone;
+	isLoading?: boolean;
 	activeParticipantsValue: string;
 	maxParticipantsValue: string;
 	completedHoursValue: string;
 	offeredHoursValue: string;
 	progressRatio: number;
 	progressValueLabel: string;
+	ctaLabel?: string | null | undefined;
+	ctaDisabled?: boolean;
+	onPressCta?: (() => void) | undefined;
 }
 
 export interface ProjectEntityCardProps {
@@ -49,6 +49,7 @@ export interface ProjectEntityCardProps {
 	addressValue: string | null;
 	cnpjValue: string;
 	cityValue: string;
+	isLoading?: boolean;
 	staffItems: ProjectDetailStaffItem[];
 	staffStateLabel: string;
 }
@@ -80,7 +81,6 @@ export interface ProjectDetailResolvedContentProps {
 	activeParticipantsValue: string;
 	addressValue: string | null;
 	canApply: boolean;
-	canCreateAttendance: boolean;
 	canManage: boolean;
 	cityValue: string;
 	cnpjValue: string;
@@ -89,6 +89,7 @@ export interface ProjectDetailResolvedContentProps {
 	completionRatio: number;
 	disabled: boolean;
 	entityName: string;
+	isLoading?: boolean;
 	maxParticipantsValue: string;
 	offeredHoursValue: string;
 	onApply: () => void;
@@ -114,8 +115,12 @@ export interface ProjectDetailContentProps {
 	completedHoursValue: string;
 	completionPercentLabel: string;
 	completionRatio: number;
+	ctaLabel?: string | null;
+	ctaDisabled?: boolean;
 	entityName: string;
+	isLoading?: boolean;
 	maxParticipantsValue: string;
+	onPressCta?: (() => void) | undefined;
 	offeredHoursValue: string;
 	project: {
 		description: string;
@@ -132,7 +137,6 @@ export interface ProjectDetailScrollContentProps {
 	addressValue: string | null;
 	badgeLabel: string;
 	canApply: boolean;
-	canCreateAttendance: boolean;
 	canManage: boolean;
 	cityValue: string;
 	cnpjValue: string;

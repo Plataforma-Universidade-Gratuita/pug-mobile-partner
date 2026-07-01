@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 
+import { useScrollToTop } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -12,9 +13,11 @@ import { useCurrentFormerStudentStore, useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import type { ProjectResponse } from "@/types/api";
 import type { HomeQuickActionItem } from "@/types/client";
+import { getTabScreenContentBottomPadding } from "@/utils";
 
 import {
 	HomeCounterpartSummaryCard,
+	HomeLoadingSkeleton,
 	HomeQuickActionsSection,
 	HomeRecentSection,
 	HomeStateCard,
@@ -29,16 +32,19 @@ import {
 	countHomePendingEnrollments,
 	findLatestAttendance,
 	findLatestEnrollment,
+	findLatestWaitingAttendance,
 	formatHomeProgressValue,
 } from "./utils";
 
 export function HomeScreen() {
 	const { t } = useTranslation();
 	const router = useRouter();
+	const scrollRef = useRef<ScrollView>(null);
 	const insets = useSafeAreaInsets();
 	const theme = useThemeStore(state => state.theme);
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
 	const styles = useMemo(() => createStyles(theme, spec), [spec, theme]);
+	useScrollToTop(scrollRef);
 	const currentUser = useCurrentFormerStudentStore(state => state.currentUser);
 	const currentFormerStudent = useCurrentFormerStudentStore(
 		state => state.currentFormerStudent,
@@ -110,6 +116,10 @@ export function HomeScreen() {
 		() => findLatestAttendance(attendancesQuery.data ?? []),
 		[attendancesQuery.data],
 	);
+	const latestWaitingAttendance = useMemo(
+		() => findLatestWaitingAttendance(attendancesQuery.data ?? []),
+		[attendancesQuery.data],
+	);
 	const activeEnrollments = countHomeActiveEnrollments(
 		enrollmentsQuery.data ?? [],
 	);
@@ -126,7 +136,7 @@ export function HomeScreen() {
 	const quickActionItems = useMemo<HomeQuickActionItem[]>(
 		() =>
 			buildQuickActionItems({
-				latestAttendanceId: latestAttendance?.id ?? null,
+				latestAttendanceId: latestWaitingAttendance?.id ?? null,
 				onAttendancesPress: () => {
 					router.push("/activity?tab=attendances");
 				},
@@ -137,8 +147,8 @@ export function HomeScreen() {
 					router.push("/activity?tab=enrollments");
 				},
 				onLatestQrPress: () => {
-					if (latestAttendance) {
-						router.push(`/attendance/qr/${latestAttendance.id}`);
+					if (latestWaitingAttendance) {
+						router.push(`/attendance/qr/${latestWaitingAttendance.id}`);
 					}
 				},
 				onProfilePress: () => {
@@ -146,7 +156,7 @@ export function HomeScreen() {
 				},
 				t,
 			}),
-		[latestAttendance, router, t],
+		[latestWaitingAttendance, router, t],
 	);
 	const hasQueryError =
 		currentFormerStudentError != null ||
@@ -162,15 +172,17 @@ export function HomeScreen() {
 		enrollmentsQuery.isRefetching ||
 		attendancesQuery.isRefetching ||
 		projectsQuery.isRefetching;
-	const contentBottomPadding =
-		theme.space[8] + theme.space[2] + Math.max(insets.bottom, theme.space[4]);
+	const contentBottomPadding = getTabScreenContentBottomPadding(
+		theme,
+		insets.bottom,
+	);
 	const enrollmentCard = buildHomeEnrollmentSnapshotCard({
 		latestAttendance,
 		latestEnrollment,
 		onOpenAttendance: () => undefined,
 		onOpenEnrollment: projectId => {
 			router.push({
-				pathname: "/activity/enrollments/[projectId]",
+				pathname: "/enrollments/[projectId]",
 				params: { projectId },
 			});
 		},
@@ -182,7 +194,7 @@ export function HomeScreen() {
 		latestEnrollment,
 		onOpenAttendance: attendanceId => {
 			router.push({
-				pathname: "/activity/attendances/[id]",
+				pathname: "/attendances/[id]",
 				params: { id: attendanceId },
 			});
 		},
@@ -195,6 +207,7 @@ export function HomeScreen() {
 		<View style={[styles.screen, { backgroundColor: spec.screenBackground }]}>
 			<BrandScreenHeader title={t("home.title")} />
 			<ScrollView
+				ref={scrollRef}
 				contentContainerStyle={[
 					styles.content,
 					{ paddingBottom: contentBottomPadding },
@@ -224,12 +237,7 @@ export function HomeScreen() {
 							tone="danger"
 						/>
 					) : isInitialLoading ? (
-						<HomeStateCard
-							badgeLabel={t("home.states.badge")}
-							description={t("home.states.loadingDescription")}
-							title={t("home.states.loadingTitle")}
-							tone="neutral"
-						/>
+						<HomeLoadingSkeleton />
 					) : (
 						<>
 							<HomeCounterpartSummaryCard
@@ -244,6 +252,7 @@ export function HomeScreen() {
 									currentFormerStudent?.period.dueDateFormatted ||
 									t("home.values.unavailable")
 								}
+								isLoading={isRefreshing}
 								name={currentUser?.name ?? t("home.values.unavailable")}
 								progressLabel={formatHomeProgressValue(
 									currentFormerStudent?.counterpartHours.progress,
@@ -268,6 +277,7 @@ export function HomeScreen() {
 								attendanceCard={attendanceCard}
 								enrollmentCard={enrollmentCard}
 								helper={t("home.sections.recentHelper")}
+								isLoading={isRefreshing}
 								title={t("home.sections.recent")}
 							/>
 						</>

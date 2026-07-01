@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AppBackButton, BrandScreenHeader } from "@/components";
 import { useCurrentFormerStudentStore, useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
+import { getTabScreenContentBottomPadding } from "@/utils";
 
 import {
 	AcademicCounterpartCard,
@@ -44,8 +45,10 @@ export function AcademicDetailsScreen() {
 		}
 	}, [isLoaded, isLoading, loadCurrentFormerStudentContext]);
 
-	const contentBottomPadding =
-		theme.space[8] + theme.space[2] + Math.max(insets.bottom, theme.space[4]);
+	const contentBottomPadding = getTabScreenContentBottomPadding(
+		theme,
+		insets.bottom,
+	);
 	const loadingLabel = t("profile.values.loading");
 	const unavailableLabel = t("profile.values.unavailable");
 	const hasError = currentFormerStudentError !== null;

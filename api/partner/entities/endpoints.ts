@@ -31,7 +31,7 @@ export async function get(id: string): Promise<EntityResponse> {
 export async function list(ids?: string[]): Promise<EntityResponse[]> {
 	return authFetch(
 		`${API_ROUTE_BASES.partner.entities}${qs({
-			ids: ids?.join(","),
+			ids,
 		})}`,
 		z.array(EntityResponseSchema),
 	);

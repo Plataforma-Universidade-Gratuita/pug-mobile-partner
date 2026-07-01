@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { ChevronRight } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 
-import { Badge, Label } from "@/components/primitives";
+import { Badge, Label, LoadingBlock } from "@/components/primitives";
 import { useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import type { ProfileInfoCardProps } from "@/types/client";
@@ -27,6 +27,7 @@ export function InfoCard({
 	areaOfExpertiseValue,
 	onOpenAcademicDetails,
 	errorMessage,
+	isLoading,
 }: ProfileInfoCardProps) {
 	const theme = useThemeStore(state => state.theme);
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
@@ -42,16 +43,31 @@ export function InfoCard({
 				<View style={styles.row}>
 					<View style={styles.rowCopy}>
 						<Label role="caption">{emailLabel}</Label>
-						<Label style={styles.rowValue}>{emailValue}</Label>
+						{isLoading ? (
+							<LoadingBlock
+								width="68%"
+								height={18}
+							/>
+						) : (
+							<Label style={styles.rowValue}>{emailValue}</Label>
+						)}
 					</View>
 
 					<View style={styles.rowAccessory}>
-						<Badge
-							tone={activeTone}
-							variant="secondary"
-						>
-							{activeStatusLabel}
-						</Badge>
+						{isLoading ? (
+							<LoadingBlock
+								width={84}
+								height={28}
+								radius={theme.radius.circle}
+							/>
+						) : (
+							<Badge
+								tone={activeTone}
+								variant="secondary"
+							>
+								{activeStatusLabel}
+							</Badge>
+						)}
 					</View>
 				</View>
 
@@ -61,16 +77,31 @@ export function InfoCard({
 				<View style={styles.row}>
 					<View style={styles.rowCopy}>
 						<Label role="caption">{academicRegistrationLabel}</Label>
-						<Label style={styles.rowValue}>{academicRegistrationValue}</Label>
+						{isLoading ? (
+							<LoadingBlock
+								width="46%"
+								height={18}
+							/>
+						) : (
+							<Label style={styles.rowValue}>{academicRegistrationValue}</Label>
+						)}
 					</View>
 
 					<View style={styles.rowAccessory}>
-						<Badge
-							tone="neutral"
-							variant="primary"
-						>
-							{campusValue}
-						</Badge>
+						{isLoading ? (
+							<LoadingBlock
+								width={104}
+								height={28}
+								radius={theme.radius.circle}
+							/>
+						) : (
+							<Badge
+								tone="neutral"
+								variant="primary"
+							>
+								{campusValue}
+							</Badge>
+						)}
 					</View>
 				</View>
 
@@ -80,7 +111,14 @@ export function InfoCard({
 				<View style={styles.row}>
 					<View style={styles.rowCopy}>
 						<Label role="caption">{courseLabel}</Label>
-						<Label style={styles.rowValue}>{courseValue}</Label>
+						{isLoading ? (
+							<LoadingBlock
+								width="62%"
+								height={18}
+							/>
+						) : (
+							<Label style={styles.rowValue}>{courseValue}</Label>
+						)}
 					</View>
 				</View>
 
@@ -90,7 +128,14 @@ export function InfoCard({
 				<View style={styles.row}>
 					<View style={styles.rowCopy}>
 						<Label role="caption">{areaOfExpertiseLabel}</Label>
-						<Label style={styles.rowValue}>{areaOfExpertiseValue}</Label>
+						{isLoading ? (
+							<LoadingBlock
+								width="54%"
+								height={18}
+							/>
+						) : (
+							<Label style={styles.rowValue}>{areaOfExpertiseValue}</Label>
+						)}
 					</View>
 				</View>
 			</View>

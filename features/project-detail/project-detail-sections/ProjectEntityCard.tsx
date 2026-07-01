@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Label } from "@/components/primitives";
+import { Label, LoadingBlock } from "@/components/primitives";
 import { useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import type { ProjectEntityCardProps } from "@/types/client";
@@ -16,6 +16,7 @@ export function ProjectEntityCard({
 	addressValue,
 	cnpjValue,
 	cityValue,
+	isLoading = false,
 	staffItems,
 	staffStateLabel,
 }: ProjectEntityCardProps) {
@@ -26,47 +27,62 @@ export function ProjectEntityCard({
 
 	return (
 		<View style={styles.entitySection}>
-			<Label
-				role="field"
-				style={styles.sectionTitle}
-			>
-				{t("projectDetail.sections.entity")}
-			</Label>
+			{isLoading ? (
+				<LoadingBlock
+					width={136}
+					height={18}
+				/>
+			) : (
+				<Label
+					role="field"
+					style={styles.sectionTitle}
+				>
+					{t("projectDetail.sections.entity")}
+				</Label>
+			)}
 
 			<View style={styles.entityHeaderBlock}>
-				<Label
-					role="title"
-					style={styles.entityTitle}
-				>
-					{entityName}
-				</Label>
+				{isLoading ? (
+					<LoadingBlock
+						width="54%"
+						height={24}
+					/>
+				) : (
+					<Label
+						role="title"
+						style={styles.entityTitle}
+					>
+						{entityName}
+					</Label>
+				)}
 				<View style={styles.entityMetaGrid}>
-					<View
-						style={[
-							styles.entityMetaCard,
-							{
-								backgroundColor: theme.colors.surface2,
-								borderColor: spec.panelBorder,
-							},
-						]}
-					>
-						<Label role="helper">{t("projectDetail.entity.city")}</Label>
-						<Label role="field">{cityValue}</Label>
-					</View>
-					<View
-						style={[
-							styles.entityMetaCard,
-							{
-								backgroundColor: theme.colors.surface2,
-								borderColor: spec.panelBorder,
-							},
-						]}
-					>
-						<Label role="helper">{t("projectDetail.entity.cnpj")}</Label>
-						<Label role="field">{cnpjValue}</Label>
-					</View>
+					{[
+						[t("projectDetail.entity.city"), cityValue],
+						[t("projectDetail.entity.cnpj"), cnpjValue],
+					].map(([label, value]) => (
+						<View
+							key={String(label)}
+							style={[
+								styles.entityMetaCard,
+								{
+									backgroundColor: theme.colors.surface2,
+									borderColor: spec.panelBorder,
+								},
+							]}
+						>
+							<Label role="helper">{label}</Label>
+							{isLoading ? (
+								<LoadingBlock
+									width="78%"
+									height={18}
+								/>
+							) : (
+								<Label role="field">{value}</Label>
+							)}
+						</View>
+					))}
 				</View>
-				{addressValue ? (
+				{addressValue || isLoading ? (
 					<View
 						style={[
 							styles.entityAddressCard,
@@ -77,19 +93,64 @@ export function ProjectEntityCard({
 						]}
 					>
 						<Label role="helper">{t("projectDetail.entity.address")}</Label>
-						<Label role="field">{addressValue}</Label>
+						{isLoading ? (
+							<LoadingBlock
+								width="94%"
+								height={18}
+							/>
+						) : (
+							<Label role="field">{addressValue}</Label>
+						)}
 					</View>
 				) : null}
 			</View>
 
 			<View style={styles.staffBlock}>
-				<Label
-					role="field"
-					style={styles.staffTitle}
-				>
-					{t("projectDetail.entity.staff")}
-				</Label>
-				{staffItems.length > 0 ? (
+				{isLoading ? (
+					<LoadingBlock
+						width={124}
+						height={18}
+					/>
+				) : (
+					<Label
+						role="field"
+						style={styles.staffTitle}
+					>
+						{t("projectDetail.entity.staff")}
+					</Label>
+				)}
+				{isLoading ? (
+					<View style={styles.staffList}>
+						{["one", "two"].map(key => (
+							<View
+								key={key}
+								style={[
+									styles.staffItem,
+									{
+										backgroundColor: theme.colors.surface2,
+										borderColor: spec.panelBorder,
+									},
+								]}
+							>
+								<LoadingBlock
+									width={44}
+									height={44}
+									radius={theme.radius.circle}
+								/>
+								<View style={styles.staffCopy}>
+									<LoadingBlock
+										width="52%"
+										height={18}
+									/>
+									<LoadingBlock
+										width="76%"
+										height={14}
+									/>
+								</View>
+							</View>
+						))}
+					</View>
+				) : staffItems.length > 0 ? (
 					<View style={styles.staffList}>
 						{staffItems.map(staffItem => (
 							<View

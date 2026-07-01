@@ -16,6 +16,7 @@ export interface HomeCounterpartSummaryCardProps {
 	badgeLabel: string;
 	courseLabel: string;
 	dueDateLabel: string;
+	isLoading?: boolean;
 	name: string;
 	progressLabel: string;
 	progressRatio: number;
@@ -40,6 +41,7 @@ export interface HomeActivitySnapshotCardProps {
 	ctaLabel: string | null;
 	description: string;
 	eyebrow: string;
+	isLoading?: boolean;
 	onPress?: (() => void) | undefined;
 	title: string;
 }
@@ -65,6 +67,7 @@ export interface HomeRecentSectionProps {
 	attendanceCard: HomeActivitySnapshotCardProps;
 	enrollmentCard: HomeActivitySnapshotCardProps;
 	helper: string;
+	isLoading?: boolean;
 	title: string;
 }
 

@@ -1,13 +1,14 @@
 {
-	"name": "pug-mobile-partner",
+	"name": "pug-mobile-student",
+	"version": "1.0.0",
+	"private": true,
 	"main": "expo-router/entry",
-	"version": "0.1.0",
 	"scripts": {
 		"dev": "cross-env NODE_OPTIONS=--use-system-ca expo start --offline --port 3001",
 		"dev:mock": "cross-env NODE_OPTIONS=--use-system-ca node ./scripts/with-env.mjs mock-api.env expo start --offline --port 3001",
 		"dev:tunnel": "cross-env NODE_OPTIONS=--use-system-ca expo start --tunnel --port 3001",
+		"dev:tunnel:qa": "cross-env NODE_OPTIONS=--use-system-ca expo start --tunnel --port 3001",
 		"dev:mock:tunnel": "cross-env NODE_OPTIONS=--use-system-ca node ./scripts/with-env.mjs mock-api.env expo start --tunnel --port 3001",
-		"dev:mock-internal:tunnel": "cross-env NODE_OPTIONS=--use-system-ca node ./scripts/with-env.mjs mock-internal.env expo start --tunnel --port 3001",
 		"android": "cross-env NODE_OPTIONS=--use-system-ca expo start --offline --port 3001 --android",
 		"android:mock": "cross-env NODE_OPTIONS=--use-system-ca node ./scripts/with-env.mjs mock-api.env expo start --offline --port 3001 --android",
 		"ios": "cross-env NODE_OPTIONS=--use-system-ca expo start --offline --port 3001 --ios",
@@ -18,7 +19,9 @@
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"format": "npm run trans && prettier --write . && npm run lint:fix && tsc --noEmit",
-		"format:check": "prettier --check . && npm run lint"
+		"format:check": "prettier --check . && npm run lint",
+		"build:web": "cross-env NODE_OPTIONS=--use-system-ca expo export -p web",
+		"verify": "npm run format:check && tsc --noEmit && npm run trans && npm run build:web"
 	},
 	"dependencies": {
 		"@expo/config-plugins": "54.0.4",
@@ -78,6 +81,5 @@
 		"prettier-plugin-properties": "0.3.1",
 		"prettier-plugin-tailwindcss": "0.8.0",
 		"typescript": "5.9.3"
-	},
-	"private": true
+	}
 }

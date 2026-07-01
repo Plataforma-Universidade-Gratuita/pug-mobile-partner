@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 
 import { Image, View } from "react-native";
 
-import { Badge, Label } from "@/components/primitives";
+import { Badge, Label, LoadingBlock } from "@/components/primitives";
 import { useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import type { ProfileStudentCardProps } from "@/types/client";
@@ -17,6 +17,7 @@ export function StudentCard({
 	name,
 	cpfLabel,
 	cpfValue,
+	isLoading,
 }: ProfileStudentCardProps) {
 	const theme = useThemeStore(state => state.theme);
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
@@ -34,20 +35,35 @@ export function StudentCard({
 		<View style={styles.identitySection}>
 			<View style={styles.identityTop}>
 				<View style={styles.identityCopy}>
-					<Badge
-						style={styles.identityBadge}
-						tone="brand"
-						variant="primary"
-					>
-						{badgeLabel}
-					</Badge>
+					{isLoading ? (
+						<LoadingBlock
+							width={112}
+							height={28}
+							radius={theme.radius.circle}
+						/>
+					) : (
+						<Badge
+							style={styles.identityBadge}
+							tone="brand"
+							variant="primary"
+						>
+							{badgeLabel}
+						</Badge>
+					)}
 
-					<Label
-						role="title"
-						style={styles.identityName}
-					>
-						{name}
-					</Label>
+					{isLoading ? (
+						<LoadingBlock
+							width="72%"
+							height={32}
+						/>
+					) : (
+						<Label
+							role="title"
+							style={styles.identityName}
+						>
+							{name}
+						</Label>
+					)}
 				</View>
 
 				<View
@@ -66,7 +82,14 @@ export function StudentCard({
 				</View>
 			</View>
 
-			<Label role="helper">{`${cpfLabel} - ${cpfValue}`}</Label>
+			{isLoading ? (
+				<LoadingBlock
+					width="54%"
+					height={14}
+				/>
+			) : (
+				<Label role="helper">{`${cpfLabel} - ${cpfValue}`}</Label>
+			)}
 		</View>
 	);
 }

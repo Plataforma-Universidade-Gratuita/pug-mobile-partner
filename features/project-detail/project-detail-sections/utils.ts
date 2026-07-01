@@ -22,10 +22,10 @@ export function createExitProjectOptionStyle(
 	return {
 		backgroundColor: pressed
 			? withAlpha(theme.colors.danger, theme.mode === "dark" ? 0.24 : 0.18)
-			: withAlpha(theme.colors.danger, theme.mode === "dark" ? 0.16 : 0.12),
+			: withAlpha(theme.colors.danger, theme.mode === "dark" ? 0.16 : 0.1),
 		borderColor: withAlpha(
 			theme.colors.danger,
-			theme.mode === "dark" ? 0.28 : 0.2,
+			theme.mode === "dark" ? 0.28 : 0.18,
 		),
 		opacity: isBusy ? 0.6 : 1,
 	};
@@ -39,8 +39,10 @@ export function createCloseSheetOptionStyle(
 ) {
 	return {
 		backgroundColor: pressed
-			? withAlpha(theme.colors.text, theme.mode === "dark" ? 0.08 : 0.04)
-			: theme.colors.surface3,
+			? withAlpha(theme.colors.text, theme.mode === "dark" ? 0.08 : 0.06)
+			: theme.mode === "dark"
+				? theme.colors.surface3
+				: withAlpha(theme.colors.text, 0.03),
 		borderColor: spec.panelBorder,
 		opacity: isBusy ? 0.6 : 1,
 	};
@@ -53,11 +55,11 @@ export function createApplyEnrollmentOptionStyle(
 ) {
 	return {
 		backgroundColor: pressed
-			? withAlpha(theme.colors.brand, theme.mode === "dark" ? 0.18 : 0.12)
-			: withAlpha(theme.colors.brand, theme.mode === "dark" ? 0.1 : 0.06),
+			? withAlpha(theme.colors.brand, theme.mode === "dark" ? 0.18 : 0.18)
+			: withAlpha(theme.colors.brand, theme.mode === "dark" ? 0.1 : 0.1),
 		borderColor: withAlpha(
 			theme.colors.brand,
-			theme.mode === "dark" ? 0.5 : 0.36,
+			theme.mode === "dark" ? 0.5 : 0.22,
 		),
 		opacity: isBusy ? 0.72 : 1,
 	};

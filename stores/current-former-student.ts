@@ -15,17 +15,9 @@ function resolveCurrentFormerStudentContextError(error: unknown) {
 }
 
 export const useCurrentFormerStudentStore =
-	create<CurrentFormerStudentStoreState>((set, get) => ({
-		currentAccount: null,
-		currentUser: null,
-		currentFormerStudent: null,
-		currentCourse: null,
-		isLoading: false,
-		isLoaded: false,
-		error: null,
-
-		loadCurrentFormerStudentContext: async () => {
-			if (get().isLoaded && !get().error) {
+	create<CurrentFormerStudentStoreState>((set, get) => {
+		async function loadCurrentFormerStudentContext(force: boolean) {
+			if (!force && get().isLoaded && !get().error) {
 				return;
 			}
 
@@ -89,20 +81,35 @@ export const useCurrentFormerStudentStore =
 
 			currentFormerStudentContextPromise = loadPromise;
 			return loadPromise;
-		},
+		}
 
-		clearCurrentFormerStudentContext: () => {
-			currentFormerStudentContextGeneration += 1;
-			currentFormerStudentContextPromise = null;
+		return {
+			currentAccount: null,
+			currentUser: null,
+			currentFormerStudent: null,
+			currentCourse: null,
+			isLoading: false,
+			isLoaded: false,
+			error: null,
+			loadCurrentFormerStudentContext: async () => {
+				return loadCurrentFormerStudentContext(false);
+			},
+			refreshCurrentFormerStudentContext: async () => {
+				return loadCurrentFormerStudentContext(true);
+			},
+			clearCurrentFormerStudentContext: () => {
+				currentFormerStudentContextGeneration += 1;
+				currentFormerStudentContextPromise = null;
 
-			set({
-				currentAccount: null,
-				currentUser: null,
-				currentFormerStudent: null,
-				currentCourse: null,
-				isLoading: false,
-				isLoaded: false,
-				error: null,
-			});
-		},
-	}));
+				set({
+					currentAccount: null,
+					currentUser: null,
+					currentFormerStudent: null,
+					currentCourse: null,
+					isLoading: false,
+					isLoaded: false,
+					error: null,
+				});
+			},
+		};
+	});

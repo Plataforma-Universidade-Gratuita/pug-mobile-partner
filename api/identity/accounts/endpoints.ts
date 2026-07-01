@@ -32,7 +32,7 @@ export async function getMe(): Promise<AccountResponse> {
 export async function list(ids?: string[]): Promise<AccountResponse[]> {
 	return authFetch(
 		`${API_ROUTE_BASES.identity.accounts}${qs({
-			ids: ids?.join(","),
+			ids,
 		})}`,
 		z.array(AccountResponseSchema),
 	);

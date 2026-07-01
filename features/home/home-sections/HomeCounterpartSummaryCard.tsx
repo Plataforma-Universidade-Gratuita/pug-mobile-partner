@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View, type DimensionValue } from "react-native";
 
-import { Badge, Label } from "@/components/primitives";
+import { Badge, Label, LoadingBlock } from "@/components/primitives";
 import { useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import type { HomeCounterpartSummaryCardProps } from "@/types/client";
@@ -14,6 +14,7 @@ export function HomeCounterpartSummaryCard({
 	badgeLabel,
 	courseLabel,
 	dueDateLabel,
+	isLoading = false,
 	name,
 	progressLabel,
 	progressRatio,
@@ -30,33 +31,71 @@ export function HomeCounterpartSummaryCard({
 	return (
 		<View style={styles.summarySection}>
 			<View style={styles.header}>
-				<Badge
-					style={styles.badge}
-					tone="brand"
-					variant="primary"
-				>
-					{badgeLabel}
-				</Badge>
+				{isLoading ? (
+					<LoadingBlock
+						width={112}
+						height={28}
+						radius={theme.radius.circle}
+					/>
+				) : (
+					<Badge
+						style={styles.badge}
+						tone="brand"
+						variant="primary"
+					>
+						{badgeLabel}
+					</Badge>
+				)}
 
 				<View style={styles.headerCopy}>
-					<Label
-						role="title"
-						style={styles.title}
-					>
-						{name}
-					</Label>
-					<Label role="helper">{courseLabel}</Label>
+					{isLoading ? (
+						<>
+							<LoadingBlock
+								width="58%"
+								height={28}
+							/>
+							<LoadingBlock
+								width="74%"
+								height={16}
+							/>
+						</>
+					) : (
+						<>
+							<Label
+								role="title"
+								style={styles.title}
+							>
+								{name}
+							</Label>
+							<Label role="helper">{courseLabel}</Label>
+						</>
+					)}
 				</View>
 			</View>
 
 			<View style={styles.progressBlock}>
 				<View style={styles.progressHeader}>
 					<Label role="helper">{t("home.summary.progress")}</Label>
-					<Label role="helper">{progressLabel}</Label>
+					{isLoading ? (
+						<LoadingBlock
+							width={64}
+							height={14}
+						/>
+					) : (
+						<Label role="helper">{progressLabel}</Label>
+					)}
 				</View>
 
 				<View style={styles.progressTrack}>
-					<View style={[styles.progressFill, { width: progressWidth }]} />
+					{isLoading ? (
+						<LoadingBlock
+							width="100%"
+							height="100%"
+							radius={theme.radius.circle}
+						/>
+					) : (
+						<View style={[styles.progressFill, { width: progressWidth }]} />
+					)}
 				</View>
 			</View>
 
@@ -73,12 +112,19 @@ export function HomeCounterpartSummaryCard({
 						]}
 					>
 						<Label role="helper">{metric.label}</Label>
-						<Label
-							role="field"
-							style={styles.metricValue}
-						>
-							{metric.value}
-						</Label>
+						{isLoading ? (
+							<LoadingBlock
+								width="42%"
+								height={22}
+							/>
+						) : (
+							<Label
+								role="field"
+								style={styles.metricValue}
+							>
+								{metric.value}
+							</Label>
+						)}
 					</View>
 				))}
 			</View>
@@ -86,11 +132,25 @@ export function HomeCounterpartSummaryCard({
 			<View style={styles.metaRow}>
 				<View style={styles.metaItem}>
 					<Label role="helper">{t("home.summary.dueDate")}</Label>
-					<Label role="field">{dueDateLabel}</Label>
+					{isLoading ? (
+						<LoadingBlock
+							width="72%"
+							height={18}
+						/>
+					) : (
+						<Label role="field">{dueDateLabel}</Label>
+					)}
 				</View>
 				<View style={styles.metaItem}>
 					<Label role="helper">{t("home.summary.remainingDays")}</Label>
-					<Label role="field">{remainingDaysLabel}</Label>
+					{isLoading ? (
+						<LoadingBlock
+							width="68%"
+							height={18}
+						/>
+					) : (
+						<Label role="field">{remainingDaysLabel}</Label>
+					)}
 				</View>
 			</View>
 		</View>

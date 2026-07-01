@@ -20,7 +20,7 @@ export function createStyles(
 			paddingBottom: theme.space[4],
 		},
 		contentShell: {
-			gap: theme.space[4],
+			gap: theme.space[5],
 		},
 		stateCard: {
 			borderRadius: theme.radius.xl,
@@ -38,13 +38,7 @@ export function createStyles(
 			gap: theme.space[1],
 		},
 		formCard: {
-			borderRadius: theme.radius.xl,
-			borderWidth: 1,
-			paddingHorizontal: theme.space[4],
-			paddingVertical: theme.space[4],
-			gap: theme.space[4],
-			backgroundColor: spec.panelBackground,
-			borderColor: spec.panelBorder,
+			gap: theme.space[5],
 		},
 		section: {
 			gap: theme.space[2],
@@ -54,6 +48,9 @@ export function createStyles(
 		},
 		projectOptionList: {
 			gap: theme.space[2],
+		},
+		projectOptionListContainer: {
+			maxHeight: 320,
 		},
 		projectOptionCard: {
 			borderRadius: theme.radius.lg,

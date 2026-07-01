@@ -1,12 +1,10 @@
 import React from "react";
 
-import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 
 import type { ProjectDetailResolvedContentProps } from "@/types/client";
 
 import {
-	ProjectDetailAttendanceAction,
 	ProjectDetailStateCard,
 	ProjectDetailContent,
 } from "./project-detail-sections";
@@ -15,21 +13,25 @@ import { resolveProjectDetailStatusTone } from "./utils";
 export function ProjectDetailResolvedContent({
 	activeParticipantsValue,
 	addressValue,
-	canCreateAttendance,
+	canApply,
+	canManage,
 	cityValue,
 	cnpjValue,
 	completedHoursValue,
 	completionPercentLabel,
 	completionRatio,
+	disabled,
 	entityName,
+	isLoading = false,
 	maxParticipantsValue,
 	offeredHoursValue,
+	onApply,
+	onManage,
 	project,
 	staffItems,
 	staffStateLabel,
 }: ProjectDetailResolvedContentProps) {
 	const { t } = useTranslation();
-	const router = useRouter();
 
 	if (!project) {
 		return (
@@ -43,33 +45,31 @@ export function ProjectDetailResolvedContent({
 	}
 
 	return (
-		<>
-			<ProjectDetailContent
-				activeParticipantsValue={activeParticipantsValue}
-				addressValue={addressValue}
-				cityValue={cityValue}
-				cnpjValue={cnpjValue}
-				completedHoursValue={completedHoursValue}
-				completionPercentLabel={completionPercentLabel}
-				completionRatio={completionRatio}
-				entityName={entityName}
-				maxParticipantsValue={maxParticipantsValue}
-				offeredHoursValue={offeredHoursValue}
-				project={project}
-				staffItems={staffItems}
-				staffStateLabel={staffStateLabel}
-				statusTone={resolveProjectDetailStatusTone(project.status.status)}
-			/>
-			{canCreateAttendance ? (
-				<ProjectDetailAttendanceAction
-					onPress={() => {
-						router.push({
-							pathname: "/attendance/new",
-							params: { projectId: project.id },
-						});
-					}}
-				/>
-			) : null}
-		</>
+		<ProjectDetailContent
+			activeParticipantsValue={activeParticipantsValue}
+			addressValue={addressValue}
+			cityValue={cityValue}
+			cnpjValue={cnpjValue}
+			completedHoursValue={completedHoursValue}
+			completionPercentLabel={completionPercentLabel}
+			completionRatio={completionRatio}
+			ctaDisabled={disabled}
+			ctaLabel={
+				canManage
+					? t("projectDetail.actions.manage")
+					: canApply
+						? t("projectDetail.actions.apply")
+						: null
+			}
+			entityName={entityName}
+			isLoading={isLoading}
+			maxParticipantsValue={maxParticipantsValue}
+			onPressCta={canManage ? onManage : canApply ? onApply : undefined}
+			offeredHoursValue={offeredHoursValue}
+			project={project}
+			staffItems={staffItems}
+			staffStateLabel={staffStateLabel}
+			statusTone={resolveProjectDetailStatusTone(project.status.status)}
+		/>
 	);
 }

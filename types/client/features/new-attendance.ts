@@ -1,3 +1,4 @@
+import type { UseFormReturn } from "react-hook-form";
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 import type { EnrollmentResponse, ProjectResponse } from "@/types/api";
@@ -33,7 +34,9 @@ export interface NewAttendanceProjectOptionCardProps {
 
 export interface NewAttendanceProjectSectionStyles {
 	errorText: StyleProp<TextStyle>;
+	projectOptionCard: StyleProp<ViewStyle>;
 	projectOptionList: StyleProp<ViewStyle>;
+	projectOptionListContainer: StyleProp<ViewStyle>;
 	section: StyleProp<ViewStyle>;
 	sectionHeader: StyleProp<ViewStyle>;
 }
@@ -42,6 +45,7 @@ export interface NewAttendanceProjectSectionProps {
 	clearServerError: () => void;
 	errorMessage: string | undefined;
 	isProjectLocked: boolean;
+	isRefreshingOptions: boolean;
 	isSubmitting: boolean;
 	onSelectProject: (projectId: string) => void;
 	options: NewAttendanceProjectOption[];
@@ -53,7 +57,9 @@ export interface NewAttendanceContentStyles {
 	errorText: StyleProp<TextStyle>;
 	field: StyleProp<ViewStyle>;
 	formCard: StyleProp<ViewStyle>;
+	projectOptionCard: StyleProp<ViewStyle>;
 	projectOptionList: StyleProp<ViewStyle>;
+	projectOptionListContainer: StyleProp<ViewStyle>;
 	section: StyleProp<ViewStyle>;
 	sectionHeader: StyleProp<ViewStyle>;
 }
@@ -70,6 +76,7 @@ export interface NewAttendanceContentProps {
 	hasQueryError: boolean;
 	isInitialLoading: boolean;
 	isProjectLocked: boolean;
+	isRefreshingOptions: boolean;
 	isSubmitting: boolean;
 	onChangeDuration: (value: string) => void;
 	onDurationBlur: () => void;
@@ -88,4 +95,35 @@ export interface NewAttendanceContentProps {
 		loadingTitle: string;
 	};
 	styles: NewAttendanceContentStyles;
+}
+
+export interface NewAttendanceModalBodyProps {
+	clearServerError: () => void;
+	durationValue: string;
+	form: UseFormReturn<NewAttendanceFormValues>;
+	formFooterError: string | null;
+	hasEligibleProjects: boolean;
+	hasQueryError: boolean;
+	insetBottom: number;
+	isInitialLoading: boolean;
+	isProjectLocked: boolean;
+	isRefreshingOptions: boolean;
+	isSubmitting: boolean;
+	onSelectProject: (projectId: string) => void;
+	onSubmit: () => void;
+	projectOptions: NewAttendanceProjectOption[];
+	selectedProjectId: string;
+	styles: {
+		content: StyleProp<ViewStyle>;
+		contentShell: StyleProp<ViewStyle>;
+		errorText: StyleProp<TextStyle>;
+		field: StyleProp<ViewStyle>;
+		formCard: StyleProp<ViewStyle>;
+		keyboard: StyleProp<ViewStyle>;
+		projectOptionCard: StyleProp<ViewStyle>;
+		projectOptionList: StyleProp<ViewStyle>;
+		projectOptionListContainer: StyleProp<ViewStyle>;
+		section: StyleProp<ViewStyle>;
+		sectionHeader: StyleProp<ViewStyle>;
+	};
 }

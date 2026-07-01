@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 import type { AppResolvedTheme } from "@/types/client";
 import { withAlpha } from "@/utils";
@@ -8,6 +8,26 @@ import {
 	TAB_BAR_ACTION_SIZE,
 	TAB_BAR_DOCK_PADDING,
 } from "./constants";
+
+function getNativeShadowStyle(config: {
+	color: string;
+	opacity: number;
+	radius: number;
+	offsetY: number;
+	elevation: number;
+}) {
+	if (Platform.OS === "web") {
+		return {};
+	}
+
+	return {
+		shadowColor: config.color,
+		shadowOpacity: config.opacity,
+		shadowRadius: config.radius,
+		shadowOffset: { width: 0, height: config.offsetY },
+		elevation: config.elevation,
+	};
+}
 
 export function createStyles(theme: AppResolvedTheme, bottomInset: number) {
 	const bottomPadding = Math.max(bottomInset, theme.space[2]) + theme.space[2];
@@ -44,43 +64,51 @@ export function createStyles(theme: AppResolvedTheme, bottomInset: number) {
 			padding: TAB_BAR_DOCK_PADDING,
 			position: "relative",
 			...(theme.mode === "dark"
-				? {
-						shadowColor: theme.colors.overlay,
-						shadowOpacity: 0.18,
-						shadowRadius: 16,
-						shadowOffset: { width: 0, height: 8 },
+				? getNativeShadowStyle({
+						color: theme.colors.overlay,
+						opacity: 0.18,
+						radius: 16,
+						offsetY: 8,
 						elevation: 4,
-					}
-				: {
-						shadowColor: theme.colors.text,
-						shadowOpacity: 0.05,
-						shadowRadius: 12,
-						shadowOffset: { width: 0, height: 6 },
+					})
+				: getNativeShadowStyle({
+						color: theme.colors.text,
+						opacity: 0.05,
+						radius: 12,
+						offsetY: 6,
 						elevation: 2,
-					}),
+					})),
 		},
 		actionButton: {
 			alignItems: "center",
-			backgroundColor: theme.colors.brand,
+			backgroundColor:
+				theme.mode === "dark"
+					? withAlpha(theme.colors.brand, 0.28)
+					: theme.colors.brand,
+			borderColor:
+				theme.mode === "dark"
+					? withAlpha(theme.colors.brand, 0.32)
+					: "transparent",
+			borderWidth: theme.mode === "dark" ? 1 : 0,
 			borderRadius: theme.radius.circle,
 			height: TAB_BAR_ACTION_SIZE,
 			justifyContent: "center",
 			width: TAB_BAR_ACTION_SIZE,
 			...(theme.mode === "dark"
-				? {
-						shadowColor: theme.colors.overlay,
-						shadowOpacity: 0.24,
-						shadowRadius: 16,
-						shadowOffset: { width: 0, height: 8 },
+				? getNativeShadowStyle({
+						color: theme.colors.overlay,
+						opacity: 0.24,
+						radius: 16,
+						offsetY: 8,
 						elevation: 4,
-					}
-				: {
-						shadowColor: theme.colors.text,
-						shadowOpacity: 0.12,
-						shadowRadius: 12,
-						shadowOffset: { width: 0, height: 6 },
+					})
+				: getNativeShadowStyle({
+						color: theme.colors.text,
+						opacity: 0.12,
+						radius: 12,
+						offsetY: 6,
 						elevation: 3,
-					}),
+					})),
 		},
 		actionButtonPressed: {
 			opacity: 0.84,
@@ -95,20 +123,23 @@ export function createStyles(theme: AppResolvedTheme, bottomInset: number) {
 			position: "absolute",
 			top: TAB_BAR_DOCK_PADDING,
 			...(theme.mode === "dark"
-				? {
-						shadowColor: theme.colors.overlay,
-						shadowOpacity: 0.18,
-						shadowRadius: 14,
-						shadowOffset: { width: 0, height: 6 },
+				? getNativeShadowStyle({
+						color: theme.colors.overlay,
+						opacity: 0.18,
+						radius: 14,
+						offsetY: 6,
 						elevation: 2,
-					}
-				: {
-						shadowColor: theme.colors.text,
-						shadowOpacity: 0.06,
-						shadowRadius: 10,
-						shadowOffset: { width: 0, height: 4 },
+					})
+				: getNativeShadowStyle({
+						color: theme.colors.text,
+						opacity: 0.06,
+						radius: 10,
+						offsetY: 4,
 						elevation: 1,
-					}),
+					})),
+		},
+		pointerEventsNone: {
+			pointerEvents: "none",
 		},
 		rail: {
 			alignItems: "center",

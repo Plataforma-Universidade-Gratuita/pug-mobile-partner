@@ -1,7 +1,6 @@
 import i18n from "i18next";
 import { z } from "zod";
 
-import { executeInternalMockRequest } from "@/api/internal-mock";
 import {
 	ACCESS_TOKEN_STORAGE_KEY,
 	DEFAULT_LANG,
@@ -26,24 +25,19 @@ import type {
 } from "@/types/api";
 import type {
 	AccountComplexSearchFilters,
-	EntityComplexSearchFilters,
-	ProjectComplexSearchFilters,
 	ApiRequestOptions,
+	ApiSessionProvider,
+	AuthenticatedApiRequestOptions,
+	EntityComplexSearchFilters,
 	PrimitiveHeaderValue,
+	ProjectComplexSearchFilters,
 	SearchDateBoundary,
 	StaffComplexSearchFilters,
 	UserComplexSearchFilters,
-	AuthenticatedApiRequestOptions,
-	ApiSessionProvider,
 } from "@/types/client";
 import { getStoredValue, removeStoredValue, setStoredValue } from "@/utils";
 
-import {
-	API_BASE_URL,
-	API_ROUTE_BASES,
-	JSON_HEADERS,
-	USE_INTERNAL_MOCK,
-} from "./constants";
+import { API_BASE_URL, API_ROUTE_BASES, JSON_HEADERS } from "./constants";
 import { parseApiErrorResponse } from "./errors";
 
 function normalizeHeaders(headers?: HeadersInit): Record<string, string> {
@@ -66,12 +60,32 @@ function normalizeHeaders(headers?: HeadersInit): Record<string, string> {
 	);
 }
 
-export function qs(params: Record<string, string | undefined | null>): string {
-	const entries = Object.entries(params).filter(
-		(entry): entry is [string, string] => entry[1] != null && entry[1] !== "",
-	);
-	if (entries.length === 0) return "";
-	return "?" + new URLSearchParams(entries).toString();
+export function qs(
+	params: Record<string, string | string[] | undefined | null>,
+): string {
+	const searchParams = new URLSearchParams();
+
+	for (const [key, value] of Object.entries(params)) {
+		if (value == null) {
+			continue;
+		}
+
+		if (Array.isArray(value)) {
+			for (const item of value) {
+				if (item !== "") {
+					searchParams.append(key, item);
+				}
+			}
+			continue;
+		}
+
+		if (value !== "") {
+			searchParams.append(key, value);
+		}
+	}
+
+	const query = searchParams.toString();
+	return query ? `?${query}` : "";
 }
 
 export function resolveApiLocale(explicitLocale?: string): string {
@@ -109,19 +123,11 @@ export function buildApiHeaders(
 	return headers;
 }
 
-async function performApiRequest(path: string, options: RequestInit = {}) {
-	if (USE_INTERNAL_MOCK) {
-		return executeInternalMockRequest(path, options);
-	}
-
-	return fetch(buildApiUrl(path), options);
-}
-
 export async function executeApiRequest(
 	path: string,
 	options: ApiRequestOptions = {},
 ): Promise<Response> {
-	const response = await performApiRequest(path, {
+	const response = await fetch(buildApiUrl(path), {
 		...options,
 		headers: buildApiHeaders(options),
 	});
@@ -507,7 +513,7 @@ async function requestWithAuthRetry(
 		...(options.locale ? { locale: resolveApiLocale(options.locale) } : {}),
 		...(accessToken ? { authToken: accessToken } : {}),
 	});
-	const firstResponse = await performApiRequest(path, {
+	const firstResponse = await fetch(buildApiUrl(path), {
 		...options,
 		headers: firstRequestHeaders,
 	});
@@ -533,7 +539,7 @@ async function requestWithAuthRetry(
 		...(options.locale ? { locale: resolveApiLocale(options.locale) } : {}),
 		authToken: refreshedTokens.token,
 	});
-	const retryResponse = await performApiRequest(path, {
+	const retryResponse = await fetch(buildApiUrl(path), {
 		...options,
 		headers: retryRequestHeaders,
 	});

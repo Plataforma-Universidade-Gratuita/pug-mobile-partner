@@ -36,7 +36,6 @@ export function createStyles(
 		},
 		titleRow: {
 			alignItems: "flex-start",
-			flexDirection: "row",
 			gap: theme.space[2],
 		},
 		heroTitle: {
@@ -44,15 +43,19 @@ export function createStyles(
 			flex: 1,
 		},
 		metricGrid: {
-			flexDirection: "row",
 			gap: theme.space[2],
 		},
 		metricCard: {
-			flex: 1,
 			borderRadius: theme.radius.xl,
 			borderWidth: 1,
 			paddingHorizontal: theme.space[3],
 			paddingVertical: theme.space[3],
+			gap: theme.space[2],
+		},
+		metricStack: {
+			gap: theme.space[2],
+		},
+		metricLine: {
 			gap: theme.space[1],
 		},
 		metricValue: {

@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 
+import { useScrollToTop } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { LogOut } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { ScrollView, View } from "react-native";
+import { RefreshControl, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { BrandScreenHeader, HeaderActionButton } from "@/components";
@@ -14,7 +15,9 @@ import {
 	useThemeStore,
 } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
+import { getTabScreenContentBottomPadding } from "@/utils";
 
+import { ProfileLoadingSkeleton } from "./ProfileLoadingSkeleton";
 import {
 	InfoCard,
 	PreferencesCard,
@@ -27,6 +30,7 @@ import { resolveProfileFieldValue } from "./utils";
 export function ProfileScreen() {
 	const { t } = useTranslation();
 	const router = useRouter();
+	const scrollRef = useRef<ScrollView>(null);
 	const insets = useSafeAreaInsets();
 	const theme = useThemeStore(state => state.theme);
 	const themeMode = useThemeStore(state => state.mode);
@@ -37,10 +41,14 @@ export function ProfileScreen() {
 	const signOutAll = useAuthStore(state => state.signOutAll);
 	const isMutatingSession = useAuthStore(state => state.isMutatingSession);
 	const [isLogoutSheetVisible, setIsLogoutSheetVisible] = useState(false);
+	const [isRefreshing, setIsRefreshing] = useState(false);
+	useScrollToTop(scrollRef);
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
 	const styles = useMemo(() => createStyles(theme), [theme]);
-	const contentBottomPadding =
-		theme.space[8] + theme.space[2] + Math.max(insets.bottom, theme.space[4]);
+	const contentBottomPadding = getTabScreenContentBottomPadding(
+		theme,
+		insets.bottom,
+	);
 	const currentAccount = useCurrentFormerStudentStore(
 		state => state.currentAccount,
 	);
@@ -57,9 +65,14 @@ export function ProfileScreen() {
 	const isProfileLoading = useCurrentFormerStudentStore(
 		state => state.isLoading,
 	);
+	const isProfileLoaded = useCurrentFormerStudentStore(state => state.isLoaded);
+	const refreshCurrentFormerStudentContext = useCurrentFormerStudentStore(
+		state => state.refreshCurrentFormerStudentContext,
+	);
 	const loadingLabel = t("profile.values.loading");
 	const unavailableLabel = t("profile.values.unavailable");
 	const hasProfileLoadError = currentFormerStudentError !== null;
+	const isInitialLoading = !isProfileLoaded && isProfileLoading;
 	const activeStatusLabel = isProfileLoading
 		? loadingLabel
 		: currentAccount
@@ -67,12 +80,12 @@ export function ProfileScreen() {
 				? t("profile.values.active")
 				: t("profile.values.inactive")
 			: unavailableLabel;
-	const activeTone: "neutral" | "success" | "danger" =
+	const activeTone: "neutral" | "success" | "warning" =
 		isProfileLoading || !currentAccount
 			? "neutral"
 			: currentAccount.active
 				? "success"
-				: "danger";
+				: "warning";
 	const studentName = resolveProfileFieldValue(
 		currentUser?.name,
 		isProfileLoading,
@@ -116,6 +129,20 @@ export function ProfileScreen() {
 		unavailableLabel,
 	);
 
+	async function handleRefresh() {
+		if (isRefreshing) {
+			return;
+		}
+
+		setIsRefreshing(true);
+
+		try {
+			await refreshCurrentFormerStudentContext();
+		} finally {
+			setIsRefreshing(false);
+		}
+	}
+
 	return (
 		<View style={[styles.screen, { backgroundColor: spec.screenBackground }]}>
 			<BrandScreenHeader
@@ -132,56 +159,74 @@ export function ProfileScreen() {
 				}
 			/>
 			<ScrollView
+				ref={scrollRef}
 				contentContainerStyle={[
 					styles.content,
 					{ paddingBottom: contentBottomPadding },
 				]}
+				refreshControl={
+					<RefreshControl
+						refreshing={isRefreshing}
+						onRefresh={() => {
+							void handleRefresh();
+						}}
+						tintColor={theme.colors.brand}
+					/>
+				}
 				showsVerticalScrollIndicator={false}
 			>
-				<View style={styles.shell}>
-					<StudentCard
-						badgeLabel={t("profile.badge")}
-						cpfLabel={t("profile.fields.cpf")}
-						cpfValue={cpf}
-						name={studentName}
-					/>
-					<InfoCard
-						academicRegistrationLabel={t("profile.fields.academicRegistration")}
-						academicRegistrationValue={academicRegistration}
-						activeStatusLabel={activeStatusLabel}
-						activeTone={activeTone}
-						areaOfExpertiseLabel={t("profile.fields.areaOfExpertise")}
-						areaOfExpertiseValue={areaOfExpertiseName}
-						campusValue={campus}
-						courseLabel={t("profile.fields.course")}
-						courseValue={courseName}
-						detailsLabel={t("profile.actions.openAcademicDetails")}
-						emailLabel={t("profile.fields.accountEmail")}
-						emailValue={email}
-						errorMessage={
-							hasProfileLoadError ? t("profile.errors.load") : undefined
-						}
-						onOpenAcademicDetails={() => {
-							router.push("/profile/academic");
-						}}
-						sectionTitle={t("profile.sections.record")}
-					/>
-					<PreferencesCard
-						language={language}
-						languageHelper={t("profile.fields.languageHelper")}
-						languageLabel={t("profile.fields.language")}
-						onLanguageChange={nextLanguage => {
-							void setLanguage(nextLanguage);
-						}}
-						onThemeModeChange={nextThemeMode => {
-							void setThemeMode(nextThemeMode);
-						}}
-						sectionTitle={t("profile.sections.preferences")}
-						themeHelper={t("profile.fields.themeHelper")}
-						themeLabel={t("profile.fields.theme")}
-						themeMode={themeMode}
-					/>
-				</View>
+				{isInitialLoading ? (
+					<ProfileLoadingSkeleton />
+				) : (
+					<View style={styles.shell}>
+						<StudentCard
+							badgeLabel={t("profile.badge")}
+							cpfLabel={t("profile.fields.cpf")}
+							cpfValue={cpf}
+							isLoading={isRefreshing}
+							name={studentName}
+						/>
+						<InfoCard
+							academicRegistrationLabel={t(
+								"profile.fields.academicRegistration",
+							)}
+							academicRegistrationValue={academicRegistration}
+							activeStatusLabel={activeStatusLabel}
+							activeTone={activeTone}
+							areaOfExpertiseLabel={t("profile.fields.areaOfExpertise")}
+							areaOfExpertiseValue={areaOfExpertiseName}
+							campusValue={campus}
+							courseLabel={t("profile.fields.course")}
+							courseValue={courseName}
+							detailsLabel={t("profile.actions.openAcademicDetails")}
+							emailLabel={t("profile.fields.accountEmail")}
+							emailValue={email}
+							errorMessage={
+								hasProfileLoadError ? t("profile.errors.load") : undefined
+							}
+							isLoading={isRefreshing}
+							onOpenAcademicDetails={() => {
+								router.push("/profile/academic");
+							}}
+							sectionTitle={t("profile.sections.record")}
+						/>
+						<PreferencesCard
+							language={language}
+							languageHelper={t("profile.fields.languageHelper")}
+							languageLabel={t("profile.fields.language")}
+							onLanguageChange={nextLanguage => {
+								void setLanguage(nextLanguage);
+							}}
+							onThemeModeChange={nextThemeMode => {
+								void setThemeMode(nextThemeMode);
+							}}
+							sectionTitle={t("profile.sections.preferences")}
+							themeHelper={t("profile.fields.themeHelper")}
+							themeLabel={t("profile.fields.theme")}
+							themeMode={themeMode}
+						/>
+					</View>
+				)}
 			</ScrollView>
 			<ProfileLogoutSheet
 				isBusy={isMutatingSession}

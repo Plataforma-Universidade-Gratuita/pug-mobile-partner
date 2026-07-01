@@ -27,6 +27,8 @@ export function Button({
 	);
 	const actionProps = onPress ? { onPress } : {};
 
+	const isDarkDisabled = disabled && theme.mode === "dark";
+
 	return (
 		<PaperButton
 			mode={resolveButtonMode(variant)}
@@ -40,8 +42,9 @@ export function Button({
 				styles.base,
 				fullWidth ? styles.fullWidth : null,
 				{
-					borderColor: colors.borderColor,
+					borderColor: isDarkDisabled ? "transparent" : colors.borderColor,
 					borderRadius: theme.form.controlRadius,
+					borderWidth: isDarkDisabled ? 0 : colors.borderWidth,
 				},
 				style,
 			]}

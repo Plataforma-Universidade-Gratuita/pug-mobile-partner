@@ -113,8 +113,8 @@ jobs:
           esac
 
           if [ -z "$API_URL" ]; then
-            echo "EXPO_PUBLIC_API_URL for $TARGET_ENVIRONMENT is empty or not configured."
-            exit 1
+          echo "EXPO_PUBLIC_API_URL for $TARGET_ENVIRONMENT is empty or not configured."
+          exit 1
           fi
 
           echo "expo_public_api_url=$API_URL" >> "$GITHUB_OUTPUT"

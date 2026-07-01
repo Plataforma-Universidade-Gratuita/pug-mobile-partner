@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 
 import { Pressable, View } from "react-native";
 
-import { Badge, Button, Label } from "@/components/primitives";
+import { Badge, Button, Label, LoadingBlock } from "@/components/primitives";
 import { useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import type { HomeActivitySnapshotCardProps } from "@/types/client";
@@ -16,6 +16,7 @@ export function HomeActivitySnapshotCard({
 	ctaLabel,
 	description,
 	eyebrow,
+	isLoading = false,
 	onPress,
 	title,
 }: HomeActivitySnapshotCardProps) {
@@ -30,7 +31,7 @@ export function HomeActivitySnapshotCard({
 
 	return (
 		<Pressable
-			disabled={onPress == null}
+			disabled={isLoading || onPress == null}
 			onPress={onPress}
 			style={({ pressed }) => [
 				styles.snapshotCard,
@@ -45,33 +46,71 @@ export function HomeActivitySnapshotCard({
 		>
 			<View style={styles.snapshotHeader}>
 				<View style={styles.snapshotCopy}>
-					<Label role="helper">{eyebrow}</Label>
-					<Label
-						role="field"
-						style={styles.snapshotTitle}
-					>
-						{title}
-					</Label>
+					{isLoading ? (
+						<>
+							<LoadingBlock
+								width="40%"
+								height={14}
+							/>
+							<LoadingBlock
+								width="82%"
+								height={20}
+							/>
+						</>
+					) : (
+						<>
+							<Label role="helper">{eyebrow}</Label>
+							<Label
+								role="field"
+								style={styles.snapshotTitle}
+							>
+								{title}
+							</Label>
+						</>
+					)}
 				</View>
 
-				<Badge
-					tone={badgeTone ?? "neutral"}
-					variant="primary"
-				>
-					{badgeLabel}
-				</Badge>
+				{isLoading ? (
+					<LoadingBlock
+						width={96}
+						height={28}
+						radius={theme.radius.circle}
+					/>
+				) : (
+					<Badge
+						tone={badgeTone ?? "neutral"}
+						variant="primary"
+					>
+						{badgeLabel}
+					</Badge>
+				)}
 			</View>
 
-			<Label role="helper">{description}</Label>
+			{isLoading ? (
+				<LoadingBlock
+					width="92%"
+					height={14}
+				/>
+			) : (
+				<Label role="helper">{description}</Label>
+			)}
 
 			{ctaLabel ? (
 				<View style={styles.snapshotAction}>
-					<Button
-						variant="secondary"
-						{...actionProps}
-					>
-						{ctaLabel}
-					</Button>
+					{isLoading ? (
+						<LoadingBlock
+							width={148}
+							height={theme.form.controlHeight}
+							radius={theme.form.controlRadius}
+						/>
+					) : (
+						<Button
+							variant="secondary"
+							{...actionProps}
+						>
+							{ctaLabel}
+						</Button>
+					)}
 				</View>
 			) : null}
 		</Pressable>

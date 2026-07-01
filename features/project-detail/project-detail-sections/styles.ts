@@ -21,12 +21,14 @@ export function createStyles(
 			gap: theme.space[3],
 		},
 		titleRow: {
-			flexDirection: "row",
 			alignItems: "flex-start",
 			gap: theme.space[2],
 		},
 		titleCopy: {
 			flex: 1,
+			gap: theme.space[1],
+		},
+		loadingDescription: {
 			gap: theme.space[1],
 		},
 		title: {

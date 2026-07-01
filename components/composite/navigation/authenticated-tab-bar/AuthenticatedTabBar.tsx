@@ -189,9 +189,9 @@ export function AuthenticatedTabBar({
 				>
 					{itemWidth > 0 ? (
 						<Animated.View
-							pointerEvents="none"
 							style={[
 								styles.activePill,
+								styles.pointerEventsNone,
 								{
 									left: TAB_BAR_DOCK_PADDING,
 									width: itemWidth,
@@ -279,7 +279,11 @@ export function AuthenticatedTabBar({
 					]}
 				>
 					<Plus
-						color={theme.colors.chromeFg}
+						color={
+							theme.mode === "dark"
+								? theme.colors.brandSoftText
+								: theme.colors.chromeFg
+						}
 						size={24}
 					/>
 				</Pressable>

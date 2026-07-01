@@ -1,9 +1,11 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
+import { useScrollToTop } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { RefreshControl, ScrollView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import * as api from "@/api";
 import { BrandScreenHeader } from "@/components";
@@ -16,9 +18,11 @@ import type {
 	ActivityFilters,
 	ActivityTab,
 } from "@/types/client";
+import { getTabScreenContentBottomPadding } from "@/utils";
 
 import {
 	ActivityHeaderActions,
+	ActivityLoadingSkeleton,
 	ActivityListSection,
 	ActivitySegmentedControl,
 	ActivityStateCard,
@@ -36,8 +40,10 @@ import {
 	createDefaultActivityFilters,
 	filterActivityEnrollmentItems,
 	hasActiveActivityFilters,
-	resolveAttendanceStatusTone,
 	resolveActivityStateCopy,
+	resolveActivityAttendanceStatusLabel,
+	resolveAttendanceStatusTone,
+	resolveActivityEnrollmentStatusLabel,
 	resolveEnrollmentStatusTone,
 	resolveProjectName,
 	sortActivityAttendanceItems,
@@ -47,9 +53,12 @@ import {
 export function ActivityScreen() {
 	const { t } = useTranslation();
 	const params = useLocalSearchParams<{ tab?: string | string[] }>();
+	const scrollRef = useRef<ScrollView>(null);
+	const insets = useSafeAreaInsets();
 	const theme = useThemeStore(state => state.theme);
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
 	const styles = useMemo(() => createStyles(theme, spec), [spec, theme]);
+	useScrollToTop(scrollRef);
 	const requestedTab =
 		typeof params.tab === "string" &&
 		(params.tab === "enrollments" || params.tab === "attendances")
@@ -180,8 +189,10 @@ export function ActivityScreen() {
 		enrollmentsQuery.isRefetching ||
 		attendancesQuery.isRefetching ||
 		projectsQuery.isRefetching;
-	const contentBottomPadding =
-		theme.space[8] + Math.max(theme.space[5], theme.space[4]);
+	const contentBottomPadding = getTabScreenContentBottomPadding(
+		theme,
+		insets.bottom,
+	);
 	const stateCopy = resolveActivityStateCopy({
 		activeTab,
 		hasActiveFilters,
@@ -206,6 +217,7 @@ export function ActivityScreen() {
 				}
 			/>
 			<ScrollView
+				ref={scrollRef}
 				contentContainerStyle={[
 					styles.content,
 					{ paddingBottom: contentBottomPadding },
@@ -227,35 +239,49 @@ export function ActivityScreen() {
 				showsVerticalScrollIndicator={false}
 			>
 				<View style={styles.shell}>
-					<ActivitySummarySection
-						activeCount={String(activeCount)}
-						attendanceCount={String(attendanceCount)}
-						chipLabels={summaryCopy.chips}
-						focusDescription={summaryCopy.description}
-						focusTitle={summaryCopy.title}
-						pendingCount={String(pendingCount)}
-					/>
-					<ActivitySegmentedControl
-						activeTab={activeTab}
-						onTabChange={setActiveTab}
-					/>
-					{stateCopy ? (
-						<ActivityStateCard
-							badgeLabel={t("activity.states.badge")}
-							description={stateCopy.description}
-							title={stateCopy.title}
-							tone={stateCopy.badgeTone}
-						/>
+					{isInitialLoading && !hasQueryError ? (
+						<ActivityLoadingSkeleton />
 					) : (
-						<ActivityListSection
-							activeTab={activeTab}
-							attendanceItems={visibleAttendanceItems}
-							enrollmentItems={visibleEnrollmentItems}
-							resolveAttendanceStatusTone={resolveAttendanceStatusTone}
-							resolveEnrollmentStatusTone={resolveEnrollmentStatusTone}
-							resolveProjectName={resolveProjectName}
-							t={t}
-						/>
+						<>
+							<ActivitySummarySection
+								activeCount={String(activeCount)}
+								attendanceCount={String(attendanceCount)}
+								chipLabels={summaryCopy.chips}
+								focusDescription={summaryCopy.description}
+								focusTitle={summaryCopy.title}
+								isLoading={isRefreshing}
+								pendingCount={String(pendingCount)}
+							/>
+							<ActivitySegmentedControl
+								activeTab={activeTab}
+								onTabChange={setActiveTab}
+							/>
+							{stateCopy ? (
+								<ActivityStateCard
+									badgeLabel={t("activity.states.badge")}
+									description={stateCopy.description}
+									title={stateCopy.title}
+									tone={stateCopy.badgeTone}
+								/>
+							) : (
+								<ActivityListSection
+									activeTab={activeTab}
+									attendanceItems={visibleAttendanceItems}
+									enrollmentItems={visibleEnrollmentItems}
+									isLoading={isRefreshing}
+									resolveAttendanceStatusLabel={
+										resolveActivityAttendanceStatusLabel
+									}
+									resolveAttendanceStatusTone={resolveAttendanceStatusTone}
+									resolveEnrollmentStatusLabel={
+										resolveActivityEnrollmentStatusLabel
+									}
+									resolveEnrollmentStatusTone={resolveEnrollmentStatusTone}
+									resolveProjectName={resolveProjectName}
+									t={t}
+								/>
+							)}
+						</>
 					)}
 				</View>
 			</ScrollView>

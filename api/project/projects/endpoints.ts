@@ -30,7 +30,7 @@ export async function get(id: string): Promise<ProjectResponse> {
 
 export async function list(ids?: string[]): Promise<ProjectResponse[]> {
 	return authFetch(
-		`${API_ROUTE_BASES.project.projects}${qs({ ids: ids?.join(",") })}`,
+		`${API_ROUTE_BASES.project.projects}${qs({ ids })}`,
 		z.array(ProjectResponseSchema),
 	);
 }

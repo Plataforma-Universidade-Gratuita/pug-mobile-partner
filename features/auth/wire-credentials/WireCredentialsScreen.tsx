@@ -1,8 +1,15 @@
 import React, { useRef, useState } from "react";
 
+import { ChevronDown, ChevronUp } from "lucide-react-native";
 import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import {
+	KeyboardAvoidingView,
+	Platform,
+	Pressable,
+	ScrollView,
+	View,
+} from "react-native";
 
 import { Button, Badge, Input, Label } from "@/components/primitives";
 import {
@@ -15,10 +22,14 @@ import { useAuthStore } from "@/stores";
 import type {
 	PrimitiveInputFocusHandle,
 	WireCredentialsFormValues,
+	WireCredentialsPasswordRequirements,
 } from "@/types/client";
+import {
+	evaluateWireCredentialsPasswordRequirements,
+	resolveWireCredentialsErrorMessageWithFallback,
+} from "@/utils";
 
 import { createStyles } from "./styles";
-import { resolveWireCredentialsErrorMessageWithFallback } from "./utils";
 
 export function WireCredentialsScreen() {
 	const { t } = useTranslation();
@@ -31,6 +42,7 @@ export function WireCredentialsScreen() {
 	const { clearServerError, serverError, setServerError } =
 		useServerErrorState();
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [isRequirementsExpanded, setIsRequirementsExpanded] = useState(false);
 	const confirmPasswordInputRef = useRef<PrimitiveInputFocusHandle | null>(
 		null,
 	);
@@ -45,6 +57,9 @@ export function WireCredentialsScreen() {
 		mode: "onSubmit",
 		reValidateMode: "onChange",
 	});
+	const passwordValue = form.watch("password") ?? "";
+	const passwordRequirements =
+		evaluateWireCredentialsPasswordRequirements(passwordValue);
 
 	async function onSubmit(values: WireCredentialsFormValues) {
 		clearServerError();
@@ -137,6 +152,87 @@ export function WireCredentialsScreen() {
 										/>
 									)}
 								/>
+								<View style={styles.requirementsCard}>
+									<Pressable
+										onPress={() => {
+											setIsRequirementsExpanded(current => !current);
+										}}
+										style={styles.requirementsHeader}
+									>
+										<Label
+											role="helper"
+											style={styles.requirementsTitle}
+										>
+											{t("auth.wireCredentials.passwordChecklistTitle")}
+										</Label>
+										{isRequirementsExpanded ? (
+											<ChevronUp
+												color={styles.requirementsChevron.color}
+												size={18}
+											/>
+										) : (
+											<ChevronDown
+												color={styles.requirementsChevron.color}
+												size={18}
+											/>
+										)}
+									</Pressable>
+									{isRequirementsExpanded ? (
+										<View style={styles.requirementsList}>
+											{[
+												[
+													"hasMinimumLength",
+													t("auth.wireCredentials.passwordChecklist.minLength"),
+												],
+												[
+													"hasUppercaseLetter",
+													t("auth.wireCredentials.passwordChecklist.uppercase"),
+												],
+												[
+													"hasLowercaseLetter",
+													t("auth.wireCredentials.passwordChecklist.lowercase"),
+												],
+												[
+													"hasNumber",
+													t("auth.wireCredentials.passwordChecklist.number"),
+												],
+												[
+													"hasSpecialSymbol",
+													t(
+														"auth.wireCredentials.passwordChecklist.specialSymbol",
+													),
+												],
+											].map(([key, label]) => {
+												const isSatisfied =
+													passwordRequirements[
+														key as keyof WireCredentialsPasswordRequirements
+													];
+
+												return (
+													<View
+														key={String(key)}
+														style={styles.requirementRow}
+													>
+														<View
+															style={[
+																styles.requirementIndicator,
+																isSatisfied
+																	? styles.requirementIndicatorSatisfied
+																	: styles.requirementIndicatorPending,
+															]}
+														/>
+														<Label
+															role="helper"
+															tone={isSatisfied ? "success" : "muted"}
+														>
+															{label}
+														</Label>
+													</View>
+												);
+											})}
+										</View>
+									) : null}
+								</View>
 							</View>
 
 							<View style={styles.field}>
