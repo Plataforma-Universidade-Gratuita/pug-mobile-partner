@@ -87,6 +87,30 @@
 			"subtitle": "Apresente este código para validar a presença no projeto.",
 			"title": "QR da presença"
 		},
+		"attendanceScan": {
+			"actions": {
+				"allowCamera": "Permitir câmera",
+				"close": "Fechar leitor",
+				"done": "Concluir",
+				"scanAnother": "Ler outro QR",
+				"tryAgain": "Ler novamente"
+			},
+			"badge": "Leitura de presença",
+			"resultHelper": "Revise as informações da presença lida antes de continuar com a validação.",
+			"scanHelper": "Aponte a câmera para o QR code gerado pelo Egresso.",
+			"scanTitle": "Leia um QR de presença aguardando validação",
+			"states": {
+				"errorDescription": "Não foi possível resolver este QR code agora. Tente ler novamente em instantes.",
+				"notFoundDescription": "Nenhuma presença aguardando validação corresponde a este QR code.",
+				"notFoundTitle": "Presença não encontrada",
+				"permissionDeniedDescription": "O acesso à câmera é necessário para ler o QR code mostrado pelo Egresso.",
+				"permissionDeniedTitle": "Acesso à câmera necessário",
+				"permissionLoadingDescription": "Verificando se a câmera está disponível para leitura do QR code.",
+				"permissionLoadingTitle": "Preparando leitor"
+			},
+			"subtitle": "Leia o QR code gerado pelo Egresso para visualizar os detalhes da presença.",
+			"title": "Ler QR da presença"
+		},
 		"chips": {
 			"active": "Projetos ativos",
 			"needsAttendance": "Precisa de presença",
@@ -205,7 +229,7 @@
 	},
 	"auth": {
 		"login": {
-			"badge": "Acesso do Egresso",
+			"badge": "Acesso do parceiro",
 			"emailLabel": "Email",
 			"errors": {
 				"emailInvalid": "Informe um email válido.",

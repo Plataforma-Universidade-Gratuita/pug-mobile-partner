@@ -11,7 +11,7 @@ function resolveCurrentFormerStudentContextError(error: unknown) {
 		return error.message;
 	}
 
-	return "Unable to load current former student context.";
+	return "Unable to load current partner context.";
 }
 
 export const useCurrentFormerStudentStore =
@@ -34,16 +34,11 @@ export const useCurrentFormerStudentStore =
 				}
 
 				try {
-					const [currentAccount, currentUser, currentFormerStudent] =
-						await Promise.all([
-							api.identity.accounts.getMe(),
-							api.identity.users.getMe(),
-							api.academic.formerStudents.getMe(),
-						]);
-
-					const currentCourse = currentFormerStudent.courseId
-						? await api.academic.courses.get(currentFormerStudent.courseId)
-						: null;
+					const [currentAccount, currentUser] = await Promise.all([
+						api.identity.accounts.getMe(),
+						api.identity.users.getMe(),
+						api.partner.staff.getMe(),
+					]);
 
 					if (currentFormerStudentContextGeneration !== generation) {
 						return;
@@ -52,8 +47,8 @@ export const useCurrentFormerStudentStore =
 					set({
 						currentAccount,
 						currentUser,
-						currentFormerStudent,
-						currentCourse,
+						currentFormerStudent: null,
+						currentCourse: null,
 						isLoading: false,
 						isLoaded: true,
 						error: null,

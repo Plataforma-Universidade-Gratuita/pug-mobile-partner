@@ -3,7 +3,7 @@ import { create } from "zustand";
 import * as api from "@/api";
 import type { TokenResponse } from "@/types/api";
 import type { AuthStoreState, StoredSessionTokens } from "@/types/client";
-import { validateFormerStudentToken } from "@/utils";
+import { validatePartnerToken } from "@/utils";
 
 import { useCurrentFormerStudentStore } from "./current-former-student";
 
@@ -14,7 +14,7 @@ function buildSessionState(
 	tokens: StoredSessionTokens,
 	requiresCredentialSetup: boolean,
 ) {
-	const validation = validateFormerStudentToken(tokens.accessToken);
+	const validation = validatePartnerToken(tokens.accessToken);
 
 	if (!validation.isValid || !validation.payload) {
 		return null;
@@ -94,12 +94,12 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 		}
 
 		const tokens = await api.identity.auth.refresh({ refreshToken });
-		const validation = validateFormerStudentToken(tokens.token);
+		const validation = validatePartnerToken(tokens.token);
 
 		if (!validation.isValid || !validation.payload) {
 			await clearApiSession();
 			get().clearSessionState();
-			throw new Error("Received a non-former-student token during refresh.");
+			throw new Error("Received a non-partner token during refresh.");
 		}
 
 		await getApiSessionProvider().persistSession(tokens);
@@ -181,12 +181,12 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 
 		try {
 			const tokens = await api.identity.auth.login(credentials);
-			const validation = validateFormerStudentToken(tokens.token);
+			const validation = validatePartnerToken(tokens.token);
 
 			if (!validation.isValid || !validation.payload) {
 				await clearApiSession();
 				get().clearSessionState();
-				throw new Error("Received a non-former-student token during sign-in.");
+				throw new Error("Received a non-partner token during sign-in.");
 			}
 
 			await getApiSessionProvider().persistSession(tokens);
@@ -261,7 +261,7 @@ configureApiSessionProvider({
 	persistSession: async tokens => {
 		await baseSessionProvider.persistSession(tokens);
 
-		const validation = validateFormerStudentToken(tokens.token);
+		const validation = validatePartnerToken(tokens.token);
 		if (!validation.isValid || !validation.payload) {
 			return;
 		}

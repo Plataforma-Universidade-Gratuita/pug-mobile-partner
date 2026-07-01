@@ -7,7 +7,7 @@ import type {
 	WireCredentialsPasswordRequirements,
 } from "@/types/client";
 
-export function validateFormerStudentToken(
+export function validatePartnerToken(
 	token: string,
 ): StudentTokenValidationResult {
 	try {
@@ -16,7 +16,7 @@ export function validateFormerStudentToken(
 		const isExpired = payload.exp * 1000 < Date.now();
 		if (isExpired) return { isValid: false };
 
-		if (!payload.groups?.includes("FORMER_STUDENT")) return { isValid: false };
+		if (!payload.groups?.includes("PARTNER")) return { isValid: false };
 
 		return { isValid: true, payload };
 	} catch {

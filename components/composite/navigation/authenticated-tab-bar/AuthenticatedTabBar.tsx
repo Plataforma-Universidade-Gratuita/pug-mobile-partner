@@ -8,7 +8,7 @@ import React, {
 
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { useRouter } from "expo-router";
-import { Plus } from "lucide-react-native";
+import { QrCode } from "lucide-react-native";
 import { Animated, PanResponder, Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -268,17 +268,17 @@ export function AuthenticatedTabBar({
 					</View>
 				</View>
 				<Pressable
-					accessibilityLabel="New attendance"
+					accessibilityLabel="Scan attendance QR"
 					accessibilityRole="button"
 					onPress={() => {
-						router.push("/attendance/new");
+						router.push("../attendance/scan");
 					}}
 					style={({ pressed }) => [
 						styles.actionButton,
 						pressed ? styles.actionButtonPressed : null,
 					]}
 				>
-					<Plus
+					<QrCode
 						color={
 							theme.mode === "dark"
 								? theme.colors.brandSoftText

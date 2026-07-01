@@ -1,0 +1,2 @@
+export const ATTENDANCE_SCAN_LOOKUP_PAGE = 0;
+export const ATTENDANCE_SCAN_LOOKUP_SIZE = 200;
