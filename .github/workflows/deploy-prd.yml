@@ -36,6 +36,6 @@ jobs:
     with:
       environment_name: prd
       azure_resource_group: rg-pug-prd
-      azure_container_app: pug-mobile-student-prd
-      image: ghcr.io/plataforma-universidade-gratuita/pug-mobile-student:latest
+      azure_container_app: pug-mobile-partner-prd
+      image: ghcr.io/plataforma-universidade-gratuita/pug-mobile-partner:latest
     secrets: inherit

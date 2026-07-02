@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       image:
-        description: Full image to deploy (e.g. ghcr.io/.../pug-mobile-student:sha-abc123)
+        description: Full image to deploy (e.g. ghcr.io/.../pug-mobile-partner:sha-abc123)
         required: true
         type: string
 
@@ -18,6 +18,6 @@ jobs:
     with:
       environment_name: qa
       azure_resource_group: rg-pug-qa
-      azure_container_app: pug-mobile-student-qa
+      azure_container_app: pug-mobile-partner-qa
       image: ${{ inputs.image }}
     secrets: inherit

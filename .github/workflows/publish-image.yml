@@ -21,7 +21,7 @@ permissions:
 
 env:
   REGISTRY_SERVER: ghcr.io
-  IMAGE_NAME: pug-mobile-student
+  IMAGE_NAME: pug-mobile-partner
 
 jobs:
   guard-publish-ref:
