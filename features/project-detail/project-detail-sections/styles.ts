@@ -94,12 +94,20 @@ export function createStyles(
 		entityMetaCard: {
 			borderRadius: theme.radius.lg,
 			borderWidth: 1,
-			flexBasis: "48%",
-			flexGrow: 1,
 			gap: theme.space[1],
 			minWidth: 0,
 			paddingHorizontal: theme.space[3],
 			paddingVertical: theme.space[3],
+		},
+		entityCityCard: {
+			flexBasis: "38%",
+			flexGrow: 0,
+			flexShrink: 1,
+		},
+		entityCnpjCard: {
+			flexBasis: "58%",
+			flexGrow: 0,
+			flexShrink: 0,
 		},
 		entityAddressCard: {
 			borderRadius: theme.radius.lg,

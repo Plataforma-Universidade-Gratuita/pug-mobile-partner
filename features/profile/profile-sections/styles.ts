@@ -95,6 +95,10 @@ export function createSectionStyles(
 			borderWidth: 1,
 			borderRadius: theme.radius.circle,
 		},
+		selectorWrap: {
+			flexWrap: "wrap",
+			alignItems: "stretch",
+		},
 		selectorOption: {
 			flexBasis: 0,
 			flexGrow: 1,
@@ -105,6 +109,10 @@ export function createSectionStyles(
 			borderRadius: theme.radius.circle,
 			alignItems: "center",
 			justifyContent: "center",
+		},
+		selectorOptionAuto: {
+			flexBasis: "auto",
+			flexGrow: 0,
 		},
 		selectorOptionCompact: {},
 	});

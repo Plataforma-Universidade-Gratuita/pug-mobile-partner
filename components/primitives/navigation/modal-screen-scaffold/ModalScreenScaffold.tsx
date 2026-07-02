@@ -39,16 +39,18 @@ export function ModalScreenScaffold({
 				]}
 			>
 				<View style={styles.modalHeaderRow}>
-					<View
-						style={[
-							styles.modalActionSlot,
-							actionSlotMinWidth != null
-								? { minWidth: actionSlotMinWidth }
-								: null,
-						]}
-					>
-						{leftAccessory ? leftAccessory : null}
-					</View>
+					{leftAccessory ? (
+						<View
+							style={[
+								styles.modalActionSlot,
+								actionSlotMinWidth != null
+									? { minWidth: actionSlotMinWidth }
+									: null,
+							]}
+						>
+							{leftAccessory}
+						</View>
+					) : null}
 
 					<View style={styles.modalHeaderCopy}>
 						<Label role="title">{title}</Label>
@@ -62,16 +64,18 @@ export function ModalScreenScaffold({
 						) : null}
 					</View>
 
-					<View
-						style={[
-							styles.modalActionSlot,
-							actionSlotMinWidth != null
-								? { minWidth: actionSlotMinWidth }
-								: null,
-						]}
-					>
-						{rightAccessory ? rightAccessory : null}
-					</View>
+					{rightAccessory ? (
+						<View
+							style={[
+								styles.modalActionSlot,
+								actionSlotMinWidth != null
+									? { minWidth: actionSlotMinWidth }
+									: null,
+							]}
+						>
+							{rightAccessory}
+						</View>
+					) : null}
 				</View>
 
 				<View style={styles.modalBody}>{children}</View>

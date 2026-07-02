@@ -3,13 +3,11 @@ import { jwtDecode } from "jwt-decode";
 import { ApiError } from "@/api/errors";
 import type {
 	PugJwtPayload,
-	StudentTokenValidationResult,
+	TokenValidationResult,
 	WireCredentialsPasswordRequirements,
 } from "@/types/client";
 
-export function validatePartnerToken(
-	token: string,
-): StudentTokenValidationResult {
+export function validatePartnerToken(token: string): TokenValidationResult {
 	try {
 		const payload = jwtDecode<PugJwtPayload>(token);
 

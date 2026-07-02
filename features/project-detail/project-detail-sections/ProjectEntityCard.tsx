@@ -56,31 +56,46 @@ export function ProjectEntityCard({
 					</Label>
 				)}
 				<View style={styles.entityMetaGrid}>
-					{[
-						[t("projectDetail.entity.city"), cityValue],
-						[t("projectDetail.entity.cnpj"), cnpjValue],
-					].map(([label, value]) => (
-						<View
-							key={String(label)}
-							style={[
-								styles.entityMetaCard,
-								{
-									backgroundColor: theme.colors.surface2,
-									borderColor: spec.panelBorder,
-								},
-							]}
-						>
-							<Label role="helper">{label}</Label>
-							{isLoading ? (
-								<LoadingBlock
-									width="78%"
-									height={18}
-								/>
-							) : (
-								<Label role="field">{value}</Label>
-							)}
-						</View>
-					))}
+					<View
+						style={[
+							styles.entityMetaCard,
+							styles.entityCityCard,
+							{
+								backgroundColor: theme.colors.surface2,
+								borderColor: spec.panelBorder,
+							},
+						]}
+					>
+						<Label role="helper">{t("projectDetail.entity.city")}</Label>
+						{isLoading ? (
+							<LoadingBlock
+								width="78%"
+								height={18}
+							/>
+						) : (
+							<Label role="field">{cityValue}</Label>
+						)}
+					</View>
+					<View
+						style={[
+							styles.entityMetaCard,
+							styles.entityCnpjCard,
+							{
+								backgroundColor: theme.colors.surface2,
+								borderColor: spec.panelBorder,
+							},
+						]}
+					>
+						<Label role="helper">{t("projectDetail.entity.cnpj")}</Label>
+						{isLoading ? (
+							<LoadingBlock
+								width="78%"
+								height={18}
+							/>
+						) : (
+							<Label role="field">{cnpjValue}</Label>
+						)}
+					</View>
 				</View>
 				{addressValue || isLoading ? (
 					<View

@@ -1,9 +1,9 @@
 import type {
 	AccountResponse,
 	CredentialsRequest,
-	CourseResponse,
-	FormerStudentResponse,
+	EntityResponse,
 	LoginRequest,
+	StaffResponse,
 	TokenResponse,
 	UserResponse,
 } from "@/types/api";
@@ -37,17 +37,17 @@ export interface AuthStoreState {
 	clearSessionState: () => void;
 }
 
-export interface CurrentFormerStudentStoreState {
+export interface CurrentStaffStoreState {
 	currentAccount: AccountResponse | null;
 	currentUser: UserResponse | null;
-	currentFormerStudent: FormerStudentResponse | null;
-	currentCourse: CourseResponse | null;
+	currentStaff: StaffResponse | null;
+	currentEntity: EntityResponse | null;
 	isLoading: boolean;
 	isLoaded: boolean;
 	error: string | null;
-	loadCurrentFormerStudentContext: () => Promise<void>;
-	refreshCurrentFormerStudentContext: () => Promise<void>;
-	clearCurrentFormerStudentContext: () => void;
+	loadCurrentStaffContext: () => Promise<void>;
+	refreshCurrentStaffContext: () => Promise<void>;
+	clearCurrentStaffContext: () => void;
 }
 
 export interface ThemeStoreState {

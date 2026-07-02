@@ -1,110 +1,49 @@
-import { create } from "zustand";
+/*
+ * Temporary compatibility shim for copied student-bound screens that have not
+ * been migrated yet. Auth and profile use the real current-staff store.
+ */
+import { useCurrentStaffStore } from "./current-staff";
 
-import * as api from "@/api";
-import type { CurrentFormerStudentStoreState } from "@/types/client";
-
-let currentFormerStudentContextPromise: Promise<void> | null = null;
-let currentFormerStudentContextGeneration = 0;
-
-function resolveCurrentFormerStudentContextError(error: unknown) {
-	if (error instanceof Error && error.message.trim()) {
-		return error.message;
-	}
-
-	return "Unable to load current partner context.";
+interface LegacyCurrentFormerStudentState {
+	currentAccount: ReturnType<
+		typeof useCurrentStaffStore.getState
+	>["currentAccount"];
+	currentUser: ReturnType<typeof useCurrentStaffStore.getState>["currentUser"];
+	currentFormerStudent: any;
+	currentCourse: any;
+	isLoading: ReturnType<typeof useCurrentStaffStore.getState>["isLoading"];
+	isLoaded: ReturnType<typeof useCurrentStaffStore.getState>["isLoaded"];
+	error: ReturnType<typeof useCurrentStaffStore.getState>["error"];
+	loadCurrentFormerStudentContext: ReturnType<
+		typeof useCurrentStaffStore.getState
+	>["loadCurrentStaffContext"];
+	refreshCurrentFormerStudentContext: ReturnType<
+		typeof useCurrentStaffStore.getState
+	>["refreshCurrentStaffContext"];
+	clearCurrentFormerStudentContext: ReturnType<
+		typeof useCurrentStaffStore.getState
+	>["clearCurrentStaffContext"];
 }
 
-export const useCurrentFormerStudentStore =
-	create<CurrentFormerStudentStoreState>((set, get) => {
-		async function loadCurrentFormerStudentContext(force: boolean) {
-			if (!force && get().isLoaded && !get().error) {
-				return;
-			}
-
-			if (currentFormerStudentContextPromise) {
-				return currentFormerStudentContextPromise;
-			}
-
-			const generation = currentFormerStudentContextGeneration;
-			let loadPromise!: Promise<void>;
-
-			loadPromise = (async () => {
-				if (currentFormerStudentContextGeneration === generation) {
-					set({ isLoading: true, error: null });
-				}
-
-				try {
-					const [currentAccount, currentUser] = await Promise.all([
-						api.identity.accounts.getMe(),
-						api.identity.users.getMe(),
-						api.partner.staff.getMe(),
-					]);
-
-					if (currentFormerStudentContextGeneration !== generation) {
-						return;
-					}
-
-					set({
-						currentAccount,
-						currentUser,
-						currentFormerStudent: null,
-						currentCourse: null,
-						isLoading: false,
-						isLoaded: true,
-						error: null,
-					});
-				} catch (error) {
-					if (currentFormerStudentContextGeneration !== generation) {
-						return;
-					}
-
-					set({
-						currentAccount: null,
-						currentUser: null,
-						currentFormerStudent: null,
-						currentCourse: null,
-						isLoading: false,
-						isLoaded: false,
-						error: resolveCurrentFormerStudentContextError(error),
-					});
-				} finally {
-					if (currentFormerStudentContextPromise === loadPromise) {
-						currentFormerStudentContextPromise = null;
-					}
-				}
-			})();
-
-			currentFormerStudentContextPromise = loadPromise;
-			return loadPromise;
-		}
-
-		return {
-			currentAccount: null,
-			currentUser: null,
-			currentFormerStudent: null,
-			currentCourse: null,
-			isLoading: false,
-			isLoaded: false,
-			error: null,
-			loadCurrentFormerStudentContext: async () => {
-				return loadCurrentFormerStudentContext(false);
-			},
-			refreshCurrentFormerStudentContext: async () => {
-				return loadCurrentFormerStudentContext(true);
-			},
-			clearCurrentFormerStudentContext: () => {
-				currentFormerStudentContextGeneration += 1;
-				currentFormerStudentContextPromise = null;
-
-				set({
-					currentAccount: null,
-					currentUser: null,
-					currentFormerStudent: null,
-					currentCourse: null,
-					isLoading: false,
-					isLoaded: false,
-					error: null,
-				});
-			},
-		};
+export const useCurrentFormerStudentStore = (<T>(
+	selector?: (state: LegacyCurrentFormerStudentState) => T,
+) => {
+	const fallbackSelector = (
+		state: ReturnType<typeof useCurrentStaffStore.getState>,
+	) => ({
+		currentAccount: state.currentAccount,
+		currentUser: state.currentUser,
+		currentFormerStudent: null,
+		currentCourse: null,
+		isLoading: state.isLoading,
+		isLoaded: state.isLoaded,
+		error: state.error,
+		loadCurrentFormerStudentContext: state.loadCurrentStaffContext,
+		refreshCurrentFormerStudentContext: state.refreshCurrentStaffContext,
+		clearCurrentFormerStudentContext: state.clearCurrentStaffContext,
 	});
+
+	return useCurrentStaffStore((state): T | LegacyCurrentFormerStudentState =>
+		selector ? selector(fallbackSelector(state)) : fallbackSelector(state),
+	);
+}) as <T>(selector: (state: LegacyCurrentFormerStudentState) => T) => T;

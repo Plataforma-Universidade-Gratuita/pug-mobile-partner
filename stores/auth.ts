@@ -5,7 +5,7 @@ import type { TokenResponse } from "@/types/api";
 import type { AuthStoreState, StoredSessionTokens } from "@/types/client";
 import { validatePartnerToken } from "@/utils";
 
-import { useCurrentFormerStudentStore } from "./current-former-student";
+import { useCurrentStaffStore } from "./current-staff";
 
 const { clearApiSession, configureApiSessionProvider, getApiSessionProvider } =
 	api;
@@ -40,15 +40,15 @@ const baseSessionProvider = getApiSessionProvider();
 
 let bootstrapPromise: Promise<boolean> | null = null;
 
-async function synchronizeCurrentFormerStudentContext(passwordWired: boolean) {
-	const currentFormerStudentStore = useCurrentFormerStudentStore.getState();
+async function synchronizeCurrentStaffContext(passwordWired: boolean) {
+	const currentStaffStore = useCurrentStaffStore.getState();
 
 	if (!passwordWired) {
-		currentFormerStudentStore.clearCurrentFormerStudentContext();
+		currentStaffStore.clearCurrentStaffContext();
 		return;
 	}
 
-	await currentFormerStudentStore.loadCurrentFormerStudentContext();
+	await currentStaffStore.loadCurrentStaffContext();
 }
 
 export const useAuthStore = create<AuthStoreState>((set, get) => ({
@@ -74,7 +74,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 	},
 
 	clearSessionState: () => {
-		useCurrentFormerStudentStore.getState().clearCurrentFormerStudentContext();
+		useCurrentStaffStore.getState().clearCurrentStaffContext();
 
 		set({
 			accessToken: null,
@@ -103,7 +103,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 		}
 
 		await getApiSessionProvider().persistSession(tokens);
-		await synchronizeCurrentFormerStudentContext(tokens.passwordWired);
+		await synchronizeCurrentStaffContext(tokens.passwordWired);
 		return tokens;
 	},
 
@@ -138,7 +138,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 
 				if (validStoredSession && requiresCredentialSetup !== null) {
 					set(validStoredSession);
-					await synchronizeCurrentFormerStudentContext(
+					await synchronizeCurrentStaffContext(
 						!validStoredSession.requiresCredentialSetup,
 					);
 					return true;
@@ -159,9 +159,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 				}
 
 				await getApiSessionProvider().persistSession(refreshedTokens);
-				await synchronizeCurrentFormerStudentContext(
-					refreshedTokens.passwordWired,
-				);
+				await synchronizeCurrentStaffContext(refreshedTokens.passwordWired);
 				return true;
 			} catch {
 				await clearApiSession();
@@ -190,7 +188,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 			}
 
 			await getApiSessionProvider().persistSession(tokens);
-			await synchronizeCurrentFormerStudentContext(tokens.passwordWired);
+			await synchronizeCurrentStaffContext(tokens.passwordWired);
 			return tokens;
 		} finally {
 			set({ isMutatingSession: false });

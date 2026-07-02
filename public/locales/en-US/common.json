@@ -1,36 +1,4 @@
 {
-	"academicDetails": {
-		"fields": {
-			"campus": "Campus",
-			"completedHours": "Completed hours",
-			"dueDate": "Due date",
-			"missingHours": "Missing hours",
-			"progress": "Progress",
-			"remainingDays": "Remaining days",
-			"requiredHours": "Required hours",
-			"startDate": "Start date"
-		},
-		"progressValue": "{{value}}% completed",
-		"sections": {
-			"counterpart": "Counterpart hours",
-			"period": "Period",
-			"record": "Academic record"
-		},
-		"state": {
-			"badge": "Academic state",
-			"emptyDescription": "We could not find an academic record for this session.",
-			"emptyTitle": "Academic record unavailable",
-			"errorDescription": "Refresh the screen or try again in a moment.",
-			"errorTitle": "Unable to load academic details",
-			"loadingDescription": "Fetching your current academic record and counterpart progress.",
-			"loadingTitle": "Loading academic details"
-		},
-		"status": {
-			"concluded": "Concluded",
-			"inProgress": "In progress"
-		},
-		"title": "Academic details"
-	},
 	"activity": {
 		"actions": {
 			"filters": "Open filters"
@@ -89,14 +57,9 @@
 		},
 		"attendanceScan": {
 			"actions": {
-				"allowCamera": "Allow camera",
-				"close": "Close scanner",
-				"done": "Done",
-				"scanAnother": "Scan another QR",
-				"tryAgain": "Scan again"
+				"allowCamera": "Allow camera"
 			},
 			"badge": "Attendance scan",
-			"resultHelper": "Review the scanned attendance information before continuing with validation.",
 			"scanHelper": "Point the camera at the former student's generated QR code.",
 			"scanTitle": "Scan a waiting attendance QR",
 			"states": {
@@ -389,18 +352,16 @@
 	},
 	"profile": {
 		"actions": {
-			"openAcademicDetails": "Academic details"
+			"openOrganizationalDetails": "Organizational details"
 		},
 		"badge": "Profile",
 		"errors": {
 			"load": "Some profile data could not be loaded right now."
 		},
 		"fields": {
-			"academicRegistration": "Academic registration",
 			"accountEmail": "Account",
-			"areaOfExpertise": "Area of expertise",
-			"course": "Course",
 			"cpf": "CPF",
+			"entity": "Entity",
 			"language": "Language",
 			"languageHelper": "Switch application language.",
 			"theme": "Theme",
@@ -426,8 +387,15 @@
 		},
 		"sections": {
 			"preferences": "Preferences and session",
-			"record": "Student record",
+			"record": "Employee record",
 			"session": "Session"
+		},
+		"states": {
+			"organizationEmptyDescription": "We could not find the current staff organization details for this session.",
+			"organizationEmptyTitle": "Organizational details unavailable",
+			"organizationErrorTitle": "Unable to load organizational details",
+			"organizationLoadingDescription": "Fetching the current entity and staff information for this session.",
+			"organizationLoadingTitle": "Loading organizational details"
 		},
 		"title": "Profile",
 		"values": {

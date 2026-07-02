@@ -1,14 +1,13 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 
 import { CameraView, useCameraPermissions } from "expo-camera";
-import { useRouter } from "expo-router";
-import { X } from "lucide-react-native";
+import { RefreshCcw, RotateCcw } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { ScrollView, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import * as api from "@/api";
-import { HeaderActionButton } from "@/components";
+import { ApiError } from "@/api/errors";
 import {
 	Badge,
 	Button,
@@ -17,9 +16,13 @@ import {
 	ModalScreenScaffold,
 } from "@/components/primitives";
 import { resolveAttendanceStatusTone } from "@/features/activity/utils";
-import { useThemeStore } from "@/stores";
+import { useCurrentStaffStore, useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
-import type { AttendanceComplexSearchItem } from "@/types/api";
+import type {
+	AttendanceComplexSearchItem,
+	AttendanceStatus,
+} from "@/types/api";
+import { withAlpha } from "@/utils";
 
 import {
 	ATTENDANCE_SCAN_LOOKUP_PAGE,
@@ -30,13 +33,25 @@ import { buildAttendanceScanLookupRequest } from "./utils";
 
 export function AttendanceScanModalScreen() {
 	const { t } = useTranslation();
-	const router = useRouter();
 	const insets = useSafeAreaInsets();
 	const theme = useThemeStore(state => state.theme);
+	const currentAccount = useCurrentStaffStore(state => state.currentAccount);
+	const currentUser = useCurrentStaffStore(state => state.currentUser);
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
 	const styles = useMemo(() => createStyles(theme, spec), [spec, theme]);
+	const validateAttendanceMutation =
+		api.project.attendances.useValidateAttendanceMutation();
 	const [permission, requestPermission] = useCameraPermissions();
+	const cameraRef = useRef<CameraView | null>(null);
+	const [cameraFacing, setCameraFacing] = useState<"back" | "front">("back");
+	const [availableLenses, setAvailableLenses] = useState<string[]>([]);
+	const [selectedLens, setSelectedLens] = useState<string | null>(
+		"builtInWideAngleCamera",
+	);
 	const [isResolving, setIsResolving] = useState(false);
+	const [validationError, setValidationError] = useState<string | null>(null);
+	const [pendingValidationStatus, setPendingValidationStatus] =
+		useState<AttendanceStatus | null>(null);
 	const [resolvedAttendance, setResolvedAttendance] =
 		useState<AttendanceComplexSearchItem | null>(null);
 	const [scanError, setScanError] = useState<string | null>(null);
@@ -79,9 +94,105 @@ export function AttendanceScanModalScreen() {
 		}
 	}
 
-	function resetScanState() {
-		setResolvedAttendance(null);
-		setScanError(null);
+	async function validateAttendance(status: AttendanceStatus) {
+		if (!resolvedAttendance || validateAttendanceMutation.isPending) {
+			return;
+		}
+
+		setValidationError(null);
+		setPendingValidationStatus(status);
+
+		try {
+			const validatedAttendance = await validateAttendanceMutation.mutateAsync({
+				id: resolvedAttendance.id,
+				body: {
+					status,
+					qrValidationHash:
+						resolvedAttendance.qrValidationInfo.qrValidationHash,
+				},
+			});
+
+			setResolvedAttendance(currentAttendance =>
+				currentAttendance
+					? {
+							...currentAttendance,
+							status: validatedAttendance.status,
+							attendanceInfo: {
+								...currentAttendance.attendanceInfo,
+								...validatedAttendance.attendanceInfo,
+							},
+							validator:
+								currentUser?.name && currentAccount?.email
+									? {
+											id: currentAccount.id,
+											name: currentUser.name,
+											email: currentAccount.email,
+										}
+									: currentAttendance.validator,
+						}
+					: currentAttendance,
+			);
+		} catch (error) {
+			setValidationError(
+				error instanceof ApiError
+					? error.message
+					: t("activity.attendanceScan.states.errorDescription"),
+			);
+		} finally {
+			setPendingValidationStatus(null);
+		}
+	}
+
+	async function handleCameraReady() {
+		const availableLenses = await cameraRef.current?.getAvailableLensesAsync();
+
+		if (availableLenses && availableLenses.length > 0) {
+			const nextLenses = [...availableLenses].sort((left, right) =>
+				left.localeCompare(right),
+			);
+
+			setAvailableLenses(nextLenses);
+			setSelectedLens(currentLens =>
+				currentLens && nextLenses.includes(currentLens)
+					? currentLens
+					: (nextLenses[0] ?? null),
+			);
+		}
+	}
+
+	function handleAvailableLensesChanged(lenses: string[]) {
+		const nextLenses = [...lenses].sort((left, right) =>
+			left.localeCompare(right),
+		);
+
+		setAvailableLenses(nextLenses);
+		setSelectedLens(currentLens =>
+			currentLens && nextLenses.includes(currentLens)
+				? currentLens
+				: (nextLenses[0] ?? null),
+		);
+	}
+
+	function cycleCameraLens() {
+		if (availableLenses.length <= 1) {
+			return;
+		}
+
+		setSelectedLens(currentLens => {
+			const currentIndex = currentLens
+				? availableLenses.indexOf(currentLens)
+				: -1;
+			const nextIndex =
+				currentIndex >= 0 ? (currentIndex + 1) % availableLenses.length : 0;
+
+			return availableLenses[nextIndex] ?? currentLens;
+		});
+	}
+
+	function toggleCameraFacing() {
+		setCameraFacing(currentFacing =>
+			currentFacing === "back" ? "front" : "back",
+		);
 	}
 
 	function renderStateCard(
@@ -106,37 +217,45 @@ export function AttendanceScanModalScreen() {
 		);
 	}
 
+	const canMarkPresent =
+		resolvedAttendance?.status.status === "WAITING" ||
+		resolvedAttendance?.status.status === "ABSENT";
+	const canMarkAbsent =
+		resolvedAttendance?.status.status === "WAITING" ||
+		resolvedAttendance?.status.status === "PRESENT";
 	const footer = resolvedAttendance ? (
 		<View style={styles.footer}>
-			<Button
-				variant="secondary"
-				onPress={resetScanState}
-			>
-				{t("activity.attendanceScan.actions.scanAnother")}
-			</Button>
-			<Button
-				onPress={() => {
-					router.back();
-				}}
-			>
-				{t("activity.attendanceScan.actions.done")}
-			</Button>
-		</View>
-	) : scanError ? (
-		<View style={styles.footer}>
-			<Button
-				variant="secondary"
-				onPress={resetScanState}
-			>
-				{t("activity.attendanceScan.actions.tryAgain")}
-			</Button>
-			<Button
-				onPress={() => {
-					router.back();
-				}}
-			>
-				{t("activity.attendanceScan.actions.done")}
-			</Button>
+			{validationError ? (
+				<Label
+					role="helper"
+					tone="danger"
+				>
+					{validationError}
+				</Label>
+			) : null}
+			<View style={styles.footerActions}>
+				{canMarkAbsent ? (
+					<Button
+						variant="secondary"
+						loading={pendingValidationStatus === "ABSENT"}
+						onPress={() => {
+							void validateAttendance("ABSENT");
+						}}
+					>
+						Mark absent
+					</Button>
+				) : null}
+				{canMarkPresent ? (
+					<Button
+						loading={pendingValidationStatus === "PRESENT"}
+						onPress={() => {
+							void validateAttendance("PRESENT");
+						}}
+					>
+						Mark present
+					</Button>
+				) : null}
+			</View>
 		</View>
 	) : !permission?.granted ? (
 		<View style={styles.footer}>
@@ -156,15 +275,6 @@ export function AttendanceScanModalScreen() {
 			<ModalScreenScaffold
 				title={t("activity.attendanceScan.title")}
 				subtitle={t("activity.attendanceScan.subtitle")}
-				leftAccessory={
-					<HeaderActionButton
-						accessibilityLabel={t("activity.attendanceScan.actions.close")}
-						icon={X}
-						onPress={() => {
-							router.back();
-						}}
-					/>
-				}
 				footer={footer}
 			>
 				<ScrollView
@@ -178,22 +288,31 @@ export function AttendanceScanModalScreen() {
 						{resolvedAttendance ? (
 							<View style={styles.resultCard}>
 								<View style={styles.headerBlock}>
-									<Badge
-										tone={resolveAttendanceStatusTone(
-											resolvedAttendance.status.status,
-										)}
-										variant="primary"
-									>
-										{resolvedAttendance.status.statusFormatted}
-									</Badge>
+									<View style={styles.headerMetaRow}>
+										<Badge
+											style={styles.headerBadge}
+											tone={resolveAttendanceStatusTone(
+												resolvedAttendance.status.status,
+											)}
+											variant="primary"
+										>
+											{resolvedAttendance.status.statusFormatted}
+										</Badge>
+										<Badge
+											style={styles.headerBadgeRight}
+											tone="info"
+											variant="secondary"
+										>
+											{t("activity.attendance.duration", {
+												count: resolvedAttendance.qrValidationInfo.duration,
+											})}
+										</Badge>
+									</View>
 									<Label
 										role="title"
 										style={styles.title}
 									>
 										{resolvedAttendance.project.name}
-									</Label>
-									<Label role="helper">
-										{t("activity.attendanceScan.resultHelper")}
 									</Label>
 								</View>
 								<View style={styles.rowGroup}>
@@ -211,16 +330,6 @@ export function AttendanceScanModalScreen() {
 										</Label>
 										<Label role="field">
 											{resolvedAttendance.student.academicRegistration}
-										</Label>
-									</View>
-									<View style={styles.row}>
-										<Label role="helper">
-											{t("activity.attendanceQr.fields.duration")}
-										</Label>
-										<Label role="field">
-											{t("activity.attendance.duration", {
-												count: resolvedAttendance.qrValidationInfo.duration,
-											})}
 										</Label>
 									</View>
 									<View style={styles.row}>
@@ -278,8 +387,12 @@ export function AttendanceScanModalScreen() {
 							<View style={styles.cameraCard}>
 								<View style={styles.cameraFrame}>
 									<CameraView
+										ref={cameraRef}
 										barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
-										facing="back"
+										facing={cameraFacing}
+										onAvailableLensesChanged={event => {
+											handleAvailableLensesChanged(event.lenses);
+										}}
 										onBarcodeScanned={
 											isResolving
 												? undefined
@@ -292,8 +405,52 @@ export function AttendanceScanModalScreen() {
 														void resolveAttendanceFromQrHash(qrValidationHash);
 													}
 										}
+										onCameraReady={() => {
+											void handleCameraReady();
+										}}
+										selectedLens={selectedLens ?? undefined}
 										style={styles.camera}
 									/>
+									<View style={styles.cameraControls}>
+										<Pressable
+											accessibilityLabel="Cycle camera lens"
+											disabled={availableLenses.length <= 1}
+											onPress={cycleCameraLens}
+											style={({ pressed }) => [
+												styles.cameraControlButton,
+												{
+													backgroundColor: pressed
+														? withAlpha(theme.colors.surface1, 0.92)
+														: withAlpha(theme.colors.surface1, 0.84),
+													borderColor: withAlpha(theme.colors.surface2, 0.28),
+													opacity: availableLenses.length <= 1 ? 0.56 : 1,
+												},
+											]}
+										>
+											<RefreshCcw
+												color={theme.colors.text}
+												size={18}
+											/>
+										</Pressable>
+										<Pressable
+											accessibilityLabel="Switch front or back camera"
+											onPress={toggleCameraFacing}
+											style={({ pressed }) => [
+												styles.cameraControlButton,
+												{
+													backgroundColor: pressed
+														? withAlpha(theme.colors.surface1, 0.92)
+														: withAlpha(theme.colors.surface1, 0.84),
+													borderColor: withAlpha(theme.colors.surface2, 0.28),
+												},
+											]}
+										>
+											<RotateCcw
+												color={theme.colors.text}
+												size={18}
+											/>
+										</Pressable>
+									</View>
 								</View>
 								<View style={styles.cameraCopy}>
 									<Label role="field">

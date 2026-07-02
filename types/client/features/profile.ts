@@ -17,14 +17,9 @@ export interface ProfileInfoCardProps {
 	emailValue: string;
 	activeStatusLabel: string;
 	activeTone: BadgeTone;
-	academicRegistrationLabel: string;
-	academicRegistrationValue: string;
-	campusValue: string;
-	courseLabel: string;
-	courseValue: string;
-	areaOfExpertiseLabel: string;
-	areaOfExpertiseValue: string;
-	onOpenAcademicDetails: () => void;
+	entityLabel: string;
+	entityValue: string;
+	onOpenDetails: () => void;
 	errorMessage?: string | undefined;
 	isLoading: boolean;
 }

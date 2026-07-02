@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BrandScreenHeader, HeaderActionButton } from "@/components";
 import {
 	useAuthStore,
-	useCurrentFormerStudentStore,
+	useCurrentStaffStore,
 	useLocaleStore,
 	useThemeStore,
 } from "@/stores";
@@ -49,29 +49,18 @@ export function ProfileScreen() {
 		theme,
 		insets.bottom,
 	);
-	const currentAccount = useCurrentFormerStudentStore(
-		state => state.currentAccount,
-	);
-	const currentUser = useCurrentFormerStudentStore(state => state.currentUser);
-	const currentFormerStudent = useCurrentFormerStudentStore(
-		state => state.currentFormerStudent,
-	);
-	const currentCourse = useCurrentFormerStudentStore(
-		state => state.currentCourse,
-	);
-	const currentFormerStudentError = useCurrentFormerStudentStore(
-		state => state.error,
-	);
-	const isProfileLoading = useCurrentFormerStudentStore(
-		state => state.isLoading,
-	);
-	const isProfileLoaded = useCurrentFormerStudentStore(state => state.isLoaded);
-	const refreshCurrentFormerStudentContext = useCurrentFormerStudentStore(
-		state => state.refreshCurrentFormerStudentContext,
+	const currentAccount = useCurrentStaffStore(state => state.currentAccount);
+	const currentUser = useCurrentStaffStore(state => state.currentUser);
+	const currentEntity = useCurrentStaffStore(state => state.currentEntity);
+	const currentStaffError = useCurrentStaffStore(state => state.error);
+	const isProfileLoading = useCurrentStaffStore(state => state.isLoading);
+	const isProfileLoaded = useCurrentStaffStore(state => state.isLoaded);
+	const refreshCurrentStaffContext = useCurrentStaffStore(
+		state => state.refreshCurrentStaffContext,
 	);
 	const loadingLabel = t("profile.values.loading");
 	const unavailableLabel = t("profile.values.unavailable");
-	const hasProfileLoadError = currentFormerStudentError !== null;
+	const hasProfileLoadError = currentStaffError !== null;
 	const isInitialLoading = !isProfileLoaded && isProfileLoading;
 	const activeStatusLabel = isProfileLoading
 		? loadingLabel
@@ -104,31 +93,12 @@ export function ProfileScreen() {
 		loadingLabel,
 		unavailableLabel,
 	);
-	const academicRegistration = resolveProfileFieldValue(
-		currentFormerStudent?.academicRegistration,
+	const entityName = resolveProfileFieldValue(
+		currentEntity?.name,
 		isProfileLoading,
 		loadingLabel,
 		unavailableLabel,
 	);
-	const campus = resolveProfileFieldValue(
-		currentFormerStudent?.campus.campusFormatted,
-		isProfileLoading,
-		loadingLabel,
-		unavailableLabel,
-	);
-	const courseName = resolveProfileFieldValue(
-		currentCourse?.name,
-		isProfileLoading,
-		loadingLabel,
-		unavailableLabel,
-	);
-	const areaOfExpertiseName = resolveProfileFieldValue(
-		currentCourse?.areaOfExpertise.name,
-		isProfileLoading,
-		loadingLabel,
-		unavailableLabel,
-	);
-
 	async function handleRefresh() {
 		if (isRefreshing) {
 			return;
@@ -137,7 +107,7 @@ export function ProfileScreen() {
 		setIsRefreshing(true);
 
 		try {
-			await refreshCurrentFormerStudentContext();
+			await refreshCurrentStaffContext();
 		} finally {
 			setIsRefreshing(false);
 		}
@@ -187,26 +157,19 @@ export function ProfileScreen() {
 							name={studentName}
 						/>
 						<InfoCard
-							academicRegistrationLabel={t(
-								"profile.fields.academicRegistration",
-							)}
-							academicRegistrationValue={academicRegistration}
 							activeStatusLabel={activeStatusLabel}
 							activeTone={activeTone}
-							areaOfExpertiseLabel={t("profile.fields.areaOfExpertise")}
-							areaOfExpertiseValue={areaOfExpertiseName}
-							campusValue={campus}
-							courseLabel={t("profile.fields.course")}
-							courseValue={courseName}
-							detailsLabel={t("profile.actions.openAcademicDetails")}
+							detailsLabel={t("profile.actions.openOrganizationalDetails")}
 							emailLabel={t("profile.fields.accountEmail")}
 							emailValue={email}
+							entityLabel={t("profile.fields.entity")}
+							entityValue={entityName}
 							errorMessage={
 								hasProfileLoadError ? t("profile.errors.load") : undefined
 							}
 							isLoading={isRefreshing}
-							onOpenAcademicDetails={() => {
-								router.push("/profile/academic");
+							onOpenDetails={() => {
+								router.push("/profile/organizational");
 							}}
 							sectionTitle={t("profile.sections.record")}
 						/>

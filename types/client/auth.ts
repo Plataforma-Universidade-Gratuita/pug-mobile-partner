@@ -7,7 +7,7 @@ export interface PugJwtPayload {
 	exp: number;
 }
 
-export interface StudentTokenValidationResult {
+export interface TokenValidationResult {
 	isValid: boolean;
 	payload?: PugJwtPayload;
 }

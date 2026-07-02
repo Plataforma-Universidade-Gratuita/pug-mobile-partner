@@ -18,14 +18,9 @@ export function InfoCard({
 	emailValue,
 	activeStatusLabel,
 	activeTone,
-	academicRegistrationLabel,
-	academicRegistrationValue,
-	campusValue,
-	courseLabel,
-	courseValue,
-	areaOfExpertiseLabel,
-	areaOfExpertiseValue,
-	onOpenAcademicDetails,
+	entityLabel,
+	entityValue,
+	onOpenDetails,
 	errorMessage,
 	isLoading,
 }: ProfileInfoCardProps) {
@@ -76,72 +71,21 @@ export function InfoCard({
 				/>
 				<View style={styles.row}>
 					<View style={styles.rowCopy}>
-						<Label role="caption">{academicRegistrationLabel}</Label>
+						<Label role="caption">{entityLabel}</Label>
 						{isLoading ? (
 							<LoadingBlock
-								width="46%"
+								width="64%"
 								height={18}
 							/>
 						) : (
-							<Label style={styles.rowValue}>{academicRegistrationValue}</Label>
-						)}
-					</View>
-
-					<View style={styles.rowAccessory}>
-						{isLoading ? (
-							<LoadingBlock
-								width={104}
-								height={28}
-								radius={theme.radius.circle}
-							/>
-						) : (
-							<Badge
-								tone="neutral"
-								variant="primary"
-							>
-								{campusValue}
-							</Badge>
-						)}
-					</View>
-				</View>
-
-				<View
-					style={[styles.rowDivider, { borderTopColor: spec.panelBorder }]}
-				/>
-				<View style={styles.row}>
-					<View style={styles.rowCopy}>
-						<Label role="caption">{courseLabel}</Label>
-						{isLoading ? (
-							<LoadingBlock
-								width="62%"
-								height={18}
-							/>
-						) : (
-							<Label style={styles.rowValue}>{courseValue}</Label>
-						)}
-					</View>
-				</View>
-
-				<View
-					style={[styles.rowDivider, { borderTopColor: spec.panelBorder }]}
-				/>
-				<View style={styles.row}>
-					<View style={styles.rowCopy}>
-						<Label role="caption">{areaOfExpertiseLabel}</Label>
-						{isLoading ? (
-							<LoadingBlock
-								width="54%"
-								height={18}
-							/>
-						) : (
-							<Label style={styles.rowValue}>{areaOfExpertiseValue}</Label>
+							<Label style={styles.rowValue}>{entityValue}</Label>
 						)}
 					</View>
 				</View>
 			</View>
 
 			<Pressable
-				onPress={onOpenAcademicDetails}
+				onPress={onOpenDetails}
 				style={({ pressed }) => [
 					styles.actionButton,
 					{
