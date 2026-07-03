@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import * as SystemUI from "expo-system-ui";
 import { View, useColorScheme } from "react-native";
 
+import { AppSnackbarHost } from "@/components";
 import { useAuthStore, useLocaleStore, useThemeStore } from "@/stores";
 import { coerceResolvedTheme, getStatusBarStyle } from "@/utils";
 
@@ -83,6 +84,8 @@ export function RootNavigator() {
 				<Stack.Screen name="(public)" />
 				<Stack.Screen name="(protected)" />
 			</Stack>
+
+			<AppSnackbarHost />
 
 			{isAppBootstrapping ? (
 				<View style={styles.bootstrapOverlay}>
