@@ -274,3 +274,12 @@ pug-mobile-student/
 - [Architecture notes](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-mobile-student/ARCHITECTURE.md)
 - [Development notes](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-mobile-student/DEVELOPMENT.md)
 - [CI/CD notes](https://github.com/Plataforma-Universidade-Gratuita/pug-docs/blob/main/pug-mobile-student/CICD.md)
+
+## License
+
+This repository contains proprietary software. All rights are reserved.
+
+No use, copying, modification, distribution, hosting, sublicensing, or commercial
+use is permitted without prior express written permission from the copyright holder.
+
+See [LICENSE](./LICENSE).
