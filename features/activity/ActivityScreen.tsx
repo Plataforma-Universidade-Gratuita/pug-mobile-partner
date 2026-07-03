@@ -50,7 +50,7 @@ import {
 	sortActivityEnrollmentItems,
 } from "./utils";
 
-export function ActivityScreen() {
+export function AttendancesScreen() {
 	const { t } = useTranslation();
 	const params = useLocalSearchParams<{ tab?: string | string[] }>();
 	const scrollRef = useRef<ScrollView>(null);

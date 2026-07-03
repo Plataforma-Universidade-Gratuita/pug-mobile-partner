@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Tabs } from "expo-router";
-import { House, ListChecks, Search, UserRound } from "lucide-react-native";
+import { Folder, House, ListChecks, UserRound } from "lucide-react-native";
 
 import {
 	AuthenticatedTabBar,
@@ -31,11 +31,11 @@ export default function ProtectedTabsLayout() {
 				}}
 			/>
 			<Tabs.Screen
-				name="discover"
+				name="projects"
 				options={{
-					title: "Discover",
+					title: "Projects",
 					tabBarIcon: ({ color, size }) => (
-						<Search
+						<Folder
 							color={color}
 							size={size ?? 20}
 							strokeWidth={1.95}
@@ -44,9 +44,9 @@ export default function ProtectedTabsLayout() {
 				}}
 			/>
 			<Tabs.Screen
-				name="activity"
+				name="attendances"
 				options={{
-					title: "Activity",
+					title: "Attendances",
 					tabBarIcon: ({ color, size }) => (
 						<ListChecks
 							color={color}

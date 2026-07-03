@@ -69,7 +69,7 @@ export function ActivityListSection({
 								}
 								onPress={() => {
 									router.push(
-										`/activity/enrollments/${item.enrollment.projectId}`,
+										`/enrollment/${item.enrollment.projectId}`,
 									);
 								}}
 								projectName={resolveProjectName(
@@ -108,7 +108,7 @@ export function ActivityListSection({
 								})}
 								isLoading={isLoading}
 								onPress={() => {
-									router.push(`/activity/attendances/${item.attendance.id}`);
+									router.push(`/attendance/${item.attendance.id}`);
 								}}
 								projectName={resolveProjectName(
 									item.project,
