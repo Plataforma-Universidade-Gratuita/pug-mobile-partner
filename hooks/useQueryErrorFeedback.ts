@@ -3,7 +3,9 @@ import { useEffect, useRef } from "react";
 import { useFeedbackStore } from "@/stores";
 import type { QueryErrorFeedbackDescriptor } from "@/types/client";
 
-export function useQueryErrorFeedback(descriptors: QueryErrorFeedbackDescriptor[]) {
+export function useQueryErrorFeedback(
+	descriptors: QueryErrorFeedbackDescriptor[],
+) {
 	const shownAtRef = useRef(new Map<string, number>());
 	const showDanger = useFeedbackStore(state => state.showDanger);
 

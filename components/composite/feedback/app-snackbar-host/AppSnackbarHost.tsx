@@ -20,17 +20,17 @@ export function AppSnackbarHost() {
 	const accentColor = current
 		? resolveFeedbackAccentColor(current.tone, theme.colors)
 		: theme.colors.info;
+	const action =
+		current?.actionLabel && current.onAction
+			? {
+					label: current.actionLabel,
+					onPress: current.onAction,
+				}
+			: null;
 
 	return (
 		<Snackbar
-			action={
-				current?.actionLabel && current.onAction
-					? {
-							label: current.actionLabel,
-							onPress: current.onAction,
-						}
-					: undefined
-			}
+			{...(action ? { action } : {})}
 			duration={FEEDBACK_SNACKBAR_DURATION}
 			onDismiss={dismissFeedback}
 			style={[styles.snackbar, { borderColor: accentColor }]}
@@ -42,7 +42,7 @@ export function AppSnackbarHost() {
 		>
 			{current ? (
 				<View style={styles.message}>
-					<Text style={[styles.title, { color: accentColor }]}> 
+					<Text style={[styles.title, { color: accentColor }]}>
 						{resolveFeedbackIcon(current.tone)}
 					</Text>
 					<View style={styles.content}>

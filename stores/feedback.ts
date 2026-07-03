@@ -1,6 +1,10 @@
 import { create } from "zustand";
 
-import type { FeedbackOptions, FeedbackStoreState, FeedbackTone } from "@/types/client";
+import type {
+	FeedbackOptions,
+	FeedbackStoreState,
+	FeedbackTone,
+} from "@/types/client";
 
 let nextFeedbackId = 0;
 
@@ -22,7 +26,9 @@ function createFeedbackMessage(
 export const useFeedbackStore = create<FeedbackStoreState>(set => ({
 	current: null,
 	showFeedback: message => {
-		set({ current: createFeedbackMessage(message.tone, message.title, message) });
+		set({
+			current: createFeedbackMessage(message.tone, message.title, message),
+		});
 	},
 	showSuccess: (title, options) => {
 		set({ current: createFeedbackMessage("success", title, options) });

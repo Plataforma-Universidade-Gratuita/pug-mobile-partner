@@ -1,5 +1,8 @@
 import { ApiError } from "@/api/errors";
-import type { ApiFeedbackContent, ApiFeedbackContentOptions } from "@/types/client";
+import type {
+	ApiFeedbackContent,
+	ApiFeedbackContentOptions,
+} from "@/types/client";
 
 function isMeaningfulMessage(message: string | undefined): message is string {
 	if (!message) return false;

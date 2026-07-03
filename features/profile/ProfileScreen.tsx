@@ -22,7 +22,7 @@ import {
 	InfoCard,
 	PreferencesCard,
 	ProfileLogoutSheet,
-	StudentCard,
+	StaffCard,
 } from "./profile-sections";
 import { createStyles } from "./styles";
 import { resolveProfileFieldValue } from "./utils";
@@ -149,7 +149,7 @@ export function ProfileScreen() {
 					<ProfileLoadingSkeleton />
 				) : (
 					<View style={styles.shell}>
-						<StudentCard
+						<StaffCard
 							badgeLabel={t("profile.badge")}
 							cpfLabel={t("profile.fields.cpf")}
 							cpfValue={cpf}

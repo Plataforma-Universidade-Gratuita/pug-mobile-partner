@@ -12,7 +12,7 @@ import { createSectionStyles } from "./styles";
 
 const brandLogo = require("../../../public/assets/brand/pug-logo.png");
 
-export function StudentCard({
+export function StaffCard({
 	badgeLabel,
 	name,
 	cpfLabel,

@@ -1,4 +1,4 @@
-import i18n from "i18next";
+import { t } from "i18next";
 import { create } from "zustand";
 
 import * as api from "@/api";
@@ -205,15 +205,13 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 			await get().refreshSession();
 			useFeedbackStore
 				.getState()
-				.showSuccess(i18n.t("feedback.auth.wireCredentials.success.title"), {
-					description: i18n.t(
-						"feedback.auth.wireCredentials.success.description",
-					),
+				.showSuccess(t("feedback.auth.wireCredentials.success.title"), {
+					description: t("feedback.auth.wireCredentials.success.description"),
 				});
 		} catch (error) {
 			const feedback = getApiFeedbackContent(error, {
-				fallbackTitle: i18n.t("feedback.auth.wireCredentials.error.title"),
-				fallbackDescription: i18n.t(
+				fallbackTitle: t("feedback.auth.wireCredentials.error.title"),
+				fallbackDescription: t(
 					"feedback.auth.wireCredentials.error.description",
 				),
 			});
