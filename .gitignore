@@ -43,6 +43,7 @@ mock
 # markdown notes
 *.md
 !README.md
+!NOTICE.md
 
 
 # typescript
