@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2026 Mateus Fernandes and Plataforma Universidade Gratuita.
+ * All rights reserved.
+ *
+ * This source code is proprietary and confidential. Unauthorized use,
+ * copying, modification, distribution, or deployment is prohibited.
+ */
 import { create } from "zustand";
 
 import { DEFAULT_LANG, LANG_STORAGE_KEY, SUPPORTED_LANGS } from "@/constants";

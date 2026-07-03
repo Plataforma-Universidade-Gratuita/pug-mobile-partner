@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2026 Mateus Fernandes and Plataforma Universidade Gratuita.
+ * All rights reserved.
+ *
+ * This source code is proprietary and confidential. Unauthorized use,
+ * copying, modification, distribution, or deployment is prohibited.
+ */
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { Animated, Modal, Pressable, View } from "react-native";

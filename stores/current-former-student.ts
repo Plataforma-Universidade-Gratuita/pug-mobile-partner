@@ -1,4 +1,11 @@
 /*
+ * Copyright (c) 2026 Mateus Fernandes and Plataforma Universidade Gratuita.
+ * All rights reserved.
+ *
+ * This source code is proprietary and confidential. Unauthorized use,
+ * copying, modification, distribution, or deployment is prohibited.
+ */
+/*
  * Temporary compatibility shim for copied student-bound screens that have not
  * been migrated yet. Auth and profile use the real current-staff store.
  */
