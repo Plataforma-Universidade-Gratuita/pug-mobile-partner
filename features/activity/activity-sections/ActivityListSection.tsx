@@ -68,9 +68,10 @@ export function ActivityListSection({
 									t("activity.values.projectFallback")
 								}
 								onPress={() => {
-									router.push(
-										`/enrollment/${item.enrollment.projectId}`,
-									);
+									router.push({
+										pathname: "/enrollment/[id]",
+										params: { id: item.enrollment.projectId },
+									});
 								}}
 								projectName={resolveProjectName(
 									item.project,
@@ -108,7 +109,10 @@ export function ActivityListSection({
 								})}
 								isLoading={isLoading}
 								onPress={() => {
-									router.push(`/attendance/${item.attendance.id}`);
+									router.push({
+										pathname: "/attendance/[id]",
+										params: { id: item.attendance.id },
+									});
 								}}
 								projectName={resolveProjectName(
 									item.project,

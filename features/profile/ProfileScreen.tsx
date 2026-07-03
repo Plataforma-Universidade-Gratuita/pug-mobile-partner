@@ -169,7 +169,7 @@ export function ProfileScreen() {
 							}
 							isLoading={isRefreshing}
 							onOpenDetails={() => {
-								router.push("/profile/organizational");
+								router.push("/profile/organization");
 							}}
 							sectionTitle={t("profile.sections.record")}
 						/>

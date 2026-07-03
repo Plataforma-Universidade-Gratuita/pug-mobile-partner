@@ -2,6 +2,7 @@ import React from "react";
 
 import { Tabs } from "expo-router";
 import { Folder, House, ListChecks, UserRound } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 
 import {
 	AuthenticatedTabBar,
@@ -10,6 +11,7 @@ import {
 import { useThemeStore } from "@/stores";
 
 export default function ProtectedTabsLayout() {
+	const { t } = useTranslation();
 	const theme = useThemeStore(state => state.theme);
 
 	return (
@@ -20,7 +22,7 @@ export default function ProtectedTabsLayout() {
 			<Tabs.Screen
 				name="index"
 				options={{
-					title: "Home",
+					title: t("navigation.tabs.home"),
 					tabBarIcon: ({ color, size }) => (
 						<House
 							color={color}
@@ -33,7 +35,7 @@ export default function ProtectedTabsLayout() {
 			<Tabs.Screen
 				name="projects"
 				options={{
-					title: "Projects",
+					title: t("navigation.tabs.projects"),
 					tabBarIcon: ({ color, size }) => (
 						<Folder
 							color={color}
@@ -46,7 +48,7 @@ export default function ProtectedTabsLayout() {
 			<Tabs.Screen
 				name="attendances"
 				options={{
-					title: "Attendances",
+					title: t("navigation.tabs.attendances"),
 					tabBarIcon: ({ color, size }) => (
 						<ListChecks
 							color={color}
@@ -59,7 +61,7 @@ export default function ProtectedTabsLayout() {
 			<Tabs.Screen
 				name="profile"
 				options={{
-					title: "Profile",
+					title: t("navigation.tabs.profile"),
 					tabBarIcon: ({ color, size }) => (
 						<UserRound
 							color={color}

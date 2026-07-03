@@ -1,460 +1,478 @@
 {
-	"activity": {
-		"actions": {
-			"filters": "Abrir filtros"
-		},
-		"attendance": {
-			"duration": "{{count}}h registradas",
-			"waiting": "Aguardando"
-		},
-		"attendanceDetail": {
-			"actions": {
-				"openEnrollment": "Abrir inscrição",
-				"showQr": "Mostrar QR code"
-			},
-			"fields": {
-				"formerStudent": "Ex-aluno",
-				"registration": "Matrícula acadêmica"
-			},
-			"metrics": {
-				"createdAt": "Criado em",
-				"validatedAt": "Validado em",
-				"validator": "Validador"
-			},
-			"sections": {
-				"validation": "Dados de validação"
-			},
-			"states": {
-				"errorDescription": "Atualize a tela ou tente novamente em instantes.",
-				"errorTitle": "Não foi possível carregar esta presença",
-				"missingDescription": "Não encontramos esta presença na sua lista de atividades atual.",
-				"missingTitle": "Presença indisponível"
-			},
-			"subtitle": "Revise o estado de validação e o projeto vinculado antes de abri-lo novamente.",
-			"title": "Detalhes da presença",
-			"values": {
-				"notValidated": "Ainda não validada"
-			}
-		},
-		"attendanceQr": {
-			"actions": {
-				"done": "Concluído"
-			},
-			"fields": {
-				"duration": "Duração registrada"
-			},
-			"helper": "Mantenha o código totalmente visível até a validação ser concluída.",
-			"states": {
-				"errorDescription": "Atualize o modal ou tente novamente em instantes.",
-				"errorTitle": "Não foi possível carregar este QR code",
-				"loadingDescription": "Buscando a presença selecionada e gerando o QR code.",
-				"loadingTitle": "Carregando QR de presença",
-				"missingDescription": "Não encontramos esta presença ou seu hash de validação.",
-				"missingTitle": "QR code indisponível"
-			},
-			"subtitle": "Apresente este código para que a presença no projeto seja validada.",
-			"title": "QR de presença"
-		},
-		"attendanceScan": {
-			"actions": {
-				"allowCamera": "Permitir câmera"
-			},
-			"badge": "Leitura de presença",
-			"scanHelper": "Aponte a câmera para o QR code gerado pelo ex-aluno.",
-			"scanTitle": "Escaneie um QR de presença aguardando validação",
-			"states": {
-				"errorDescription": "Não conseguimos resolver este QR code agora. Tente escanear novamente em instantes.",
-				"notFoundDescription": "Nenhuma presença aguardando validação corresponde a este QR code.",
-				"notFoundTitle": "Presença não encontrada",
-				"permissionDeniedDescription": "O acesso à câmera é necessário para escanear o QR code exibido pelo ex-aluno.",
-				"permissionDeniedTitle": "Acesso à câmera necessário",
-				"permissionLoadingDescription": "Verificando se a câmera está disponível para leitura de QR.",
-				"permissionLoadingTitle": "Preparando scanner"
-			},
-			"subtitle": "Escaneie o QR code gerado pelo ex-aluno para pré-visualizar os detalhes da presença.",
-			"title": "Escanear QR de presença"
-		},
-		"chips": {
-			"active": "Projetos ativos",
-			"needsAttendance": "Precisa de presença",
-			"pending": "Em análise",
-			"recent": "Registros recentes",
-			"waiting": "Aguardando"
-		},
-		"enrollment": {},
-		"enrollmentDetail": {
-			"actions": {
-				"openProject": "Detalhes do projeto"
-			},
-			"attendancesHelper": "Revise apenas as presenças registradas neste projeto para sua inscrição atual.",
-			"attendancesTitle": "Presenças nesta inscrição",
-			"badge": "Inscrição",
-			"states": {
-				"emptyAttendancesDescription": "As presenças registradas para esta inscrição aparecerão aqui assim que forem criadas.",
-				"emptyAttendancesTitle": "Nenhuma presença ainda",
-				"errorDescription": "Atualize a tela ou tente novamente em instantes.",
-				"errorTitle": "Não foi possível carregar esta inscrição",
-				"missingDescription": "Não encontramos uma das suas inscrições atuais para este projeto.",
-				"missingTitle": "Inscrição indisponível"
-			},
-			"title": "Detalhes da inscrição"
-		},
-		"filters": {
-			"apply": "Aplicar",
-			"clear": "Limpar",
-			"searchHelperAttendances": "Busca pelo nome do projeto.",
-			"searchHelperEnrollments": "Busca pelo nome do projeto ou da entidade.",
-			"searchLabel": "Buscar",
-			"searchPlaceholderAttendances": "Buscar por nome do projeto",
-			"searchPlaceholderEnrollments": "Buscar por projeto ou entidade",
-			"statusesHelper": "Selecione um ou mais status da lista atual.",
-			"statusesLabel": "Status",
-			"subtitle": "Aplique filtros locais para refinar a lista de atividades atual.",
-			"title": "Filtrar atividade"
-		},
-		"focus": {
-			"activeDescription": "Acompanhe o progresso dos projetos e registre presenças no prazo.",
-			"activeTitle": "{{count}} inscrições ativas em andamento",
-			"attendancesDescription": "Revise validações recentes e acompanhe registros ainda aguardando confirmação.",
-			"attendancesTitle": "{{count}} presenças acompanhadas até agora",
-			"pendingDescription": "Acompanhe respostas dos parceiros e mova inscrições aprovadas para o fluxo de presença.",
-			"pendingTitle": "{{count}} inscrições pendentes precisam de atenção"
-		},
-		"sections": {
-			"attendances": "Suas presenças",
-			"attendancesHelper": "Revise o estado de validação e retorne ao projeto relacionado.",
-			"enrollments": "Suas inscrições",
-			"enrollmentsHelper": "Acompanhe o status de aprovação e abra cada projeto para ver detalhes."
-		},
-		"segments": {
-			"attendances": "Presenças",
-			"enrollments": "Inscrições"
-		},
-		"states": {
-			"badge": "Estado da atividade",
-			"emptyAttendancesDescription": "Os registros de presença aparecerão aqui quando sua atividade em projetos começar.",
-			"emptyAttendancesTitle": "Nenhuma presença ainda",
-			"emptyEnrollmentsDescription": "Os projetos em que você se inscrever aparecerão aqui assim que forem criados.",
-			"emptyEnrollmentsTitle": "Nenhuma inscrição ainda",
-			"errorDescription": "Atualize a tela ou tente novamente em instantes.",
-			"errorTitle": "Não foi possível carregar a atividade",
-			"filteredEmptyAttendancesDescription": "Tente limpar um ou mais filtros para ver mais presenças.",
-			"filteredEmptyAttendancesTitle": "Nenhuma presença corresponde a estes filtros",
-			"filteredEmptyEnrollmentsDescription": "Tente limpar um ou mais filtros para ver mais inscrições.",
-			"filteredEmptyEnrollmentsTitle": "Nenhuma inscrição corresponde a estes filtros",
-			"loadingDescription": "Buscando inscrições, presenças e detalhes dos projetos relacionados.",
-			"loadingTitle": "Carregando sua atividade"
-		},
-		"summary": {
-			"active": "Ativas",
-			"attendances": "Presenças",
-			"pending": "Pendentes"
-		},
-		"title": "Atividade",
-		"values": {
-			"projectFallback": "Projeto indisponível"
-		}
-	},
-	"attendanceCreate": {
-		"actions": {
-			"submit": "Criar presença"
-		},
-		"duration": {
-			"helper": "Use a quantidade de horas concluídas nesta atividade do projeto.",
-			"label": "Duração em horas",
-			"placeholder": "Exemplo: 2"
-		},
-		"errors": {
-			"durationInvalid": "Informe uma duração maior que zero.",
-			"durationRequired": "A duração é obrigatória.",
-			"fallback": "Não foi possível criar esta presença agora. Tente novamente em instantes.",
-			"missingFormerStudent": "Não foi possível resolver o contexto do ex-aluno atual.",
-			"projectRequired": "Selecione um projeto antes de continuar."
-		},
-		"project": {
-			"helper": "Escolha uma das suas inscrições aprovadas em projetos.",
-			"label": "Projeto",
-			"lockedHelper": "Esta presença será criada para o projeto atual.",
-			"selected": "Projeto selecionado",
-			"selectedFromProject": "Selecionado a partir deste projeto"
-		},
-		"states": {
-			"badge": "Estado da presença",
-			"emptyDescription": "Você precisa de uma inscrição aprovada antes de registrar uma nova presença.",
-			"emptyTitle": "Nenhum projeto aprovado ainda",
-			"errorDescription": "Atualize o modal ou tente novamente em instantes.",
-			"errorTitle": "Não foi possível preparar o formulário de presença",
-			"loadingDescription": "Buscando suas inscrições aprovadas e o contexto de projeto disponível.",
-			"loadingTitle": "Carregando formulário de presença"
-		},
-		"subtitle": "Registre suas horas de projeto e abra o QR de validação logo após salvar.",
-		"title": "Nova presença"
-	},
-	"auth": {
-		"login": {
-			"badge": "Acesso parceiro",
-			"emailLabel": "E-mail",
-			"errors": {
-				"emailInvalid": "Informe um endereço de e-mail válido.",
-				"emailRequired": "O e-mail é obrigatório.",
-				"emailTooLong": "O e-mail é muito longo.",
-				"fallback": "Não foi possível entrar agora. Tente novamente em instantes.",
-				"invalidCredentials": "E-mail ou senha incorretos, ou conta inativa.",
-				"passwordInvalid": "A senha deve ter entre 8 e 255 caracteres.",
-				"passwordRequired": "A senha é obrigatória."
-			},
-			"passwordHelper": "Deixe em branco no seu primeiro acesso.",
-			"passwordLabel": "Senha",
-			"submit": "Entrar",
-			"subtitle": "Gerencie inscrições e presenças nos projetos em um só lugar.",
-			"title": "Mantenha controle das horas de contrapartida"
-		},
-		"wireCredentials": {
-			"badge": "Configuração do primeiro acesso",
-			"confirmPasswordLabel": "Confirmar senha",
-			"confirmPasswordPlaceholder": "Repita sua senha",
-			"errors": {
-				"confirmationMismatch": "As senhas não coincidem.",
-				"confirmationRequired": "Confirme sua senha.",
-				"fallback": "Não foi possível concluir a configuração agora. Tente novamente em instantes.",
-				"missingEmail": "Não foi possível resolver o e-mail da conta atual.",
-				"passwordInvalid": "A senha não atende ao formato exigido.",
-				"passwordMinLength": "A senha deve ter pelo menos 8 caracteres.",
-				"passwordRequired": "A senha é obrigatória."
-			},
-			"finishLater": "Concluir depois",
-			"passwordChecklist": {
-				"lowercase": "Uma letra minúscula",
-				"minLength": "Pelo menos 8 caracteres",
-				"number": "Um número",
-				"specialSymbol": "Um símbolo especial",
-				"uppercase": "Uma letra maiúscula"
-			},
-			"passwordChecklistTitle": "Sua senha deve incluir:",
-			"passwordLabel": "Senha",
-			"passwordPlaceholder": "Crie sua senha",
-			"submit": "Concluir configuração",
-			"subtitle": "Crie a senha que será exigida nos próximos acessos.",
-			"title": "Defina sua senha"
-		}
-	},
-	"common": {
-		"primitives": {
-			"input": {
-				"placeholders": {
-					"email": "aluno@catolica.edu.br",
-					"password": "Digite sua senha",
-					"text": "Digite aqui"
-				}
-			}
-		}
-	},
-	"discover": {
-		"actions": {
-			"filters": "Abrir filtros"
-		},
-		"badge": "Projetos disponíveis",
-		"card": {
-			"hoursFallback": "Horas disponíveis",
-			"hoursLabel": "Horas",
-			"hoursValue": "{{count}}h restantes",
-			"openProject": "Abrir projeto {{name}}",
-			"seatsLabel": "Disponibilidade",
-			"seatsOpen": "Vagas abertas",
-			"seatsUnlimited": "Vagas ilimitadas",
-			"seatsValue": "{{count}} vagas restantes"
-		},
-		"filters": {
-			"apply": "Aplicar",
-			"clear": "Limpar",
-			"entitiesHelper": "Selecione uma ou mais entidades parceiras.",
-			"entitiesLabel": "Entidades",
-			"searchHelper": "Busca em qualquer um dos campos.",
-			"searchLabel": "Nome ou descrição",
-			"searchPlaceholder": "Buscar projetos",
-			"statusesHelper": "Selecione um ou mais status de projeto.",
-			"statusesLabel": "Status",
-			"subtitle": "Aplique filtros locais para refinar os projetos disponíveis.",
-			"title": "Filtrar projetos"
-		},
-		"resultsTitle": "Projetos",
-		"states": {
-			"badge": "Estado da descoberta",
-			"emptyDescription": "Nenhum projeto disponível corresponde à sua área no momento.",
-			"emptyTitle": "Nada aberto ainda",
-			"errorDescription": "Não foi possível carregar a descoberta de projetos agora.",
-			"errorTitle": "Projetos indisponíveis",
-			"filteredEmptyDescription": "Tente limpar um ou mais filtros para ver mais resultados.",
-			"filteredEmptyTitle": "Nenhum projeto corresponde a estes filtros",
-			"loadingDescription": "Verificando quais projetos estão abertos para sua área acadêmica atual.",
-			"loadingTitle": "Carregando projetos disponíveis",
-			"missingAreaDescription": "Não foi possível resolver a área de conhecimento do seu curso atual.",
-			"missingAreaTitle": "Área de conhecimento indisponível"
-		},
-		"summary": {
-			"count": "{{count}} disponíveis",
-			"description": "Apenas projetos com horas restantes, disponibilidade aberta e status elegível aparecem aqui.",
-			"fallbackArea": "Área indisponível"
-		},
-		"title": "Descobrir"
-	},
-	"home": {
-		"actions": {
-			"attendances": "Presenças",
-			"attendancesHelper": "Revise validações e atividades recentes.",
-			"discover": "Descobrir",
-			"discoverHelper": "Encontre projetos que ainda têm capacidade aberta.",
-			"enrollments": "Inscrições",
-			"enrollmentsHelper": "Verifique aprovações e solicitações de projeto pendentes.",
-			"latestQr": "Último QR",
-			"latestQrHelper": "Abra o QR code mais recente ainda aguardando validação.",
-			"openAttendance": "Abrir presença",
-			"openEnrollment": "Abrir inscrição",
-			"profile": "Perfil",
-			"profileHelper": "Revise seus dados de aluno e preferências."
-		},
-		"recent": {
-			"emptyAttendanceDescription": "Seus registros de presença aparecerão aqui após sua próxima sessão de projeto.",
-			"emptyAttendanceTitle": "Nenhuma presença ainda",
-			"emptyEnrollmentDescription": "Sua inscrição de projeto mais recente aparecerá aqui assim que você criar uma.",
-			"emptyEnrollmentTitle": "Nenhuma inscrição ainda",
-			"latestAttendance": "Última presença",
-			"latestAttendanceDescription": "Registrada em {{createdAt}}.",
-			"latestEnrollment": "Última inscrição",
-			"latestEnrollmentDescription": "Enviada em {{createdAt}}."
-		},
-		"sections": {
-			"quickActions": "Ações rápidas",
-			"quickActionsHelper": "Acesse rapidamente o próximo item que você precisa resolver.",
-			"recent": "Atividade recente",
-			"recentHelper": "Abra sua inscrição ou presença mais recente sem precisar procurar."
-		},
-		"states": {
-			"badge": "Estado inicial",
-			"emptyBadge": "Sem dados",
-			"errorDescription": "Atualize a tela ou tente novamente em instantes.",
-			"errorTitle": "Não foi possível carregar seu painel"
-		},
-		"summary": {
-			"activeEnrollments": "Projetos ativos",
-			"attendances": "Presenças",
-			"dueDate": "Prazo final",
-			"pendingEnrollments": "Aprovações pendentes",
-			"progress": "Progresso da contrapartida",
-			"progressValue": "{{value}}% concluído",
-			"remainingDays": "Dias restantes"
-		},
-		"title": "Início",
-		"values": {
-			"projectUnavailable": "Projeto indisponível",
-			"unavailable": "Indisponível"
-		}
-	},
-	"profile": {
-		"actions": {
-			"openOrganizationalDetails": "Detalhes organizacionais"
-		},
-		"badge": "Perfil",
-		"errors": {
-			"load": "Alguns dados do perfil não puderam ser carregados agora."
-		},
-		"fields": {
-			"accountEmail": "Conta",
-			"cpf": "CPF",
-			"entity": "Entidade",
-			"language": "Idioma",
-			"languageHelper": "Altere o idioma do aplicativo.",
-			"theme": "Tema",
-			"themeHelper": "Escolha como o app deve ser exibido."
-		},
-		"logout": {
-			"device": "Sair neste dispositivo",
-			"deviceHelper": "Encerra apenas a sessão deste dispositivo.",
-			"everywhere": "Sair de todos os lugares",
-			"everywhereHelper": "Encerra a sessão desta conta em todos os dispositivos ainda conectados.",
-			"stay": "Continuar conectado",
-			"stayHelper": "Fecha esta janela e mantém o uso do app.",
-			"subtitle": "Escolha se deseja manter a sessão, sair apenas daqui ou encerrar todas as sessões ativas.",
-			"title": "Sair da sua conta",
-			"trigger": "Sair"
-		},
-		"options": {
-			"theme": {
-				"dark": "Escuro",
-				"light": "Claro",
-				"system": "Sistema"
-			}
-		},
-		"sections": {
-			"preferences": "Preferências e sessão",
-			"record": "Registro do colaborador",
-			"session": "Sessão"
-		},
-		"states": {
-			"organizationEmptyDescription": "Não encontramos os detalhes da organização do colaborador atual para esta sessão.",
-			"organizationEmptyTitle": "Detalhes organizacionais indisponíveis",
-			"organizationErrorTitle": "Não foi possível carregar os detalhes organizacionais",
-			"organizationLoadingDescription": "Buscando a entidade atual e as informações do colaborador desta sessão.",
-			"organizationLoadingTitle": "Carregando detalhes organizacionais"
-		},
-		"title": "Perfil",
-		"values": {
-			"active": "Ativa",
-			"inactive": "Inativa",
-			"loading": "Carregando...",
-			"unavailable": "Indisponível"
-		}
-	},
-	"projectDetail": {
-		"actions": {
-			"apply": "Inscrever-se no projeto",
-			"close": "Fechar",
-			"exitProject": "Sair do projeto",
-			"manage": "Gerenciar inscrição"
-		},
-		"apply": {
-			"applyHelper": "Crie uma nova solicitação de inscrição neste projeto e aguarde a análise do parceiro.",
-			"caption": "Inscrição",
-			"closeHelper": "Feche esta janela e continue revisando os detalhes do projeto.",
-			"subtitle": "Confirme que deseja se inscrever neste projeto antes de enviar sua inscrição."
-		},
-		"entity": {
-			"address": "Endereço",
-			"city": "Cidade",
-			"cnpj": "CNPJ",
-			"staff": "Equipe"
-		},
-		"manage": {
-			"caption": "Inscrição",
-			"closeHelper": "Feche esta janela e volte aos detalhes do projeto.",
-			"exitProjectHelper": "Saia deste projeto e libere a vaga para outro participante.",
-			"subtitle": "Escolha o que deseja fazer com sua inscrição neste projeto."
-		},
-		"metrics": {
-			"activeParticipants": "Participantes ativos",
-			"completedHours": "Horas concluídas",
-			"maxParticipants": "Máximo de participantes",
-			"offeredHours": "Horas oferecidas",
-			"progress": "Progresso",
-			"progressValue": "{{value}}% concluído"
-		},
-		"sections": {
-			"entity": "Entidade"
-		},
-		"states": {
-			"badge": "Projeto",
-			"errorDescription": "Atualize a tela ou tente novamente em instantes.",
-			"errorTitle": "Não foi possível carregar este projeto",
-			"loadingDescription": "Buscando projeto, entidade e dados de inscrição relacionados.",
-			"loadingTitle": "Carregando detalhes do projeto",
-			"missingDescription": "Não encontramos este projeto para exibir seus detalhes.",
-			"missingTitle": "Projeto indisponível"
-		},
-		"title": "Detalhes do projeto",
-		"values": {
-			"loading": "Carregando...",
-			"unavailable": "Indisponível",
-			"unlimited": "Ilimitado"
-		}
-	}
+    "activity": {
+        "actions": {
+            "filters": "Abrir filtros"
+        },
+        "attendance": {
+            "duration": "{{count}}h registradas",
+            "waiting": "Aguardando"
+        },
+        "attendanceDetail": {
+            "actions": {
+                "openEnrollment": "Abrir inscrição",
+                "showQr": "Mostrar QR code"
+            },
+            "fields": {
+                "formerStudent": "Ex-aluno",
+                "registration": "Matrícula acadêmica"
+            },
+            "metrics": {
+                "createdAt": "Criado em",
+                "validatedAt": "Validado em",
+                "validator": "Validador"
+            },
+            "sections": {
+                "validation": "Dados de validação"
+            },
+            "states": {
+                "errorDescription": "Atualize a tela ou tente novamente em instantes.",
+                "errorTitle": "Não foi possível carregar esta presença",
+                "missingDescription": "Não encontramos esta presença na sua lista de atividades atual.",
+                "missingTitle": "Presença indisponível"
+            },
+            "subtitle": "Revise o estado de validação e o projeto vinculado antes de abri-lo novamente.",
+            "title": "Detalhes da presença",
+            "values": {
+                "notValidated": "Ainda não validada"
+            }
+        },
+        "attendanceQr": {
+            "actions": {
+                "done": "Concluído"
+            },
+            "fields": {
+                "duration": "Duração registrada"
+            },
+            "helper": "Mantenha o código totalmente visível até a validação ser concluída.",
+            "states": {
+                "errorDescription": "Atualize o modal ou tente novamente em instantes.",
+                "errorTitle": "Não foi possível carregar este QR code",
+                "loadingDescription": "Buscando a presença selecionada e gerando o QR code.",
+                "loadingTitle": "Carregando QR de presença",
+                "missingDescription": "Não encontramos esta presença ou seu hash de validação.",
+                "missingTitle": "QR code indisponível"
+            },
+            "subtitle": "Apresente este código para que a presença no projeto seja validada.",
+            "title": "QR de presença"
+        },
+        "attendanceScan": {
+            "actions": {
+                "allowCamera": "Permitir câmera"
+            },
+            "badge": "Leitura de presença",
+            "scanHelper": "Aponte a câmera para o QR code gerado pelo ex-aluno.",
+            "scanTitle": "Escaneie um QR de presença aguardando validação",
+            "states": {
+                "errorDescription": "Não conseguimos resolver este QR code agora. Tente escanear novamente em instantes.",
+                "notFoundDescription": "Nenhuma presença aguardando validação corresponde a este QR code.",
+                "notFoundTitle": "Presença não encontrada",
+                "permissionDeniedDescription": "O acesso à câmera é necessário para escanear o QR code exibido pelo ex-aluno.",
+                "permissionDeniedTitle": "Acesso à câmera necessário",
+                "permissionLoadingDescription": "Verificando se a câmera está disponível para leitura de QR.",
+                "permissionLoadingTitle": "Preparando scanner"
+            },
+            "subtitle": "Escaneie o QR code gerado pelo ex-aluno para pré-visualizar os detalhes da presença.",
+            "title": "Escanear QR de presença"
+        },
+        "chips": {
+            "active": "Projetos ativos",
+            "needsAttendance": "Precisa de presença",
+            "pending": "Em análise",
+            "recent": "Registros recentes",
+            "waiting": "Aguardando"
+        },
+        "enrollment": {},
+        "enrollmentDetail": {
+            "actions": {
+                "openProject": "Detalhes do projeto"
+            },
+            "attendancesHelper": "Revise apenas as presenças registradas neste projeto para sua inscrição atual.",
+            "attendancesTitle": "Presenças nesta inscrição",
+            "badge": "Inscrição",
+            "states": {
+                "emptyAttendancesDescription": "As presenças registradas para esta inscrição aparecerão aqui assim que forem criadas.",
+                "emptyAttendancesTitle": "Nenhuma presença ainda",
+                "errorDescription": "Atualize a tela ou tente novamente em instantes.",
+                "errorTitle": "Não foi possível carregar esta inscrição",
+                "missingDescription": "Não encontramos uma das suas inscrições atuais para este projeto.",
+                "missingTitle": "Inscrição indisponível"
+            },
+            "title": "Detalhes da inscrição"
+        },
+        "filters": {
+            "apply": "Aplicar",
+            "clear": "Limpar",
+            "searchHelperAttendances": "Busca pelo nome do projeto.",
+            "searchHelperEnrollments": "Busca pelo nome do projeto ou da entidade.",
+            "searchLabel": "Buscar",
+            "searchPlaceholderAttendances": "Buscar por nome do projeto",
+            "searchPlaceholderEnrollments": "Buscar por projeto ou entidade",
+            "statusesHelper": "Selecione um ou mais status da lista atual.",
+            "statusesLabel": "Status",
+            "subtitle": "Aplique filtros locais para refinar a lista de atividades atual.",
+            "title": "Filtrar atividade"
+        },
+        "focus": {
+            "activeDescription": "Acompanhe o progresso dos projetos e registre presenças no prazo.",
+            "activeTitle": "{{count}} inscrições ativas em andamento",
+            "attendancesDescription": "Revise validações recentes e acompanhe registros ainda aguardando confirmação.",
+            "attendancesTitle": "{{count}} presenças acompanhadas até agora",
+            "pendingDescription": "Acompanhe respostas dos parceiros e mova inscrições aprovadas para o fluxo de presença.",
+            "pendingTitle": "{{count}} inscrições pendentes precisam de atenção"
+        },
+        "sections": {
+            "attendances": "Suas presenças",
+            "attendancesHelper": "Revise o estado de validação e retorne ao projeto relacionado.",
+            "enrollments": "Suas inscrições",
+            "enrollmentsHelper": "Acompanhe o status de aprovação e abra cada projeto para ver detalhes."
+        },
+        "segments": {
+            "attendances": "Presenças",
+            "enrollments": "Inscrições"
+        },
+        "states": {
+            "badge": "Estado da atividade",
+            "emptyAttendancesDescription": "Os registros de presença aparecerão aqui quando sua atividade em projetos começar.",
+            "emptyAttendancesTitle": "Nenhuma presença ainda",
+            "emptyEnrollmentsDescription": "Os projetos em que você se inscrever aparecerão aqui assim que forem criados.",
+            "emptyEnrollmentsTitle": "Nenhuma inscrição ainda",
+            "errorDescription": "Atualize a tela ou tente novamente em instantes.",
+            "errorTitle": "Não foi possível carregar a atividade",
+            "filteredEmptyAttendancesDescription": "Tente limpar um ou mais filtros para ver mais presenças.",
+            "filteredEmptyAttendancesTitle": "Nenhuma presença corresponde a estes filtros",
+            "filteredEmptyEnrollmentsDescription": "Tente limpar um ou mais filtros para ver mais inscrições.",
+            "filteredEmptyEnrollmentsTitle": "Nenhuma inscrição corresponde a estes filtros",
+            "loadingDescription": "Buscando inscrições, presenças e detalhes dos projetos relacionados.",
+            "loadingTitle": "Carregando sua atividade"
+        },
+        "summary": {
+            "active": "Ativas",
+            "attendances": "Presenças",
+            "pending": "Pendentes"
+        },
+        "title": "Atividade",
+        "values": {
+            "projectFallback": "Projeto indisponível"
+        }
+    },
+    "attendanceCreate": {
+        "actions": {
+            "submit": "Criar presença"
+        },
+        "duration": {
+            "helper": "Use a quantidade de horas concluídas nesta atividade do projeto.",
+            "label": "Duração em horas",
+            "placeholder": "Exemplo: 2"
+        },
+        "errors": {
+            "durationInvalid": "Informe uma duração maior que zero.",
+            "durationRequired": "A duração é obrigatória.",
+            "fallback": "Não foi possível criar esta presença agora. Tente novamente em instantes.",
+            "missingFormerStudent": "Não foi possível resolver o contexto do ex-aluno atual.",
+            "projectRequired": "Selecione um projeto antes de continuar."
+        },
+        "project": {
+            "helper": "Escolha uma das suas inscrições aprovadas em projetos.",
+            "label": "Projeto",
+            "lockedHelper": "Esta presença será criada para o projeto atual.",
+            "selected": "Projeto selecionado",
+            "selectedFromProject": "Selecionado a partir deste projeto"
+        },
+        "states": {
+            "badge": "Estado da presença",
+            "emptyDescription": "Você precisa de uma inscrição aprovada antes de registrar uma nova presença.",
+            "emptyTitle": "Nenhum projeto aprovado ainda",
+            "errorDescription": "Atualize o modal ou tente novamente em instantes.",
+            "errorTitle": "Não foi possível preparar o formulário de presença",
+            "loadingDescription": "Buscando suas inscrições aprovadas e o contexto de projeto disponível.",
+            "loadingTitle": "Carregando formulário de presença"
+        },
+        "subtitle": "Registre suas horas de projeto e abra o QR de validação logo após salvar.",
+        "title": "Nova presença"
+    },
+    "attendances": {
+        "actions": {
+            "scanQr": "Ler QR code"
+        },
+        "placeholder": {
+            "description": "Em breve você poderá revisar validações pendentes, confirmações recentes e o histórico de presenças dos projetos da sua entidade.",
+            "title": "A validação de presenças ficará aqui"
+        },
+        "title": "Presenças"
+    },
+    "auth": {
+        "login": {
+            "badge": "Acesso parceiro",
+            "emailLabel": "E-mail",
+            "errors": {
+                "emailInvalid": "Informe um endereço de e-mail válido.",
+                "emailRequired": "O e-mail é obrigatório.",
+                "emailTooLong": "O e-mail é muito longo.",
+                "fallback": "Não foi possível entrar agora. Tente novamente em instantes.",
+                "invalidCredentials": "E-mail ou senha incorretos, ou conta inativa.",
+                "passwordInvalid": "A senha deve ter entre 8 e 255 caracteres.",
+                "passwordRequired": "A senha é obrigatória."
+            },
+            "passwordHelper": "Deixe em branco no seu primeiro acesso.",
+            "passwordLabel": "Senha",
+            "submit": "Entrar",
+            "subtitle": "Gerencie inscrições e presenças nos projetos em um só lugar.",
+            "title": "Mantenha controle das horas de contrapartida"
+        },
+        "wireCredentials": {
+            "badge": "Configuração do primeiro acesso",
+            "confirmPasswordLabel": "Confirmar senha",
+            "confirmPasswordPlaceholder": "Repita sua senha",
+            "errors": {
+                "confirmationMismatch": "As senhas não coincidem.",
+                "confirmationRequired": "Confirme sua senha.",
+                "fallback": "Não foi possível concluir a configuração agora. Tente novamente em instantes.",
+                "missingEmail": "Não foi possível resolver o e-mail da conta atual.",
+                "passwordInvalid": "A senha não atende ao formato exigido.",
+                "passwordMinLength": "A senha deve ter pelo menos 8 caracteres.",
+                "passwordRequired": "A senha é obrigatória."
+            },
+            "finishLater": "Concluir depois",
+            "passwordChecklist": {
+                "lowercase": "Uma letra minúscula",
+                "minLength": "Pelo menos 8 caracteres",
+                "number": "Um número",
+                "specialSymbol": "Um símbolo especial",
+                "uppercase": "Uma letra maiúscula"
+            },
+            "passwordChecklistTitle": "Sua senha deve incluir:",
+            "passwordLabel": "Senha",
+            "passwordPlaceholder": "Crie sua senha",
+            "submit": "Concluir configuração",
+            "subtitle": "Crie a senha que será exigida nos próximos acessos.",
+            "title": "Defina sua senha"
+        }
+    },
+    "common": {
+        "primitives": {
+            "input": {
+                "placeholders": {
+                    "email": "aluno@catolica.edu.br",
+                    "password": "Digite sua senha",
+                    "text": "Digite aqui"
+                }
+            }
+        }
+    },
+    "discover": {
+        "actions": {
+            "filters": "Abrir filtros"
+        },
+        "badge": "Projetos disponíveis",
+        "card": {
+            "hoursFallback": "Horas disponíveis",
+            "hoursLabel": "Horas",
+            "hoursValue": "{{count}}h restantes",
+            "openProject": "Abrir projeto {{name}}",
+            "seatsLabel": "Disponibilidade",
+            "seatsOpen": "Vagas abertas",
+            "seatsUnlimited": "Vagas ilimitadas",
+            "seatsValue": "{{count}} vagas restantes"
+        },
+        "filters": {
+            "apply": "Aplicar",
+            "clear": "Limpar",
+            "entitiesHelper": "Selecione uma ou mais entidades parceiras.",
+            "entitiesLabel": "Entidades",
+            "searchHelper": "Busca em qualquer um dos campos.",
+            "searchLabel": "Nome ou descrição",
+            "searchPlaceholder": "Buscar projetos",
+            "statusesHelper": "Selecione um ou mais status de projeto.",
+            "statusesLabel": "Status",
+            "subtitle": "Aplique filtros locais para refinar os projetos disponíveis.",
+            "title": "Filtrar projetos"
+        },
+        "resultsTitle": "Projetos",
+        "states": {
+            "badge": "Estado da descoberta",
+            "emptyDescription": "Nenhum projeto disponível corresponde à sua área no momento.",
+            "emptyTitle": "Nada aberto ainda",
+            "errorDescription": "Não foi possível carregar a descoberta de projetos agora.",
+            "errorTitle": "Projetos indisponíveis",
+            "filteredEmptyDescription": "Tente limpar um ou mais filtros para ver mais resultados.",
+            "filteredEmptyTitle": "Nenhum projeto corresponde a estes filtros",
+            "loadingDescription": "Verificando quais projetos estão abertos para sua área acadêmica atual.",
+            "loadingTitle": "Carregando projetos disponíveis",
+            "missingAreaDescription": "Não foi possível resolver a área de conhecimento do seu curso atual.",
+            "missingAreaTitle": "Área de conhecimento indisponível"
+        },
+        "summary": {
+            "count": "{{count}} disponíveis",
+            "description": "Apenas projetos com horas restantes, disponibilidade aberta e status elegível aparecem aqui.",
+            "fallbackArea": "Área indisponível"
+        },
+        "title": "Descobrir"
+    },
+    "home": {
+        "actions": {
+            "attendances": "Presenças",
+            "attendancesHelper": "Revise validações e atividades recentes.",
+            "discover": "Descobrir",
+            "discoverHelper": "Encontre projetos que ainda têm capacidade aberta.",
+            "enrollments": "Inscrições",
+            "enrollmentsHelper": "Verifique aprovações e solicitações de projeto pendentes.",
+            "latestQr": "Último QR",
+            "latestQrHelper": "Abra o QR code mais recente ainda aguardando validação.",
+            "openAttendance": "Abrir presença",
+            "openEnrollment": "Abrir inscrição",
+            "profile": "Perfil",
+            "profileHelper": "Revise seus dados de aluno e preferências."
+        },
+        "recent": {
+            "emptyAttendanceDescription": "Seus registros de presença aparecerão aqui após sua próxima sessão de projeto.",
+            "emptyAttendanceTitle": "Nenhuma presença ainda",
+            "emptyEnrollmentDescription": "Sua inscrição de projeto mais recente aparecerá aqui assim que você criar uma.",
+            "emptyEnrollmentTitle": "Nenhuma inscrição ainda",
+            "latestAttendance": "Última presença",
+            "latestAttendanceDescription": "Registrada em {{createdAt}}.",
+            "latestEnrollment": "Última inscrição",
+            "latestEnrollmentDescription": "Enviada em {{createdAt}}."
+        },
+        "sections": {
+            "quickActions": "Ações rápidas",
+            "quickActionsHelper": "Acesse rapidamente o próximo item que você precisa resolver.",
+            "recent": "Atividade recente",
+            "recentHelper": "Abra sua inscrição ou presença mais recente sem precisar procurar."
+        },
+        "states": {
+            "badge": "Estado inicial",
+            "emptyBadge": "Sem dados",
+            "errorDescription": "Atualize a tela ou tente novamente em instantes.",
+            "errorTitle": "Não foi possível carregar seu painel"
+        },
+        "summary": {
+            "activeEnrollments": "Projetos ativos",
+            "attendances": "Presenças",
+            "dueDate": "Prazo final",
+            "pendingEnrollments": "Aprovações pendentes",
+            "progress": "Progresso da contrapartida",
+            "progressValue": "{{value}}% concluído",
+            "remainingDays": "Dias restantes"
+        },
+        "title": "Início",
+        "values": {
+            "projectUnavailable": "Projeto indisponível",
+            "unavailable": "Indisponível"
+        }
+    },
+    "navigation": {
+        "tabs": {
+            "attendances": "Presenças",
+            "home": "Início",
+            "profile": "Perfil",
+            "projects": "Projetos"
+        }
+    },
+    "profile": {
+        "actions": {
+            "openOrganizationalDetails": "Detalhes organizacionais"
+        },
+        "badge": "Perfil",
+        "errors": {
+            "load": "Alguns dados do perfil não puderam ser carregados agora."
+        },
+        "fields": {
+            "accountEmail": "Conta",
+            "cpf": "CPF",
+            "entity": "Entidade",
+            "language": "Idioma",
+            "languageHelper": "Altere o idioma do aplicativo.",
+            "theme": "Tema",
+            "themeHelper": "Escolha como o app deve ser exibido."
+        },
+        "logout": {
+            "device": "Sair neste dispositivo",
+            "deviceHelper": "Encerra apenas a sessão deste dispositivo.",
+            "everywhere": "Sair de todos os lugares",
+            "everywhereHelper": "Encerra a sessão desta conta em todos os dispositivos ainda conectados.",
+            "stay": "Continuar conectado",
+            "stayHelper": "Fecha esta janela e mantém o uso do app.",
+            "subtitle": "Escolha se deseja manter a sessão, sair apenas daqui ou encerrar todas as sessões ativas.",
+            "title": "Sair da sua conta",
+            "trigger": "Sair"
+        },
+        "options": {
+            "theme": {
+                "dark": "Escuro",
+                "light": "Claro",
+                "system": "Sistema"
+            }
+        },
+        "sections": {
+            "preferences": "Preferências e sessão",
+            "record": "Registro do colaborador",
+            "session": "Sessão"
+        },
+        "states": {
+            "organizationEmptyDescription": "Não encontramos os detalhes da organização do colaborador atual para esta sessão.",
+            "organizationEmptyTitle": "Detalhes organizacionais indisponíveis",
+            "organizationErrorTitle": "Não foi possível carregar os detalhes organizacionais",
+            "organizationLoadingDescription": "Buscando a entidade atual e as informações do colaborador desta sessão.",
+            "organizationLoadingTitle": "Carregando detalhes organizacionais"
+        },
+        "title": "Perfil",
+        "values": {
+            "active": "Ativa",
+            "inactive": "Inativa",
+            "loading": "Carregando...",
+            "unavailable": "Indisponível"
+        }
+    },
+    "projectDetail": {
+        "actions": {
+            "apply": "Inscrever-se no projeto",
+            "close": "Fechar",
+            "exitProject": "Sair do projeto",
+            "manage": "Gerenciar inscrição"
+        },
+        "apply": {
+            "applyHelper": "Crie uma nova solicitação de inscrição neste projeto e aguarde a análise do parceiro.",
+            "caption": "Inscrição",
+            "closeHelper": "Feche esta janela e continue revisando os detalhes do projeto.",
+            "subtitle": "Confirme que deseja se inscrever neste projeto antes de enviar sua inscrição."
+        },
+        "entity": {
+            "address": "Endereço",
+            "city": "Cidade",
+            "cnpj": "CNPJ",
+            "staff": "Equipe"
+        },
+        "manage": {
+            "caption": "Inscrição",
+            "closeHelper": "Feche esta janela e volte aos detalhes do projeto.",
+            "exitProjectHelper": "Saia deste projeto e libere a vaga para outro participante.",
+            "subtitle": "Escolha o que deseja fazer com sua inscrição neste projeto."
+        },
+        "metrics": {
+            "activeParticipants": "Participantes ativos",
+            "completedHours": "Horas concluídas",
+            "maxParticipants": "Máximo de participantes",
+            "offeredHours": "Horas oferecidas",
+            "progress": "Progresso",
+            "progressValue": "{{value}}% concluído"
+        },
+        "sections": {
+            "entity": "Entidade"
+        },
+        "states": {
+            "badge": "Projeto",
+            "errorDescription": "Atualize a tela ou tente novamente em instantes.",
+            "errorTitle": "Não foi possível carregar este projeto",
+            "loadingDescription": "Buscando projeto, entidade e dados de inscrição relacionados.",
+            "loadingTitle": "Carregando detalhes do projeto",
+            "missingDescription": "Não encontramos este projeto para exibir seus detalhes.",
+            "missingTitle": "Projeto indisponível"
+        },
+        "title": "Detalhes do projeto",
+        "values": {
+            "loading": "Carregando...",
+            "unavailable": "Indisponível",
+            "unlimited": "Ilimitado"
+        }
+    }
 }

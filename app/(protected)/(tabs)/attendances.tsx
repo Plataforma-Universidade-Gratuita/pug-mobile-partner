@@ -1,7 +1,1 @@
-import React from "react";
-
-import { AttendancesScreen } from "@/features/activity";
-
-export default function AttendancesRoute() {
-	return <AttendancesScreen />;
-}
+export { AttendancesScreen as default } from "@/features/attendances";
