@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 
-import { Snackbar } from "react-native-paper";
 import { Text, View } from "react-native";
+import { Snackbar } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useFeedbackStore, useThemeStore } from "@/stores";
