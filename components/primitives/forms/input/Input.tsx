@@ -75,10 +75,7 @@ export function Input({
 		autoCapitalize: resolvedAutoCapitalize,
 	};
 	const autoCompleteProps =
-		resolvedAutoComplete !== undefined
-			? { autoComplete: resolvedAutoComplete }
-			: {};
-	const keyboardTypeProps = keyboardType
+	const autoCompleteProps = { autoComplete: resolvedAutoComplete };
 		? { keyboardType: resolveInputKeyboardType(type, keyboardType) }
 		: type === "email"
 			? { keyboardType: resolveInputKeyboardType(type, keyboardType) }
