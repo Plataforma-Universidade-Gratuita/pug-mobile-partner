@@ -9,15 +9,23 @@ import {
 	LANG_COOKIE_NAME,
 } from "@/i18n/constants";
 import enUSCommon from "@/public/locales/en-US/common.json";
+import enUSFeedback from "@/public/locales/en-US/feedback.json";
 import ptBRCommon from "@/public/locales/pt-BR/common.json";
+import ptBRFeedback from "@/public/locales/pt-BR/feedback.json";
 import type { AppLang } from "@/types/client";
 
 const resources = {
 	"en-US": {
-		[I18N_NAMESPACE]: enUSCommon,
+		[I18N_NAMESPACE]: {
+			...enUSCommon,
+			feedback: enUSFeedback,
+		},
 	},
 	"pt-BR": {
-		[I18N_NAMESPACE]: ptBRCommon,
+		[I18N_NAMESPACE]: {
+			...ptBRCommon,
+			feedback: ptBRFeedback,
+		},
 	},
 } as const;
 

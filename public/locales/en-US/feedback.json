@@ -1,0 +1,14 @@
+{
+	"auth": {
+		"wireCredentials": {
+			"error": {
+				"description": "Try again in a moment.",
+				"title": "Unable to finish setup"
+			},
+			"success": {
+				"description": "Your partner access is ready for future sign-ins.",
+				"title": "Password configured"
+			}
+		}
+	}
+}

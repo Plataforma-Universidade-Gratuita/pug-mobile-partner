@@ -3,6 +3,7 @@ export * from "./app";
 export * from "./auth";
 export * from "./context";
 export * from "./features";
+export * from "./feedback";
 export * from "./hooks";
 export * from "./query";
 export * from "./store";
