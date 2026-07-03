@@ -169,6 +169,32 @@
             "recent": "Atividade recente",
             "recentHelper": "Abra sua inscrição ou presença mais recente sem precisar procurar."
         },
+        "snackbarTests": {
+            "actions": {
+                "danger": "Mostrar erro",
+                "info": "Mostrar informa��o",
+                "success": "Mostrar sucesso",
+                "warning": "Mostrar aviso"
+            },
+            "danger": {
+                "description": "� assim que a��es com falha ser�o explicadas.",
+                "title": "Feedback de erro"
+            },
+            "description": "Controles tempor�rios para ajustar o feedback mobile antes de ligar nos fluxos reais.",
+            "info": {
+                "description": "� assim que atualiza��es neutras ser�o exibidas.",
+                "title": "Feedback informativo"
+            },
+            "success": {
+                "description": "� assim que a��es conclu�das ser�o confirmadas.",
+                "title": "Feedback de sucesso"
+            },
+            "title": "Testes de snackbar",
+            "warning": {
+                "description": "� assim que estados de risco ou incompletos ser�o exibidos.",
+                "title": "Feedback de aviso"
+            }
+        },
         "states": {
             "badge": "Estado inicial",
             "emptyBadge": "Sem dados",
@@ -184,7 +210,7 @@
             "progressValue": "{{value}}% concluído",
             "remainingDays": "Dias restantes"
         },
-        "title": "Início",
+        "title": "In�cio",
         "values": {
             "projectUnavailable": "Projeto indisponível",
             "unavailable": "Indisponível"

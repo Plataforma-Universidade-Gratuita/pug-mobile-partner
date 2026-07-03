@@ -169,6 +169,32 @@
             "recent": "Recent activity",
             "recentHelper": "Open your latest enrollment or attendance without searching for it."
         },
+        "snackbarTests": {
+            "actions": {
+                "danger": "Show error",
+                "info": "Show info",
+                "success": "Show success",
+                "warning": "Show warning"
+            },
+            "danger": {
+                "description": "This is how failed actions will be explained.",
+                "title": "Error feedback"
+            },
+            "description": "Temporary controls to refine mobile feedback before wiring it into real flows.",
+            "info": {
+                "description": "This is how neutral updates will be shown.",
+                "title": "Info feedback"
+            },
+            "success": {
+                "description": "This is how successful actions will be confirmed.",
+                "title": "Success feedback"
+            },
+            "title": "Snackbar tests",
+            "warning": {
+                "description": "This is how risky or incomplete states will be shown.",
+                "title": "Warning feedback"
+            }
+        },
         "states": {
             "badge": "Home state",
             "emptyBadge": "No data",
