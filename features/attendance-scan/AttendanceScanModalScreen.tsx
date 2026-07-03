@@ -15,7 +15,7 @@ import {
 	LoadingBlock,
 	ModalScreenScaffold,
 } from "@/components/primitives";
-import { resolveAttendanceStatusTone } from "@/features/activity/utils";
+import { resolveAttendanceStatusTone } from "@/features/attendances/utils";
 import { useCurrentStaffStore, useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import type {

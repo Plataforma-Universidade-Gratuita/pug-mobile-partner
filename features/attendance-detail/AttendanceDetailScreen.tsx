@@ -11,7 +11,7 @@ import { useCurrentFormerStudentStore, useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
 import { getTabScreenContentBottomPadding } from "@/utils";
 
-import { resolveAttendanceStatusTone } from "../activity/utils";
+import { resolveAttendanceStatusTone } from "../attendances/utils";
 import { AttendanceDetailContent } from "./AttendanceDetailContent";
 import { AttendanceDetailLoadingSkeleton } from "./AttendanceDetailLoadingSkeleton";
 import { AttendanceDetailStateCard } from "./AttendanceDetailStateCard";

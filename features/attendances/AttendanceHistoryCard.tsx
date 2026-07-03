@@ -5,11 +5,11 @@ import { Pressable, View } from "react-native";
 import { Badge, Label, LoadingBlock } from "@/components/primitives";
 import { useThemeStore } from "@/stores";
 import { createPrimitiveSurfaceStyleSpec } from "@/styles";
-import type { ActivityAttendanceCardProps } from "@/types/client";
+import type { AttendanceHistoryCardProps } from "@/types/client";
 
-import { createStyles } from "../styles";
+import { createStyles } from "./styles";
 
-export function ActivityAttendanceCard({
+export function AttendanceHistoryCard({
 	dateLabel,
 	durationLabel,
 	onPress,
@@ -17,7 +17,7 @@ export function ActivityAttendanceCard({
 	statusLabel,
 	statusTone,
 	isLoading = false,
-}: ActivityAttendanceCardProps) {
+}: AttendanceHistoryCardProps) {
 	const theme = useThemeStore(state => state.theme);
 	const spec = useMemo(() => createPrimitiveSurfaceStyleSpec(theme), [theme]);
 	const styles = useMemo(() => createStyles(theme, spec), [spec, theme]);

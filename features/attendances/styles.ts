@@ -37,5 +37,34 @@ export function createStyles(
 		title: {
 			color: theme.colors.text,
 		},
+		card: {
+			borderRadius: theme.radius.xl,
+			borderWidth: 1,
+			paddingHorizontal: theme.space[4],
+			paddingVertical: theme.space[4],
+			gap: theme.space[2],
+		},
+		cardBadge: {
+			alignSelf: "flex-start",
+		},
+		cardBodyRow: {
+			flexDirection: "row",
+			alignItems: "flex-start",
+			justifyContent: "space-between",
+			gap: theme.space[3],
+		},
+		cardCopy: {
+			flex: 1,
+			gap: theme.space[1],
+		},
+		cardTitle: {
+			color: theme.colors.text,
+		},
+		cardMetaRow: {
+			flexDirection: "row",
+			flexWrap: "wrap",
+			alignItems: "center",
+			gap: theme.space[2],
+		},
 	});
 }

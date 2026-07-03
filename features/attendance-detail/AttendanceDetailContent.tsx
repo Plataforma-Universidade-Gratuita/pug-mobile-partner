@@ -150,9 +150,7 @@ export function AttendanceDetailContent({
 						)}
 					</View>
 					<View style={styles.row}>
-						<Label role="helper">
-							{t("activity.attendanceQr.fields.duration")}
-						</Label>
+						<Label role="helper">Logged hours</Label>
 						{isLoading ? (
 							<LoadingBlock
 								width="44%"
@@ -205,32 +203,19 @@ export function AttendanceDetailContent({
 							height={theme.form.controlHeight}
 							radius={theme.form.controlRadius}
 						/>
-						<LoadingBlock
-							width="100%"
-							height={theme.form.controlHeight}
-							radius={theme.form.controlRadius}
-						/>
 					</>
 				) : (
-					<>
-						<Button
-							onPress={() => {
-								router.push(`/attendance/qr/${attendance.id}`);
-							}}
-						>
-							{t("activity.attendanceDetail.actions.showQr")}
-						</Button>
-						<Button
-							variant="secondary"
-							onPress={() => {
-								router.replace(
-									`/activity/enrollments/${attendance.project.id}`,
-								);
-							}}
-						>
-							{t("activity.attendanceDetail.actions.openEnrollment")}
-						</Button>
-					</>
+					<Button
+						variant="secondary"
+						onPress={() => {
+							router.replace({
+								pathname: "/enrollment/[id]",
+								params: { id: attendance.project.id },
+							});
+						}}
+					>
+						{t("activity.attendanceDetail.actions.openEnrollment")}
+					</Button>
 				)}
 			</View>
 		</>

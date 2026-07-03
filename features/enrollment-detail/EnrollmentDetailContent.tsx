@@ -5,11 +5,11 @@ import { useTranslation } from "react-i18next";
 import { RefreshControl, ScrollView, View } from "react-native";
 
 import { Badge, Button, Label, LoadingBlock } from "@/components/primitives";
-import { ActivityAttendanceCard } from "@/features/activity/activity-sections";
+import { AttendanceHistoryCard } from "@/features/attendances";
 import {
 	resolveAttendanceStatusTone,
 	resolveEnrollmentStatusTone,
-} from "@/features/activity/utils";
+} from "@/features/attendances/utils";
 import { ProjectDetailStateCard } from "@/features/project-detail/project-detail-sections";
 import { getProjectCompletionRatio } from "@/features/project-detail/utils";
 import { useThemeStore } from "@/stores";
@@ -255,7 +255,7 @@ export function EnrollmentDetailContent({
 						</View>
 						{isRefreshing
 							? ["first", "second", "third"].map(key => (
-									<ActivityAttendanceCard
+									<AttendanceHistoryCard
 										key={key}
 										dateLabel=""
 										durationLabel=""
@@ -267,7 +267,7 @@ export function EnrollmentDetailContent({
 									/>
 								))
 							: attendanceItems.map(attendance => (
-									<ActivityAttendanceCard
+									<AttendanceHistoryCard
 										key={attendance.id}
 										dateLabel={
 											attendance.attendanceInfo.auditInfo.createdAtFormatted
@@ -276,7 +276,10 @@ export function EnrollmentDetailContent({
 											count: attendance.qrValidationInfo.duration,
 										})}
 										onPress={() => {
-											router.replace(`/activity/attendances/${attendance.id}`);
+											router.replace({
+												pathname: "/attendance/[id]",
+												params: { id: attendance.id },
+											});
 										}}
 										projectName={attendance.project.name}
 										statusLabel={attendance.status.statusFormatted}
