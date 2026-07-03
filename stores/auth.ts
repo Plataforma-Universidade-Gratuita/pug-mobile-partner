@@ -1,11 +1,13 @@
+import i18n from "i18next";
 import { create } from "zustand";
 
 import * as api from "@/api";
 import type { TokenResponse } from "@/types/api";
 import type { AuthStoreState, StoredSessionTokens } from "@/types/client";
-import { validatePartnerToken } from "@/utils";
+import { getApiFeedbackContent, validatePartnerToken } from "@/utils";
 
 import { useCurrentStaffStore } from "./current-staff";
+import { useFeedbackStore } from "./feedback";
 
 const { clearApiSession, configureApiSessionProvider, getApiSessionProvider } =
 	api;
@@ -201,6 +203,25 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 		try {
 			await api.identity.auth.wireCredentials(body);
 			await get().refreshSession();
+			useFeedbackStore
+				.getState()
+				.showSuccess(i18n.t("feedback.auth.wireCredentials.success.title"), {
+					description: i18n.t(
+						"feedback.auth.wireCredentials.success.description",
+					),
+				});
+		} catch (error) {
+			const feedback = getApiFeedbackContent(error, {
+				fallbackTitle: i18n.t("feedback.auth.wireCredentials.error.title"),
+				fallbackDescription: i18n.t(
+					"feedback.auth.wireCredentials.error.description",
+				),
+			});
+
+			useFeedbackStore
+				.getState()
+				.showDanger(feedback.title, { description: feedback.description });
+			throw error;
 		} finally {
 			set({ isMutatingSession: false });
 		}
@@ -258,15 +279,6 @@ configureApiSessionProvider({
 	},
 	persistSession: async tokens => {
 		await baseSessionProvider.persistSession(tokens);
-
-		const validation = validatePartnerToken(tokens.token);
-		if (!validation.isValid || !validation.payload) {
-			return;
-		}
-
-		useAuthStore
-			.getState()
-			.setSession(toStoredSessionTokens(tokens), validation.payload);
 		useAuthStore.getState().setRequiresCredentialSetup(!tokens.passwordWired);
 	},
 });
