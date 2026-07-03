@@ -31,3 +31,11 @@ export interface ApiFeedbackContentOptions {
 	fallbackTitle: string;
 	fallbackDescription: string;
 }
+
+export interface QueryErrorFeedbackDescriptor {
+	key: string;
+	isError: boolean;
+	error: unknown;
+	errorUpdatedAt: number;
+	getContent: (error: unknown) => ApiFeedbackContent;
+}
