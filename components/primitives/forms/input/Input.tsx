@@ -71,10 +71,9 @@ export function Input({
 		? { placeholder: resolvedPlaceholder }
 		: {};
 	const submitProps = onSubmitEditing ? { onSubmitEditing } : {};
-	const autoCapitalizeProps =
-		resolvedAutoCapitalize !== undefined
-			? { autoCapitalize: resolvedAutoCapitalize }
-			: {};
+	const autoCapitalizeProps = {
+		autoCapitalize: resolvedAutoCapitalize,
+	};
 	const autoCompleteProps =
 		resolvedAutoComplete !== undefined
 			? { autoComplete: resolvedAutoComplete }
