@@ -1,0 +1,14 @@
+{
+	"auth": {
+		"wireCredentials": {
+			"error": {
+				"description": "Tente novamente em instantes.",
+				"title": "Não foi possível concluir a configuração"
+			},
+			"success": {
+				"description": "Seu acesso de parceiro está pronto para os próximos logins.",
+				"title": "Senha configurada"
+			}
+		}
+	}
+}
