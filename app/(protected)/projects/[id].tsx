@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import { ProjectDetailScreen } from "@/features/project-detail";

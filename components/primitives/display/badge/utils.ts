@@ -1,4 +1,3 @@
-
 import type { ChipProps } from "react-native-paper";
 
 import type {

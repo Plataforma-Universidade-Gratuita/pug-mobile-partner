@@ -1,4 +1,3 @@
-
 import type { StaffCreateRequest, StaffUpdateRequest } from "@/types/api";
 
 export type StaffEditorMode = "create" | "duplicate" | "update";

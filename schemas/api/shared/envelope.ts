@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 export function createApiSuccessEnvelopeSchema<T extends z.ZodTypeAny>(

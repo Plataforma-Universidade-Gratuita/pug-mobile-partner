@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 import { CampusResponseSchema } from "../shared/shared";

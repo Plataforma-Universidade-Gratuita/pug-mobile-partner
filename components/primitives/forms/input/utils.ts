@@ -1,4 +1,3 @@
-
 import type { TextInputProps } from "react-native";
 
 import type {

@@ -1,4 +1,3 @@
-
 import type { EntityCreateRequest, EntityUpdateRequest } from "@/types/api";
 
 export type EntityEditorMode = "create" | "duplicate" | "update";

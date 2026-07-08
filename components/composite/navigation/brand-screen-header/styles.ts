@@ -1,4 +1,3 @@
-
 import { Platform, StyleSheet } from "react-native";
 
 import type { AppResolvedTheme } from "@/types/client";

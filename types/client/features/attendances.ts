@@ -1,4 +1,3 @@
-
 import type { AttendanceStatus, EnrollmentStatus } from "@/types/api";
 import type { BadgeTone } from "@/types/client";
 

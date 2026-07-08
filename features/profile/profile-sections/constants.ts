@@ -1,4 +1,3 @@
-
 import type { AppLang, AppTheme } from "@/types/client";
 
 export const PROFILE_THEME_OPTIONS: readonly {

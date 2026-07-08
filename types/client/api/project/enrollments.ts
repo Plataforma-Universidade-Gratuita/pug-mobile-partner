@@ -1,4 +1,3 @@
-
 import type { EnrollmentStatus } from "@/types/api";
 
 export type EnrollmentStatusAction =

@@ -1,4 +1,3 @@
-
 import type { BadgeTone } from "../components/primitives/display/badge";
 import type { AppLang } from "../context";
 import type { AppTheme } from "../theme";

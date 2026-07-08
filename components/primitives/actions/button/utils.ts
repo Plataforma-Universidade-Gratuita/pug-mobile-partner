@@ -1,4 +1,3 @@
-
 import type { ButtonProps } from "react-native-paper";
 
 import type {

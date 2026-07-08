@@ -1,4 +1,3 @@
-
 import React, { useMemo } from "react";
 
 import { PaperProvider } from "react-native-paper";

@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import { RefreshControl, ScrollView, View } from "react-native";

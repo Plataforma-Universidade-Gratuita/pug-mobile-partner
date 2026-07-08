@@ -1,4 +1,3 @@
-
 import { create } from "zustand";
 
 import { DEFAULT_LANG, LANG_STORAGE_KEY, SUPPORTED_LANGS } from "@/constants";

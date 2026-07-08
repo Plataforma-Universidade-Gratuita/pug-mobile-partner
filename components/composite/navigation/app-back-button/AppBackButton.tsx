@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import { useNavigation, useRouter } from "expo-router";

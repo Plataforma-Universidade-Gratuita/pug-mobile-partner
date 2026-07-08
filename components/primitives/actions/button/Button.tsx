@@ -1,4 +1,3 @@
-
 import React, { useMemo } from "react";
 
 import { Button as PaperButton } from "react-native-paper";

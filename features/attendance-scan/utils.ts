@@ -1,4 +1,3 @@
-
 import { buildAttendanceComplexSearchRequest } from "@/api/utils";
 
 export function buildAttendanceScanLookupRequest() {

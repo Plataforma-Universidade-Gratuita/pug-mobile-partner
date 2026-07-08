@@ -1,4 +1,3 @@
-
 import {
 	APP_THEME_MAP,
 	APP_THEMES,

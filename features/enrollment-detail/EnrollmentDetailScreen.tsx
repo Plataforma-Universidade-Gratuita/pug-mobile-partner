@@ -1,4 +1,3 @@
-
 import React, { useEffect, useMemo, useState } from "react";
 
 import { useLocalSearchParams, useRouter } from "expo-router";

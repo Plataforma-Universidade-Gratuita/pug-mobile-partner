@@ -1,4 +1,3 @@
-
 import type { QueryClientConfig } from "@tanstack/react-query";
 
 export const QUERY_DEFAULT_RETRY_COUNT = 1;

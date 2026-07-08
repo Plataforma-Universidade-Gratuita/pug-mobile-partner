@@ -1,4 +1,3 @@
-
 import type { ReactNode } from "react";
 
 import type { StyleProp, TextStyle } from "react-native";

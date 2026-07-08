@@ -1,4 +1,3 @@
-
 import { Appearance } from "react-native";
 import { create } from "zustand";
 

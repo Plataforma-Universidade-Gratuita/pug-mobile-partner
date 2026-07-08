@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import { OrganizationalDetailsScreen } from "@/features/organizational-details";

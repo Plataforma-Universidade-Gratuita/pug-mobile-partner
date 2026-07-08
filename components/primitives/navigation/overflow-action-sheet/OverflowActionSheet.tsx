@@ -1,4 +1,3 @@
-
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { Animated, Modal, Pressable, View } from "react-native";

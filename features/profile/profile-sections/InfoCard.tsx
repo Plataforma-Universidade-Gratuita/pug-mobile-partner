@@ -1,4 +1,3 @@
-
 import React, { useMemo } from "react";
 
 import { ChevronRight } from "lucide-react-native";

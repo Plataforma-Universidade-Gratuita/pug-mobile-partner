@@ -1,4 +1,3 @@
-
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 
 import { useSegments } from "expo-router";

@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import { Redirect, Stack, usePathname } from "expo-router";

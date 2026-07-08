@@ -1,4 +1,3 @@
-
 import { ApiError } from "@/api/errors";
 import type {
 	ApiFeedbackContent,

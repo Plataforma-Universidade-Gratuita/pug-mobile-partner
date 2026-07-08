@@ -1,4 +1,3 @@
-
 import type { TokenResponse } from "@/types/api";
 
 export interface ApiSessionProvider {

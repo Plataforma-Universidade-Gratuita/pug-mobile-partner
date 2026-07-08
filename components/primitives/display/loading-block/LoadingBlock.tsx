@@ -1,4 +1,3 @@
-
 import React, { useEffect, useMemo, useRef } from "react";
 
 import { Animated, Easing, View } from "react-native";

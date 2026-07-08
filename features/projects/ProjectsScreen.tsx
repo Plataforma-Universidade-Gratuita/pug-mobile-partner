@@ -1,4 +1,3 @@
-
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { useScrollToTop } from "@react-navigation/native";

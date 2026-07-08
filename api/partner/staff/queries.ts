@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useQuery } from "@tanstack/react-query";
 
 import * as accountApi from "@/api/identity/accounts";

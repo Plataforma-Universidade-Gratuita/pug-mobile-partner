@@ -1,4 +1,3 @@
-
 import React, { useMemo } from "react";
 
 import { Pressable, View } from "react-native";

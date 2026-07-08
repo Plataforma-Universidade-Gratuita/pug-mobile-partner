@@ -1,4 +1,3 @@
-
 /*
  * Temporary compatibility shim for copied student-bound screens that have not
  * been migrated yet. Auth and profile use the real current-staff store.

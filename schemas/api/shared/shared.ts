@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 export const CampiEnum = z.enum(["JARAGUA_DO_SUL", "JOINVILLE"]);

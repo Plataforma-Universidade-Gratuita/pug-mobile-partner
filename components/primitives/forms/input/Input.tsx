@@ -1,4 +1,3 @@
-
 import React, { useMemo, useState } from "react";
 import type { ComponentProps } from "react";
 
@@ -68,8 +67,8 @@ export function Input({
 	const autoCapitalizeProps = {
 		autoCapitalize: resolvedAutoCapitalize,
 	};
-	const autoCompleteProps =
 	const autoCompleteProps = { autoComplete: resolvedAutoComplete };
+	const keyboardTypeProps = keyboardType
 		? { keyboardType: resolveInputKeyboardType(type, keyboardType) }
 		: type === "email"
 			? { keyboardType: resolveInputKeyboardType(type, keyboardType) }

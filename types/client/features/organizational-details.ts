@@ -1,4 +1,3 @@
-
 import type { BadgeTone } from "../components/primitives/display/badge";
 
 export interface OrganizationalDetailsStateCardProps {

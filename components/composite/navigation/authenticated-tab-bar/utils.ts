@@ -1,4 +1,3 @@
-
 import type { AppResolvedTheme } from "@/types/client";
 
 export function clampTabIndex(index: number, routeCount: number) {

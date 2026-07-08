@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import { Plus, Settings2 } from "lucide-react-native";

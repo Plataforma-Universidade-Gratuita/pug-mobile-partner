@@ -1,4 +1,3 @@
-
 import type { EnrollmentStatus } from "@/types/api";
 
 export const ACTIVE_PARTICIPANT_STATUSES = [

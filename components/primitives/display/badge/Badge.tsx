@@ -1,4 +1,3 @@
-
 import React, { useMemo } from "react";
 
 import { Chip } from "react-native-paper";
