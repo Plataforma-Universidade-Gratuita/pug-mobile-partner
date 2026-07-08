@@ -1,10 +1,4 @@
-/*
- * Copyright (c) 2026 Mateus Fernandes and Plataforma Universidade Gratuita.
- * All rights reserved.
- *
- * This source code is proprietary and confidential. Unauthorized use,
- * copying, modification, distribution, or deployment is prohibited.
- */
+
 import { MD3DarkTheme, MD3LightTheme, type MD3Theme } from "react-native-paper";
 
 import type { AppResolvedTheme } from "@/types/client";
